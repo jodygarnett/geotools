@@ -3219,12 +3219,13 @@ public class StreamingRenderer implements GTRenderer {
                         // when computing the centroid
                         LiteShape2 first = getTransformedShape(g, sa);
                         if(first != null) {
-                            if(projectionHandler != null) {
+                            MathTransform reverse = sa.xformInverse();
+                            if(projectionHandler != null && reverse != null) {
                                 // at the same time, we cannot keep the geometry in screen space because
                                 // that would prevent the advanced projection handling to do its work,
                                 // to replicate the geometries across the datelines, so we transform
                                 // it back to the original
-                                Geometry tx = JTS.transform(first.getGeometry(), sa.xform.inverse());
+                                Geometry tx = JTS.transform(first.getGeometry(), reverse);
                                 return getTransformedShape(RendererUtilities.getCentroid(tx), sa);
                             } else {
                                 return getTransformedShape(RendererUtilities.getCentroid(g), null);
@@ -3284,22 +3285,7 @@ public class StreamingRenderer implements GTRenderer {
                     d.decimateTransformGeneralize(geom, sa.crsxform);
                     geom.geometryChanged();
                     // then post process it (provide reverse transform if available)
-                    MathTransform reverse = null;
-                    if (sa.crsxform != null) {
-                        if (sa.crsxform instanceof ConcatenatedTransform
-                                && ((ConcatenatedTransform) sa.crsxform).transform1
-                                        .getTargetDimensions() >= 3
-                                && ((ConcatenatedTransform) sa.crsxform).transform2
-                                        .getTargetDimensions() == 2) {
-                            reverse = null; // We are downcasting 3D data to 2D data so no inverse is available
-                        } else {
-                            try {
-                                reverse = sa.crsxform.inverse();
-                            } catch (Exception cannotReverse) {
-                                reverse = null; // reverse transform not available
-                            }
-                        }
-                    }
+                    MathTransform reverse = sa.crsxfromInverse();
                     geom = projectionHandler.postProcess(reverse, geom);
                     if(geom == null) {
                         shape = null;

@@ -246,7 +246,7 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
     final ReferencingFactoryContainer getFactoryContainer() {
         return factories;
     }
-
+    
     /**
      * Returns an affine transform between two coordinate systems. Only units and
      * axis order (e.g. transforming from (NORTH,WEST) to (EAST,NORTH)) are taken
@@ -274,8 +274,39 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
                                       final CoordinateSystem targetCS)
             throws OperationNotFoundException
     {
+        return swapAndScaleAxis(sourceCS, targetCS, false);
+    }
+
+    /**
+     * Returns an affine transform between two coordinate systems. Only units and
+     * axis order (e.g. transforming from (NORTH,WEST) to (EAST,NORTH)) are taken
+     * in account.
+     * <p>
+     * Example: If coordinates in {@code sourceCS} are (x,y) pairs in metres and
+     * coordinates in {@code targetCS} are (-y,x) pairs in centimetres, then the
+     * transformation can be performed as below:
+     *
+     * <pre><blockquote>
+     *          [-y(cm)]   [ 0  -100    0 ] [x(m)]
+     *          [ x(cm)] = [ 100   0    0 ] [y(m)]
+     *          [ 1    ]   [ 0     0    1 ] [1   ]
+     * </blockquote></pre>
+     *
+     * @param  sourceCS The source coordinate system.
+     * @param  targetCS The target coordinate system.
+     * @return The transformation from {@code sourceCS} to {@code targetCS} as
+     *         an affine transform. Only axis orientation and units are taken in account.
+     * @throws OperationNotFoundException If the affine transform can't be constructed.
+     *
+     * @see AbstractCS#swapAndScaleAxis
+     */
+    protected Matrix swapAndScaleAxis(final CoordinateSystem sourceCS,
+                                      final CoordinateSystem targetCS,
+                                      final boolean lenientAxisTransformation)
+            throws OperationNotFoundException
+    {
         try {
-            return AbstractCS.swapAndScaleAxis(sourceCS,targetCS);
+            return AbstractCS.swapAndScaleAxis(sourceCS, targetCS, lenientAxisTransformation);
         } catch (IllegalArgumentException exception) {
             throw new OperationNotFoundException(getErrorMessage(sourceCS, targetCS), exception);
         } catch (ConversionException exception) {

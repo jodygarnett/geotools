@@ -220,7 +220,37 @@ public class GeneralMatrix extends GMatrix implements XMatrix {
     public GeneralMatrix(final AxisDirection[] srcAxis,
                          final AxisDirection[] dstAxis)
     {
-        this(null, srcAxis, null, dstAxis, false);
+        this(null, srcAxis, null, dstAxis, false, false);
+    }
+    
+    /**
+     * Constructs a transform changing axis order and/or direction.
+     * For example, the transform may converts (NORTH,WEST) coordinates
+     * into (EAST,NORTH). Axis direction can be inversed only. For example,
+     * it is illegal to transform (NORTH,WEST) coordinates into (NORTH,DOWN).
+     *
+     * <P>If the source dimension is equals to the destination dimension,
+     * then the transform is affine. However, the following special cases
+     * are also handled:</P>
+     * <BR>
+     * <UL>
+     *   <LI>If the target dimension is smaller than the source dimension,
+     *       extra axis are dropped. An exception is thrown if the target
+     *       contains some axis not found in the source.</LI>
+     * </UL>
+     *
+     * @param  srcAxis The set of axis direction for source coordinate system.
+     * @param  dstAxis The set of axis direction for destination coordinate system.
+     * @param  lenientAxisTransformation When true input axis will be silently dropped if a corresponding
+     *         one is not found in the output (assuming at least one input axis can be translated)
+     * @throws IllegalArgumentException If {@code dstAxis} contains some axis
+     *         not found in {@code srcAxis}, or if some colinear axis were found.
+     */
+    public GeneralMatrix(final AxisDirection[] srcAxis,
+                         final AxisDirection[] dstAxis,
+                         final boolean lenientAxisTransformation)
+    {
+        this(null, srcAxis, null, dstAxis, false, lenientAxisTransformation);
     }
 
     /**
@@ -244,6 +274,42 @@ public class GeneralMatrix extends GMatrix implements XMatrix {
      * @param srcAxis   Axis direction for each dimension of the source region.
      * @param dstRegion The destination region.
      * @param dstAxis   Axis direction for each dimension of the destination region.
+     * @param lenientAxisTransformation When true input axis will be silently dropped if a corresponding
+     *        one is not found in the output (assuming at least one input axis can be translated)
+     * @throws MismatchedDimensionException if the envelope dimension doesn't
+     *         matches the axis direction array length.
+     * @throws IllegalArgumentException If {@code dstAxis} contains some axis
+     *         not found in {@code srcAxis}, or if some colinear axis were found.
+     */
+    public GeneralMatrix(final Envelope srcRegion, final AxisDirection[] srcAxis,
+                         final Envelope dstRegion, final AxisDirection[] dstAxis,
+                         final boolean lenientAxisTransformation)
+    {
+        this(srcRegion, srcAxis, dstRegion, dstAxis, true, lenientAxisTransformation);
+    }
+    
+    /**
+     * Constructs a transform mapping a source region to a destination region.
+     * Axis order and/or direction can be changed during the process.
+     * For example, the transform may convert (NORTH,WEST) coordinates
+     * into (EAST,NORTH). Axis direction can be inversed only. For example,
+     * it is illegal to transform (NORTH,WEST) coordinates into (NORTH,DOWN).
+     *
+     * <P>If the source dimension is equals to the destination dimension,
+     * then the transform is affine. However, the following special cases
+     * are also handled:</P>
+     * <BR>
+     * <UL>
+     *   <LI>If the target dimension is smaller than the source dimension,
+     *       extra axis are dropped. An exception is thrown if the target
+     *       contains some axis not found in the source.</LI>
+     * </UL>
+     *
+     * @param srcRegion The source region.
+     * @param srcAxis   Axis direction for each dimension of the source region.
+     * @param dstRegion The destination region.
+     * @param dstAxis   Axis direction for each dimension of the destination region.
+     * 
      * @throws MismatchedDimensionException if the envelope dimension doesn't
      *         matches the axis direction array length.
      * @throws IllegalArgumentException If {@code dstAxis} contains some axis
@@ -261,10 +327,13 @@ public class GeneralMatrix extends GMatrix implements XMatrix {
      * @param validRegions   {@code true} if source and destination regions must
      *        be taken in account. If {@code false}, then source and destination
      *        regions will be ignored and may be null.
+     * @param lenientAxisTransformation When true input axis will be silently dropped if a corresponding
+     *        one is not found in the output (assuming at least one input axis
+     *        can be translated)
      */
     private GeneralMatrix(final Envelope srcRegion, final AxisDirection[] srcAxis,
                           final Envelope dstRegion, final AxisDirection[] dstAxis,
-                          final boolean validRegions)
+                          final boolean validRegions, final boolean lenientAxisTransformation)
     {
         super(dstAxis.length+1, srcAxis.length+1);
         if (validRegions) {
@@ -279,6 +348,8 @@ public class GeneralMatrix extends GMatrix implements XMatrix {
          * have to be moved at index {@code dstIndex}.
          */
         setZero();
+        int matched = 0;
+        int mismatchedAxis = 0;
         for (int dstIndex=0; dstIndex<dstAxis.length; dstIndex++) {
             boolean hasFound = false;
             final AxisDirection dstAxe = dstAxis[dstIndex];
@@ -292,6 +363,7 @@ public class GeneralMatrix extends GMatrix implements XMatrix {
                                                            srcAxe.name(), dstAxe.name()));
                     }
                     hasFound = true;
+                    matched++;
                     /*
                      * Set the matrix elements. Some matrix elements will never
                      * be set. They will be left to zero, which is their wanted
@@ -312,10 +384,16 @@ public class GeneralMatrix extends GMatrix implements XMatrix {
                 }
             }
             if (!hasFound) {
-                // TODO: Use the localized version of 'getName' in GeoAPI 2.1
-                throw new IllegalArgumentException(Errors.format(
-                            ErrorKeys.NO_SOURCE_AXIS_$1, dstAxis[dstIndex].name()));
+                mismatchedAxis = dstIndex;
+                if(!lenientAxisTransformation) {
+                    throw new IllegalArgumentException(Errors.format(
+                                ErrorKeys.NO_SOURCE_AXIS_$1, dstAxis[dstIndex].name()));
+                }
             }
+        }
+        if(matched == 0) {
+            throw new IllegalArgumentException(Errors.format(
+                    ErrorKeys.NO_SOURCE_AXIS_$1, dstAxis[mismatchedAxis].name()));
         }
         setElement(dstAxis.length, srcAxis.length, 1);
         assert (srcAxis.length != dstAxis.length) || isAffine() : this;

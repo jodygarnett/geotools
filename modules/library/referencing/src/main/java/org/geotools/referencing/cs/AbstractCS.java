@@ -294,7 +294,7 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
         }
         return axis;
     }
-
+    
     /**
      * Returns an affine transform between two coordinate systems. Only units and
      * axis order (e.g. transforming from
@@ -322,6 +322,39 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
      */
     public static Matrix swapAndScaleAxis(final CoordinateSystem sourceCS,
                                           final CoordinateSystem targetCS)
+            throws IllegalArgumentException, ConversionException {
+        return swapAndScaleAxis(sourceCS, targetCS, false);
+    }
+
+    /**
+     * Returns an affine transform between two coordinate systems. Only units and
+     * axis order (e.g. transforming from
+     * ({@linkplain AxisDirection#NORTH NORTH},{@linkplain AxisDirection#WEST WEST}) to
+     * ({@linkplain AxisDirection#EAST EAST},{@linkplain AxisDirection#NORTH NORTH}
+     * are taken in account.
+     * <p>
+     * <b>Example:</b> If coordinates in {@code sourceCS} are (<var>x</var>,<var>y</var>) pairs
+     * in metres and coordinates in {@code targetCS} are (-<var>y</var>,<var>x</var>) pairs in
+     * centimetres, then the transformation can be performed as below:
+     *
+     * <pre><blockquote>
+     *          [-y(cm)]   [ 0  -100    0 ] [x(m)]
+     *          [ x(cm)] = [ 100   0    0 ] [y(m)]
+     *          [ 1    ]   [ 0     0    1 ] [1   ]
+     * </blockquote></pre>
+     *
+     * @param  sourceCS The source coordinate system.
+     * @param  targetCS The target coordinate system.
+     * @return The conversion from {@code sourceCS} to {@code targetCS} as
+     *         an affine transform. Only axis direction and units are taken in account.
+     *         
+     * @throws IllegalArgumentException if axis doesn't matches, or the CS doesn't have the
+     *         same geometry.
+     * @throws ConversionException if the unit conversion is non-linear.
+     */
+    public static Matrix swapAndScaleAxis(final CoordinateSystem sourceCS,
+                                          final CoordinateSystem targetCS,
+                                          final boolean lenientAxisTransformation)
             throws IllegalArgumentException, ConversionException
     {
         if (!Classes.sameInterfaces(sourceCS.getClass(), targetCS.getClass(), CoordinateSystem.class)) {
@@ -330,7 +363,7 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
         }
         final AxisDirection[] sourceAxis = getAxisDirections(sourceCS);
         final AxisDirection[] targetAxis = getAxisDirections(targetCS);
-        final GeneralMatrix matrix = new GeneralMatrix(sourceAxis, targetAxis);
+        final GeneralMatrix matrix = new GeneralMatrix(sourceAxis, targetAxis, lenientAxisTransformation);
         assert Arrays.equals(sourceAxis, targetAxis) == matrix.isIdentity() : matrix;
         /*
          * The previous code computed a matrix for swapping axis. Usually, this

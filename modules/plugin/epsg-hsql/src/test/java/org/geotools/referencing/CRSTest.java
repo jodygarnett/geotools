@@ -24,24 +24,24 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.opengis.metadata.citation.Citation;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
-import org.opengis.referencing.cs.AxisDirection;
-import org.opengis.referencing.cs.CoordinateSystem;
-import org.opengis.referencing.cs.CoordinateSystemAxis;
-import org.opengis.referencing.crs.CRSAuthorityFactory;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.CoordinateOperation;
-import org.opengis.referencing.operation.CoordinateOperationFactory;
-import org.opengis.referencing.operation.MathTransform;
-
-import org.geotools.factory.Hints;
 import org.geotools.factory.GeoTools;
+import org.geotools.factory.Hints;
+import org.geotools.geometry.DirectPosition2D;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.factory.OrderedAxisAuthorityFactory;
+import org.opengis.metadata.citation.Citation;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.NoSuchAuthorityCodeException;
+import org.opengis.referencing.crs.CRSAuthorityFactory;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.cs.AxisDirection;
+import org.opengis.referencing.cs.CoordinateSystem;
+import org.opengis.referencing.cs.CoordinateSystemAxis;
+import org.opengis.referencing.operation.CoordinateOperation;
+import org.opengis.referencing.operation.CoordinateOperationFactory;
+import org.opengis.referencing.operation.MathTransform;
 
 
 /**
@@ -552,5 +552,14 @@ public class CRSTest extends TestCase {
         } finally {
             System.getProperties().remove("org.geotools.referencing.forceXY");
         }
+    }
+    
+    public void testTransformLenient3Dto2D() throws Exception {
+        MathTransform mt = CRS.findMathTransform(DefaultGeographicCRS.WGS84, DefaultGeographicCRS.WGS84_3D, true);
+        double[] src = new double[] {10, 20};
+        double[] dst = new double[] {0, 0, 0};
+        mt.transform(src, 0, dst, 0, 1);
+        assertEquals(10, dst[0], 0d);
+        assertEquals(20, dst[1], 0d);
     }
 }

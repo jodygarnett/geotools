@@ -18,6 +18,7 @@ package org.geotools.renderer.lite;
 
 
 import org.geotools.factory.Hints;
+import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
@@ -54,4 +55,50 @@ class SymbolizerAssociation{
       * Transform used between viewport CRS through to the screen.
       */
      public MathTransform axform;
+     
+     
+     /**
+      * The inverse of crsxform, will return null if not available (for example when going between 2D and 3D data).
+      * @return Inverse of crsxform, or null if not available
+      */
+     public MathTransform crsxfromInverse(){
+         if (crsxform != null) {
+             if (crsxform instanceof ConcatenatedTransform
+                     && ((ConcatenatedTransform) crsxform).transform1
+                             .getTargetDimensions() >= 3
+                     && ((ConcatenatedTransform) crsxform).transform2
+                             .getTargetDimensions() == 2) {
+                 return null; // We are downcasting 3D data to 2D data so no inverse is available
+             } else {
+                 try {
+                     return crsxform.inverse();
+                 } catch (Exception cannotReverse) {
+                     return null; // reverse transform not available
+                 }
+             }
+         }
+         return null; // not available
+     }
+     /**
+      * The inverse of xform, will return null if not available (for example when going between 2D and 3D data).
+      * @return Inverse of xform, or null if not available
+      */
+     public MathTransform xformInverse(){
+         if (xform != null) {
+             if (xform instanceof ConcatenatedTransform
+                     && ((ConcatenatedTransform) xform).transform1
+                             .getTargetDimensions() >= 3
+                     && ((ConcatenatedTransform) xform).transform2
+                             .getTargetDimensions() == 2) {
+                 return null; // We are downcasting 3D data to 2D data so no inverse is available
+             } else {
+                 try {
+                     return xform.inverse();
+                 } catch (Exception cannotReverse) {
+                     return null; // reverse transform not available
+                 }
+             }
+         }
+         return null; // not available
+     }
 }

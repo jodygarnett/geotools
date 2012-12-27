@@ -267,7 +267,8 @@ public final class CRS {
      * findMathTransform} convenience methods.
      *
      * @param lenient {@code true} if the coordinate operations should be created
-     *        even when there is no information available for a datum shift.
+     *        even when there is no information available for a datum shift or going
+     *        to a higher number of dimensions
      *
      * @since 2.4
      */
@@ -1148,7 +1149,8 @@ search:             if (DefaultCoordinateSystemAxis.isCompassDirection(axis.getD
      * @param  sourceCRS The source CRS.
      * @param  targetCRS The target CRS.
      * @param  lenient {@code true} if the math transform should be created even when there is
-     *         no information available for a datum shift. The default value is {@code false}.
+     *         no information available for a datum shift, and even if we are going from M dimensions
+     *         to N dimensions, where M < N. The default value is {@code false}.
      * @return The math transform from {@code sourceCRS} to {@code targetCRS}.
      * @throws FactoryException If no math transform can be created for the specified source and
      *         target CRS.

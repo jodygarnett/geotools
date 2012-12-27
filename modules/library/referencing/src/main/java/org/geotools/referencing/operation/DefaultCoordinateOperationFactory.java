@@ -598,7 +598,7 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
                                     final PrimeMeridian targetPM)
             throws OperationNotFoundException
     {
-        final Matrix matrix = swapAndScaleAxis(sourceCS, targetCS);
+        final Matrix matrix = swapAndScaleAxis(sourceCS, targetCS, lenientDatumShift);
         for (int i=targetCS.getDimension(); --i>=0;) {
             final CoordinateSystemAxis axis = targetCS.getAxis(i);
             final AxisDirection direction = axis.getDirection();

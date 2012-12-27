@@ -90,6 +90,7 @@ public class DefaultCoordinateSequenceTransformer implements CoordinateSequenceT
         // create a target CS so that the dimensions not contemplated in the source CS  
         // are copied over (think Z or M with a 2d CRS)
         int targetCSDim = targetDim + (sequence.getDimension() - sourceDim);
+        targetCSDim = Math.max( targetCSDim,  3 ); // max of 3 for default implementation
 		CoordinateSequence result =  csFactory.create(sequence.size(), targetCSDim);
 
         for (int i = 0; i < size; i++) {

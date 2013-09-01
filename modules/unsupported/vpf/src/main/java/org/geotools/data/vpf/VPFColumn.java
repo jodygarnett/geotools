@@ -22,6 +22,7 @@ import org.geotools.data.vpf.ifc.DataTypesDefinition;
 import org.geotools.data.vpf.io.TripletId;
 import org.geotools.data.vpf.util.DataUtils;
 import org.geotools.feature.AttributeTypeBuilder;
+import org.geotools.resources.Classes;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.Name;
@@ -206,7 +207,8 @@ public class VPFColumn implements AttributeDescriptor, DataTypesDefinition {
      * @see org.geotools.feature.AttributeType#isGeometry()
      */
     public boolean isGeometry() {
-        return attribute instanceof Geometry;
+        //return attribute instanceof Geometry;
+        return Geometry.class.isAssignableFrom( attribute.getType().getBinding() );
     }
 
     // no longer needed
@@ -298,4 +300,13 @@ public class VPFColumn implements AttributeDescriptor, DataTypesDefinition {
 	public PropertyType type() {
 		return attribute.getType();
 	}
+
+    public String toString() {
+        StringBuffer sb = new StringBuffer(Classes.getShortClassName(this));
+        sb.append(" ");
+        sb.append(attribute.getName());
+        sb.append(":");
+        sb.append(attribute.getType().getBinding().getSimpleName());
+        return sb.toString();
+    }
 }

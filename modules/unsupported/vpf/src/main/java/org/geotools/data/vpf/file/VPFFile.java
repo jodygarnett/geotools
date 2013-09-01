@@ -40,15 +40,18 @@ import org.geotools.data.vpf.io.VariableIndexInputStream;
 import org.geotools.data.vpf.io.VariableIndexRow;
 import org.geotools.data.vpf.util.DataUtils;
 import org.geotools.feature.FeatureTypes;
+import org.geotools.feature.GeometryAttributeImpl;
 import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.AnnotationFeatureType;
+import org.geotools.feature.type.GeometryDescriptorImpl;
 import org.geotools.filter.CompareFilter;
 import org.geotools.filter.Filter;
 import org.geotools.filter.LengthFunction;
 import org.geotools.filter.LiteralExpression;
+import org.opengis.feature.GeometryAttribute;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -98,7 +101,7 @@ public class VPFFile implements SimpleFeatureType, FileConstants, DataTypesDefin
     /**
      * The columns of the file. This list shall contain objects of type <code>VPFColumn</code>
      */
-    private final List columns = new Vector();
+    private final List<VPFColumn> columns = new Vector<VPFColumn>();
 
     /**
      * Variable <code>description</code> keeps value of text description of the
@@ -149,7 +152,7 @@ public class VPFFile implements SimpleFeatureType, FileConstants, DataTypesDefin
         GeometryDescriptor gat = null;
         VPFColumn geometryColumn = null;
 
-        Iterator iter = columns.iterator();
+        Iterator<VPFColumn> iter = columns.iterator();
         while (iter.hasNext()) {
             geometryColumn = (VPFColumn) iter.next();
 
@@ -159,7 +162,10 @@ public class VPFFile implements SimpleFeatureType, FileConstants, DataTypesDefin
                 break;
             }
         }
-
+        if( gat == null ){
+            // No recognized geometry column?
+            //throw new SchemaException("No recognised geometry column:"+columns);
+        }
         SimpleFeatureType superType = null;
         // if it's a text geometry feature type add annotation as a super type
         if (pathName.endsWith(TEXT_PRIMITIVE)) {
@@ -170,8 +176,19 @@ public class VPFFile implements SimpleFeatureType, FileConstants, DataTypesDefin
         b.setName( cPathName );
         b.setNamespaceURI("VPF");
         b.setSuperType(superType);
-        b.addAll( columns );
-        b.setDefaultGeometry(gat.getLocalName());
+        AttributeDescriptor attributes[] = new AttributeDescriptor[columns.size()];
+        for( int i = 0; i<columns.size();i++){
+            VPFColumn column = columns.get(i);
+            attributes[i] = columns.get(i);
+            if( column.isGeometry() ){
+                if(!(column instanceof GeometryDescriptor)){
+                    // need to cast this
+                    throw new ClassCastException("Column "+column.getName()+" must be represented as a GeometryDescriptor");
+                }
+            }
+        }
+        b.addAll( attributes );
+        b.setDefaultGeometry(gat == null ? null : gat.getLocalName());
         featureType = b.buildFeatureType();
     }
 

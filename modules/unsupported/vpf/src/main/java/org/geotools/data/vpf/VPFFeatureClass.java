@@ -192,7 +192,7 @@ public class VPFFeatureClass implements DataTypesDefinition, FileConstants,
             b.setNamespaceURI(namespace);
             b.setSuperType(superType);
             b.addAll(columns);
-            b.setDefaultGeometry(gat.getLocalName());
+            b.setDefaultGeometry(gat == null ? null : gat.getLocalName());
             
             featureType = b.buildFeatureType();
         } catch (IOException exp) {

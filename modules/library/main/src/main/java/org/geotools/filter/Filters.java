@@ -319,11 +319,9 @@ public class Filters {
      * @deprecated please use instanceof checks
      */
     public static short getFilterType( org.opengis.filter.Filter filter ){
+        if( filter == null ) return 0;
         if( filter == org.opengis.filter.Filter.EXCLUDE ) return FilterType.ALL;
         if( filter == org.opengis.filter.Filter.INCLUDE ) return FilterType.NONE;
-        if( filter instanceof org.geotools.filter.Filter){
-            return ((org.geotools.filter.Filter)filter).getFilterType();
-        }
         if( filter instanceof PropertyIsBetween ) return FilterType.BETWEEN;
         if( filter instanceof PropertyIsEqualTo ) return FilterType.COMPARE_EQUALS;
         if( filter instanceof PropertyIsGreaterThan ) return FilterType.COMPARE_GREATER_THAN;

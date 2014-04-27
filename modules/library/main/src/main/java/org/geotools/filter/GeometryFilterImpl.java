@@ -108,9 +108,7 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
         
         super(CommonFactoryFinder.getFilterFactory(null));
         
-        if (isGeometryFilter(filterType)) {
-            this.filterType = filterType;
-        } else {
+        if (!isGeometryFilter(filterType)) {
             throw new IllegalFilterException("Attempted to create geometry "
                 + "filter with non-geometry type.");
         }
@@ -272,6 +270,7 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
         String operator = null;
 
         // Handles all normal geometry cases
+        int filterType = Filters.getFilterType(this);
         if (filterType == GEOMETRY_EQUALS) {
             operator = " equals ";
         } else if (filterType == GEOMETRY_DISJOINT) {
@@ -323,10 +322,10 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
             GeometryFilterImpl geomFilter = (GeometryFilterImpl) obj;
             boolean isEqual = true;
 
-            isEqual = geomFilter.getFilterType() == this.filterType;
+            isEqual = Filters.getFilterType( geomFilter ) == Filters.getFilterType( this );
             if( LOGGER.isLoggable(Level.FINEST) ) {
                 LOGGER.finest("filter type match:" + isEqual + "; in:"
-                        + geomFilter.getFilterType() + "; out:" + this.filterType);
+                        + Filters.getFilterType(geomFilter) + "; out:" + Filters.getFilterType(this));
             }
             isEqual = (geomFilter.expression1 != null)
                 ? (isEqual && geomFilter.expression1.equals(this.expression1))
@@ -359,6 +358,7 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
         org.opengis.filter.expression.Expression rightGeometry = getExpression2();
          
         int result = 17;
+        int filterType = Filters.getFilterType(this);
         result = (37 * result) + filterType;
         result = (37 * result)
             + ((leftGeometry == null) ? 0 : leftGeometry.hashCode());

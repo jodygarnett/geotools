@@ -193,12 +193,6 @@ public class FilterEqualsTest extends TestCase {
         
         ff.addFid("2");
         assertEquals(ff, ff2);
-        
-        FidFilterImpl ff3 = new FidFilterImpl();
-        ff3.filterType = -1;//REVISIT: should I even be able to do that?
-        
-        assertTrue(!ff2.equals(ff3));
-        
     }
     
     public void testExpressionMath(){

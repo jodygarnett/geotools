@@ -100,8 +100,8 @@ public class FilterFilterTest extends TestCase {
         Filter f1 = (Filter) sub.get(0);
         Filter f2 = (Filter) sub.get(1);
         
-        assertEquals(FilterType.GEOMETRY_INTERSECTS,f1.getFilterType());
-        assertEquals(FilterType.GEOMETRY_BBOX, f2.getFilterType());
+        assertEquals(FilterType.GEOMETRY_INTERSECTS,Filters.getFilterType(f1));
+        assertEquals(FilterType.GEOMETRY_BBOX, Filters.getFilterType( f2));
         
     }
 
@@ -280,7 +280,7 @@ StringReader reader = new StringReader( filter );
         assertEquals(1, contentHandler.filters.size());
         Filter f = (Filter)contentHandler.filters.get(0);
         assertTrue(f instanceof LogicFilter);
-        assertEquals(FilterType.LOGIC_OR, f.getFilterType());
+        assertEquals(FilterType.LOGIC_OR, Filters.getFilterType(f));
         
         int i = 0;
         for(Iterator filters = ((LogicFilter)f).getFilterIterator(); filters.hasNext(); i++){

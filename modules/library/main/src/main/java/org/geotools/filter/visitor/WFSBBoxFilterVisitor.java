@@ -25,6 +25,7 @@ import org.geotools.filter.CompareFilter;
 import org.geotools.filter.ExpressionType;
 import org.geotools.filter.FidFilter;
 import org.geotools.filter.FilterType;
+import org.geotools.filter.Filters;
 import org.geotools.filter.FunctionExpression;
 import org.geotools.filter.GeometryFilter;
 import org.geotools.filter.IllegalFilterException;
@@ -66,7 +67,7 @@ public class WFSBBoxFilterVisitor implements org.geotools.filter.FilterVisitor2 
         if (org.geotools.filter.Filter.NONE == filter) {
             return;
         }
-            switch (((org.geotools.filter.Filter)filter).getFilterType()) {
+            switch ( Filters.getFilterType( filter )) {
             case FilterType.BETWEEN:
                 visit((BetweenFilter) filter);
 
@@ -153,7 +154,7 @@ public class WFSBBoxFilterVisitor implements org.geotools.filter.FilterVisitor2 
         if(filter!=null){
             org.geotools.filter.Expression leftGeometry = filter.getLeftGeometry();
             org.geotools.filter.Expression rightGeometry = filter.getRightGeometry();
-			switch (filter.getFilterType()) {
+            switch ( Filters.getFilterType( filter )) {
             
                         case FilterType.GEOMETRY_BBOX:
                             // find literal side and deal ...

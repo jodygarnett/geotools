@@ -73,51 +73,51 @@ public class SQLEncoder implements org.geotools.filter.FilterVisitor2 {
     private static Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
 
     /** Map of comparison types to sql representation */
-    protected static Map comparisions = new HashMap();
+    protected static Map<Short,String> comparisions = new HashMap<Short,String>();
 
     /** Map of spatial types to sql representation */
-    private static Map spatial = new HashMap();
+    private static Map<Short,String> spatial = new HashMap<Short,String>();
 
     /** Map of logical types to sql representation */
-    private static Map logical = new HashMap();
+    private static Map<Short,String> logical = new HashMap<Short,String>();
 
     /** Map of expression types to sql representation */
-    private static Map expressions = new HashMap();
+    private static Map<Short,String> expressions = new HashMap<Short,String>();
 
     static {
-        comparisions.put(new Integer(AbstractFilter.COMPARE_EQUALS), "=");
-        comparisions.put(new Integer(AbstractFilter.COMPARE_NOT_EQUALS), "!=");
-        comparisions.put(new Integer(AbstractFilter.COMPARE_GREATER_THAN), ">");
-        comparisions.put(new Integer(AbstractFilter.COMPARE_GREATER_THAN_EQUAL),
+        comparisions.put(AbstractFilter.COMPARE_EQUALS, "=");
+        comparisions.put(AbstractFilter.COMPARE_NOT_EQUALS, "!=");
+        comparisions.put(AbstractFilter.COMPARE_GREATER_THAN, ">");
+        comparisions.put(AbstractFilter.COMPARE_GREATER_THAN_EQUAL,
             ">=");
-        comparisions.put(new Integer(AbstractFilter.COMPARE_LESS_THAN), "<");
-        comparisions.put(new Integer(AbstractFilter.COMPARE_LESS_THAN_EQUAL),
+        comparisions.put(AbstractFilter.COMPARE_LESS_THAN, "<");
+        comparisions.put(AbstractFilter.COMPARE_LESS_THAN_EQUAL,
             "<=");
-        comparisions.put(new Integer(AbstractFilter.LIKE), "LIKE");
-        comparisions.put(new Integer(AbstractFilter.NULL), "IS NULL");
-        comparisions.put(new Integer(AbstractFilter.BETWEEN), "BETWEEN");
+        comparisions.put(AbstractFilter.LIKE, "LIKE");
+        comparisions.put(AbstractFilter.NULL, "IS NULL");
+        comparisions.put(AbstractFilter.BETWEEN, "BETWEEN");
 
-        expressions.put(new Integer(DefaultExpression.MATH_ADD), "+");
-        expressions.put(new Integer(DefaultExpression.MATH_DIVIDE), "/");
-        expressions.put(new Integer(DefaultExpression.MATH_MULTIPLY), "*");
-        expressions.put(new Integer(DefaultExpression.MATH_SUBTRACT), "-");
+        expressions.put(DefaultExpression.MATH_ADD, "+");
+        expressions.put(DefaultExpression.MATH_DIVIDE, "/");
+        expressions.put(DefaultExpression.MATH_MULTIPLY, "*");
+        expressions.put(DefaultExpression.MATH_SUBTRACT, "-");
 
         //more to come?
-        spatial.put(new Integer(AbstractFilter.GEOMETRY_EQUALS), "Equals");
-        spatial.put(new Integer(AbstractFilter.GEOMETRY_DISJOINT), "Disjoint");
-        spatial.put(new Integer(AbstractFilter.GEOMETRY_INTERSECTS),
+        spatial.put(AbstractFilter.GEOMETRY_EQUALS, "Equals");
+        spatial.put(AbstractFilter.GEOMETRY_DISJOINT, "Disjoint");
+        spatial.put(AbstractFilter.GEOMETRY_INTERSECTS,
             "Intersects");
-        spatial.put(new Integer(AbstractFilter.GEOMETRY_TOUCHES), "Touches");
-        spatial.put(new Integer(AbstractFilter.GEOMETRY_CROSSES), "Crosses");
-        spatial.put(new Integer(AbstractFilter.GEOMETRY_WITHIN), "Within");
-        spatial.put(new Integer(AbstractFilter.GEOMETRY_CONTAINS), "Contains");
-        spatial.put(new Integer(AbstractFilter.GEOMETRY_OVERLAPS), "Overlaps");
-        spatial.put(new Integer(AbstractFilter.GEOMETRY_BEYOND), "Beyond");
-        spatial.put(new Integer(AbstractFilter.GEOMETRY_BBOX), "BBOX");
+        spatial.put(AbstractFilter.GEOMETRY_TOUCHES, "Touches");
+        spatial.put(AbstractFilter.GEOMETRY_CROSSES, "Crosses");
+        spatial.put(AbstractFilter.GEOMETRY_WITHIN, "Within");
+        spatial.put(AbstractFilter.GEOMETRY_CONTAINS, "Contains");
+        spatial.put(AbstractFilter.GEOMETRY_OVERLAPS, "Overlaps");
+        spatial.put(AbstractFilter.GEOMETRY_BEYOND, "Beyond");
+        spatial.put(AbstractFilter.GEOMETRY_BBOX, "BBOX");
 
-        logical.put(new Integer(AbstractFilter.LOGIC_AND), "AND");
-        logical.put(new Integer(AbstractFilter.LOGIC_OR), "OR");
-        logical.put(new Integer(AbstractFilter.LOGIC_NOT), "NOT");
+        logical.put(AbstractFilter.LOGIC_AND, "AND");
+        logical.put(AbstractFilter.LOGIC_OR, "OR");
+        logical.put(AbstractFilter.LOGIC_NOT, "NOT");
     }
 
     //use these when Like is implemented.
@@ -146,7 +146,7 @@ public class SQLEncoder implements org.geotools.filter.FilterVisitor2 {
      * A type to use as context when encoding literal.
      * NOTE: when we move to geoapi filter visitor api, this will not be needed.
      */ 
-    protected Class context = null;
+    protected Class<?> context = null;
     
     /**
      * Empty constructor
@@ -320,9 +320,10 @@ public class SQLEncoder implements org.geotools.filter.FilterVisitor2 {
      */
     public void visit(Filter filter) {
         try {
-            if (filter.getFilterType() == FilterType.NONE) {
+            final int filterType = Filters.getFilterType( filter );
+            if (filterType == FilterType.NONE) {
                 out.write("TRUE");
-            } else if (filter.getFilterType() == FilterType.ALL) {
+            } else if (filterType == FilterType.ALL) {
                 out.write("FALSE");
             } else {
                 LOGGER.warning("exporting unknown filter type:"
@@ -348,9 +349,9 @@ public class SQLEncoder implements org.geotools.filter.FilterVisitor2 {
         DefaultExpression left = (DefaultExpression) filter.getLeftValue();
         DefaultExpression right = (DefaultExpression) filter.getRightValue();
         DefaultExpression mid = (DefaultExpression) filter.getMiddleValue();
-        LOGGER.finer("Filter type id is " + filter.getFilterType());
+        LOGGER.finer("Filter type id is " + Filters.getFilterType(filter));
         LOGGER.finer("Filter type text is "
-            + comparisions.get(new Integer(filter.getFilterType())));
+            + comparisions.get(Filters.getFilterType(filter)));
 
         try {
             mid.accept(this);
@@ -417,15 +418,14 @@ public class SQLEncoder implements org.geotools.filter.FilterVisitor2 {
      */
     public void visit(LogicFilter filter) throws RuntimeException {
         LOGGER.finer("exporting LogicFilter");
-
-        filter.getFilterType();
-
-        String type = (String) logical.get(new Integer(filter.getFilterType()));
+        
+        String type = (String) logical.get( Filters.getFilterType(filter) );
 
         try {
+            @SuppressWarnings("rawtypes")
             java.util.Iterator list = filter.getFilterIterator();
 
-            if (filter.getFilterType() == AbstractFilter.LOGIC_NOT) {
+            if (Filters.getFilterType(filter) == AbstractFilter.LOGIC_NOT) {
                 out.write(" NOT (");
                 Filters.accept((org.opengis.filter.Filter) list.next(),this);
                 
@@ -467,12 +467,12 @@ public class SQLEncoder implements org.geotools.filter.FilterVisitor2 {
 
         DefaultExpression left = (DefaultExpression) filter.getLeftValue();
         DefaultExpression right = (DefaultExpression) filter.getRightValue();
-        LOGGER.finer("Filter type id is " + filter.getFilterType());
+        short filterType = Filters.getFilterType( filter);
+        LOGGER.finer("Filter type id is " + filterType );
         LOGGER.finer("Filter type text is "
-            + comparisions.get(new Integer(filter.getFilterType())));
+            + comparisions.get(filterType));
 
-        String type = (String) comparisions.get(new Integer(
-                    filter.getFilterType()));
+        String type = (String) comparisions.get(filterType);
 
         try {
             left.accept(this);
@@ -493,10 +493,8 @@ public class SQLEncoder implements org.geotools.filter.FilterVisitor2 {
     public void visit(NullFilter filter) throws RuntimeException {
         LOGGER.finer("exporting NullFilter");
 
-        DefaultExpression expr = (DefaultExpression) filter.getNullCheckValue();
+        Expression expr = filter.getNullCheckValue();
 
-        //String type = (String) comparisions.get(new Integer(
-        //          filter.getFilterType()));
         try {
             expr.accept(this);
             out.write(" IS NULL ");
@@ -611,11 +609,11 @@ public class SQLEncoder implements org.geotools.filter.FilterVisitor2 {
         LOGGER.finer("exporting LiteralExpression");
 
         //type to convert the literal to
-        Class target = null;
+        Class<?> target = null;
         
         if ( context != null ) {
             //first try to evaluate the expression in the context of a type
-        	target = (Class) context;
+        	target = context;
         }
         
         if ( target == null ) {
@@ -733,7 +731,7 @@ public class SQLEncoder implements org.geotools.filter.FilterVisitor2 {
     public void visit(MathExpression expression) throws RuntimeException {
         LOGGER.finer("exporting Expression Math");
 
-        String type = (String) expressions.get(new Integer(expression.getType()));
+        String type = (String) expressions.get(expression.getType());
 
         try {
             ((DefaultExpression) expression.getLeftValue()).accept(this);

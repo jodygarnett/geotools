@@ -35,6 +35,7 @@ import org.geotools.filter.Filter;
 import org.geotools.filter.FilterType;
 import org.geotools.filter.FilterVisitor;
 import org.geotools.filter.FilterVisitor2;
+import org.geotools.filter.Filters;
 import org.geotools.filter.FunctionExpression;
 import org.geotools.filter.GeometryFilter;
 import org.geotools.filter.IllegalFilterException;
@@ -205,7 +206,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor, FilterVisitor2
                 }
 
                 current.push(createMediumLevelLogicFilter(
-                        filter.getFilterType(), startSize));
+                        Filters.getFilterType(filter), startSize));
 
                 break;
 
@@ -218,7 +219,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor, FilterVisitor2
                 }
 
                 current.push(createHighLevelLogicFilter(
-                        filter.getFilterType(), startSize));
+                        Filters.getFilterType(filter), startSize));
 
                 break;
 

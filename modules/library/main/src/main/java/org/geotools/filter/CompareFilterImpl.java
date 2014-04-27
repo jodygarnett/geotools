@@ -26,6 +26,7 @@ import org.geotools.util.Converters;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.FilterVisitor;
+import org.opengis.filter.PropertyIsNull;
 
 
 /**
@@ -64,9 +65,7 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract
      */
     protected CompareFilterImpl(short filterType) throws IllegalFilterException {
     	super(CommonFactoryFinder.getFilterFactory(null));
-    	if (isCompareFilter(filterType)) {
-            this.filterType = filterType;
-        } else {
+    	if (!isCompareFilter(filterType)) {
             throw new IllegalFilterException(
                 "Attempted to create compare filter with non-compare type.");
         }
@@ -98,6 +97,7 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract
     
     public void setExpression1(org.opengis.filter.expression.Expression leftValue) {
     	//Checks if this is math filter or not and handles appropriately
+        int filterType = Filters.getFilterType(this);
         if (isMathFilter(filterType)) {
             if (DefaultExpression.isMathExpression(leftValue)
                     || permissiveConstruction) {
@@ -131,6 +131,7 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract
 
     public void setExpression2(org.opengis.filter.expression.Expression rightValue) {
     	 // Checks if this is math filter or not and handles appropriately
+        int filterType = Filters.getFilterType(this);
         if (isMathFilter(filterType)) {
             if (DefaultExpression.isMathExpression(rightValue)
                     || permissiveConstruction) {
@@ -253,10 +254,10 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract
      * @return String representation of the compare filter.
      */
     public String toString() {
+        int filterType = Filters.getFilterType( this );
         if (filterType == NULL) {
         	return "[ " + expression1 + " IS NULL ]";
         }
-        
         String operator = null;
 
         if (filterType == COMPARE_EQUALS) {
@@ -302,6 +303,7 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract
 
             // todo - check for nulls here, or make immutable.
             //
+            int filterType = Filters.getFilterType(this);
             return filterType == Filters.getFilterType(cFilter)
                     && (expression1 == cFilter.getExpression1() || (expression1 != null && expression1
                             .equals(cFilter.getExpression1())))
@@ -319,6 +321,8 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract
      */
     public int hashCode() {
         int result = 17;
+        int filterType = Filters.getFilterType(this);
+        
         result = (37 * result) + filterType;
         result = (37 * result)
             + ((expression1 == null) ? 0 : expression1.hashCode());

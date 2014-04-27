@@ -49,9 +49,6 @@ public class BBOXImpl extends AbstractPreparedGeometryFilter implements BBOX {
 
     public BBOXImpl(org.opengis.filter.FilterFactory factory, Expression e1, Expression e2) {
         super(factory, e1, e2);
-
-        // backwards compat with old type system
-        this.filterType = GEOMETRY_BBOX;
         if (e1 != null)
             setExpression1(e1);
         if (e2 != null)
@@ -66,9 +63,6 @@ public class BBOXImpl extends AbstractPreparedGeometryFilter implements BBOX {
     
     public BBOXImpl(org.opengis.filter.FilterFactory factory, Expression e1, Expression e2, MatchAction matchAction) {
         super(factory, e1, e2, matchAction);
-
-        // backwards compat with old type system
-        this.filterType = GEOMETRY_BBOX;
         if (e1 != null)
             setExpression1(e1);
         if (e2 != null)

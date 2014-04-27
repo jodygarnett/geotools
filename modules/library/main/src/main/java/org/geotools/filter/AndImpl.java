@@ -33,14 +33,10 @@ import org.opengis.filter.FilterVisitor;
  * @source $URL$
  */
 public class AndImpl extends LogicFilterImpl implements And {
-	
-	protected AndImpl(org.opengis.filter.FilterFactory factory, List/*<Filter>*/ children) {
-		super(factory, children );
-		
-		//backwards compatability with old type system
-		this.filterType = LOGIC_AND;
-	}
-	
+
+    protected AndImpl(org.opengis.filter.FilterFactory factory, List/* <Filter> */children) {
+        super(factory, children);
+    }
 
     public boolean evaluate(Object object) {
         for (Iterator itr = children.iterator(); itr.hasNext();) {

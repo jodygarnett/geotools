@@ -33,11 +33,8 @@ import org.opengis.feature.simple.SimpleFeature;
  */
 public abstract class AbstractFilter extends FilterAbstract implements Filter {
    
-	/** The logger for the default core module. */
+    /** The logger for the default core module. */
     protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.core");
-
-    /** Defines filter type (all valid types defined below). */
-    protected short filterType;
 
     /** Sets the permissiveness of the filter construction handling. */
     protected boolean permissiveConstruction = true;
@@ -98,7 +95,7 @@ public abstract class AbstractFilter extends FilterAbstract implements Filter {
      *
      * @return Whether or not this is a math filter type.
      */
-    protected static boolean isMathFilter(short filterType) {
+    protected static boolean isMathFilter(int filterType) {
         return ((filterType == COMPARE_LESS_THAN)
         || (filterType == COMPARE_GREATER_THAN)
         || (filterType == COMPARE_LESS_THAN_EQUAL)
@@ -112,7 +109,7 @@ public abstract class AbstractFilter extends FilterAbstract implements Filter {
      *
      * @return Whether or not this is a compare filter type.
      */
-    protected static boolean isCompareFilter(short filterType) {
+    protected static boolean isCompareFilter(int filterType) {
         return ((isMathFilter(filterType)) || (filterType == COMPARE_EQUALS)
         || (filterType == BETWEEN) || (filterType == COMPARE_NOT_EQUALS));
     }
@@ -157,19 +154,6 @@ public abstract class AbstractFilter extends FilterAbstract implements Filter {
     protected static boolean isSimpleFilter(short filterType) {
         return (isCompareFilter(filterType) || isGeometryFilter(filterType)
         || (filterType == NULL) || (filterType == FID) || (filterType == LIKE));
-    }
-
-    /**
-     * Retrieves the type of filter.
-     *
-     * @return a short representation of the filter type.
-     * 
-     * @deprecated The enumeration base type system is replaced with a class 
-     * 	based type system. An 'instanceof' check should be made instead of 
-     * 	calling this method.
-     */
-    public short getFilterType() {
-        return filterType;
     }
     
     /**

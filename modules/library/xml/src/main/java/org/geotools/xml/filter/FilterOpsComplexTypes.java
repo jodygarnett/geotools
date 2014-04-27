@@ -33,6 +33,7 @@ import org.geotools.filter.Expression;
 import org.geotools.filter.FidFilter;
 import org.geotools.filter.Filter;
 import org.geotools.filter.FilterCapabilities;
+import org.geotools.filter.Filters;
 import org.geotools.filter.GeometryDistanceFilter;
 import org.geotools.filter.GeometryFilter;
 import org.geotools.filter.IllegalFilterException;
@@ -326,7 +327,7 @@ public class FilterOpsComplexTypes {
 
             Filter lf = (Filter) value;
 
-            switch (lf.getFilterType()) {
+            switch ( Filters.getFilterType( lf )) {
             case COMPARE_EQUALS:
                 BinaryComparisonOpType.getInstance().encode(new FilterElement(
                 		"PropertyIsEqualTo",
@@ -535,7 +536,7 @@ public class FilterOpsComplexTypes {
 
             GeometryFilter lf = (GeometryFilter) value;
 
-            switch (lf.getFilterType()) {
+            switch ( Filters.getFilterType( lf )) {
             case GEOMETRY_BBOX:
                 BBOXType.getInstance().encode(new FilterElement("BBOX",
                         BBOXType.getInstance(), element), value, output, hints);
@@ -699,7 +700,7 @@ public class FilterOpsComplexTypes {
 
             LogicFilter lf = (LogicFilter) value;
 
-            switch (lf.getFilterType()) {
+            switch ( Filters.getFilterType( lf )) {
             case LOGIC_AND:
                 BinaryLogicOpType.getInstance().encode(new FilterElement(
                         "And", BinaryLogicOpType.getInstance(), element),
@@ -857,7 +858,7 @@ public class FilterOpsComplexTypes {
             boolean r = ((element != null) && (element.getType() != null)
                 && getName().equals(element.getType().getName()));
             r = (r && (value != null) && value instanceof Filter
-                && (((Filter) value).getFilterType() != 0));
+                && Filters.getFilterType( (Filter) value) != 0);
 
             return r;
         }

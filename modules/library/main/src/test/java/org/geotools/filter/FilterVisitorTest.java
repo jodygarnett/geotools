@@ -91,7 +91,7 @@ public class FilterVisitorTest extends TestCase implements FilterVisitor {
 
             java.util.Iterator list = filter.getFilterIterator();
 
-            if (filter.getFilterType() == AbstractFilter.LOGIC_NOT) {
+            if ( Filters.getFilterType(filter) == AbstractFilter.LOGIC_NOT) {
                
                 Filters.accept((org.opengis.filter.Filter) list.next(),this);
                 

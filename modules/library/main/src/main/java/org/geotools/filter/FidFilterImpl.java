@@ -68,7 +68,6 @@ public class FidFilterImpl extends AbstractFilter implements FidFilter {
      */
     protected FidFilterImpl() {
         super(CommonFactoryFinder.getFilterFactory(null));
-        filterType = AbstractFilter.FID;
     }
 
     /**
@@ -80,7 +79,6 @@ public class FidFilterImpl extends AbstractFilter implements FidFilter {
      */
     protected FidFilterImpl(String initialFid) {
         super(CommonFactoryFinder.getFilterFactory(null));
-        filterType = AbstractFilter.FID;
         addFid(initialFid);
     }
 
@@ -91,7 +89,6 @@ public class FidFilterImpl extends AbstractFilter implements FidFilter {
      */
     protected FidFilterImpl(Set/* <Identifier> */fids) {
         super(CommonFactoryFinder.getFilterFactory(null));
-        filterType = AbstractFilter.FID;
         // check these are really identifiers
         for (Iterator it = fids.iterator(); it.hasNext();) {
             Object next = it.next();
@@ -300,12 +297,14 @@ public class FidFilterImpl extends AbstractFilter implements FidFilter {
         LOGGER.finest("condition: " + filter);
 
         if ((filter != null) && (filter.getClass() == this.getClass())) {
+            FidFilterImpl other = (FidFilterImpl) filter;
+            int filterType = Filters.getFilterType( other );
             if(LOGGER.isLoggable(Level.FINEST)) {
-                LOGGER.finest("condition: " + ((FidFilterImpl) filter).filterType);
+                LOGGER.finest("condition: " + filterType);
             }
 
-            if (((FidFilterImpl) filter).filterType == AbstractFilter.FID) {
-                return fids.equals(((FidFilterImpl) filter).fids);
+            if (filterType == AbstractFilter.FID) {
+                return fids.equals(other.fids);
             } else {
                 return false;
             }

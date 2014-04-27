@@ -17,6 +17,8 @@
 package org.geotools.filter;
 
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.spatial.Beyond;
+import org.opengis.filter.spatial.DWithin;
 
 
 /**
@@ -83,9 +85,7 @@ public abstract class CartesianDistanceFilter extends GeometryFilterImpl
         throws IllegalFilterException {
         super(filterType);
 
-        if (isGeometryDistanceFilter(filterType)) {
-            this.filterType = filterType;
-        } else {
+        if (!isGeometryDistanceFilter(filterType)) {
             throw new IllegalFilterException("Attempted to create distance "
                 + "geometry filter with nondistance" + " geometry type.");
         }
@@ -126,9 +126,9 @@ public abstract class CartesianDistanceFilter extends GeometryFilterImpl
         String operator = null;
 
         // Handles all normal geometry cases
-        if (filterType == GEOMETRY_BEYOND) {
+        if (this instanceof Beyond) {
             operator = " beyond ";
-        } else if (filterType == GEOMETRY_DWITHIN) {
+        } else if (this instanceof DWithin) {
             operator = " dwithin ";
         }
 

@@ -38,8 +38,7 @@ public class NullFilterImpl extends AbstractFilter implements NullFilter {
      * Constructor which sets the type as null check.
      */
     protected NullFilterImpl() {
-    	super(CommonFactoryFinder.getFilterFactory(null));
-    	filterType = NULL;
+        super(CommonFactoryFinder.getFilterFactory(null));
     }
 
     /**
@@ -129,7 +128,7 @@ public class NullFilterImpl extends AbstractFilter implements NullFilter {
         if (obj!=null && obj.getClass() == this.getClass()) {
             NullFilterImpl nullFilter = (NullFilterImpl) obj;
 
-            return ((nullFilter.getFilterType() == this.filterType)
+            return ((Filters.getFilterType( nullFilter ) == Filters.getFilterType( this ))
             && nullFilter.getNullCheckValue().equals(this.nullCheck));
         } else {
             return false;

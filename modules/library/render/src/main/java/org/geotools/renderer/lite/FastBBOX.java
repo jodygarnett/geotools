@@ -177,10 +177,6 @@ class FastBBOX implements BBOX, BinarySpatialOperator, BinaryComparisonOperator,
         accept(new FilterVisitorFilterWrapper(visitor),null);        
     }
 
-    public short getFilterType() {
-        return Filter.GEOMETRY_BBOX;
-    }
-
     public MatchAction getMatchAction() {
         return MatchAction.ANY;
     }

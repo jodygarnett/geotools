@@ -47,8 +47,7 @@ public class BetweenFilterImpl extends CompareFilterImpl
     protected org.opengis.filter.expression.Expression middleValue = null;
 
     protected BetweenFilterImpl(org.opengis.filter.FilterFactory factory) {
-    	super(factory,null,null);
-    	this.filterType = BETWEEN;
+        super(factory, null, null);
     }
     
     /**
@@ -211,8 +210,7 @@ public class BetweenFilterImpl extends CompareFilterImpl
         if (oFilter.getClass() == this.getClass()) {
             BetweenFilterImpl bFilter = (BetweenFilterImpl) oFilter;
 
-            return filterType == Filters.getFilterType(bFilter)
-                    && (expression1 == bFilter.getExpression1() || (expression1 != null && expression1
+            return (expression1 == bFilter.getExpression1() || (expression1 != null && expression1
                             .equals(bFilter.getExpression1())))
                     && (expression2 == bFilter.getExpression2() || (expression2 != null && expression2
                             .equals(bFilter.getExpression2())))

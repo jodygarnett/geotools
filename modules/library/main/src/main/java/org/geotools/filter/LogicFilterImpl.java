@@ -69,9 +69,7 @@ public abstract class LogicFilterImpl extends BinaryLogicAbstract implements Log
             LOGGER.finest("filtertype " + filterType);
         }
 
-        if (isLogicFilter(filterType)) {
-            this.filterType = filterType;
-        } else {
+        if (!isLogicFilter(filterType)) {
             throw new IllegalFilterException(
                 "Attempted to create logic filter with non-logic type.");
         }
@@ -90,9 +88,7 @@ public abstract class LogicFilterImpl extends BinaryLogicAbstract implements Log
         throws IllegalFilterException {
         
         super(CommonFactoryFinder.getFilterFactory(null), new ArrayList());
-        if (isLogicFilter(filterType)) {
-            this.filterType = filterType;
-        } else {
+        if (!isLogicFilter(filterType)) {
             throw new IllegalFilterException(
                 "Attempted to create logic filter with non-logic type.");
         }
@@ -114,9 +110,7 @@ public abstract class LogicFilterImpl extends BinaryLogicAbstract implements Log
         throws IllegalFilterException {
         super(CommonFactoryFinder.getFilterFactory(null), new ArrayList());
         
-        if (isLogicFilter(filterType)) {
-            this.filterType = filterType;
-        } else {
+        if (!isLogicFilter(filterType)) {
             throw new IllegalFilterException(
                 "Attempted to create logic filter with non-logic type.");
         }
@@ -140,6 +134,7 @@ public abstract class LogicFilterImpl extends BinaryLogicAbstract implements Log
      *       filter.
      */
     public final void addFilter(org.opengis.filter.Filter filter) throws IllegalFilterException {
+        int filterType = Filters.getFilterType(this);
         if ((filterType != LOGIC_NOT) || (children.size() == 0)) {
             children.add(filter);
         } else {
@@ -177,7 +172,7 @@ public abstract class LogicFilterImpl extends BinaryLogicAbstract implements Log
         String returnString = "[";
         String operator = "";
         Iterator iterator = children.iterator();
-
+        int filterType = Filters.getFilterType(this);
         if (filterType == LOGIC_OR) {
             operator = " OR ";
         } else if (filterType == LOGIC_AND) {
@@ -217,7 +212,7 @@ public abstract class LogicFilterImpl extends BinaryLogicAbstract implements Log
             LogicFilterImpl logFilter = (LogicFilterImpl) obj;
             if( LOGGER.isLoggable(Level.FINEST)) {
                 LOGGER.finest("filter type match:"
-                        + (logFilter.getFilterType() == this.filterType));
+                        + (Filters.getFilterType( logFilter ) == Filters.getFilterType( this )));
                 LOGGER.finest("same size:"
                         + (logFilter.getSubFilters().size() == this.children.size())
                         + "; inner size: " + logFilter.getSubFilters().size()
@@ -226,7 +221,7 @@ public abstract class LogicFilterImpl extends BinaryLogicAbstract implements Log
                         + logFilter.getSubFilters().containsAll(this.children));
             }
 
-            return ((logFilter.getFilterType() == this.filterType)
+            return ((Filters.getFilterType( logFilter ) == Filters.getFilterType( this ))
             && (logFilter.getSubFilters().size() == this.children.size())
             && logFilter.getSubFilters().containsAll(this.children));
         } else {
@@ -241,6 +236,7 @@ public abstract class LogicFilterImpl extends BinaryLogicAbstract implements Log
      */
     public int hashCode() {
         int result = 17;
+        int filterType = Filters.getFilterType(this);
         result = (37 * result) + filterType;
         result = (37 * result) + children.hashCode();
 

@@ -34,6 +34,7 @@ import org.opengis.filter.expression.Add;
  *
  * @source $URL$
  */
+@SuppressWarnings("deprecation")
 public class SQLEncoderTest extends SQLFilterTestSupport {
     private FilterFactory filterFac = FilterFactoryFinder.createFilterFactory();
     private org.opengis.filter.FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
@@ -129,10 +130,10 @@ public class SQLEncoderTest extends SQLFilterTestSupport {
 //        //LOGGER.fine("parsed filter is: " + test);
 //    }
 //
+    
     public void testConstructor() throws Exception {
         NullFilter tFilter = filterFac.createNullFilter();
 
-        Integer testInt = new Integer(5);
         Expression testAtt = filterFac.createAttributeExpression(null, "test");
         tFilter.nullCheckValue(testAtt);
 

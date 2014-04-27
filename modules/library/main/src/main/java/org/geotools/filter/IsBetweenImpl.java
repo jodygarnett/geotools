@@ -42,9 +42,6 @@ public class IsBetweenImpl extends CompareFilterImpl implements BetweenFilter {
 		super( factory, lower, upper );
 		this.expression = expression;
 		this.matchAction = matchAction;
-		
-		//backwards compatability
-		filterType = FilterType.BETWEEN;
 	}
 	
 	protected IsBetweenImpl(org.opengis.filter.FilterFactory factory, Expression lower, Expression expression, Expression upper ){

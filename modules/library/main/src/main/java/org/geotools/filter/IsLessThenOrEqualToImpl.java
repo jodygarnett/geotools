@@ -36,23 +36,22 @@ public class IsLessThenOrEqualToImpl extends MultiCompareFilterImpl implements
             this(factory, expression1, expression2,false);
     }
 
-    protected IsLessThenOrEqualToImpl(org.opengis.filter.FilterFactory factory, Expression expression1, Expression expression2,boolean matchCase ) {
-            super(factory, expression1, expression2,matchCase);
-            
-            //backwards compat with old type system
-            this.filterType = COMPARE_LESS_THAN_EQUAL;
+    protected IsLessThenOrEqualToImpl(org.opengis.filter.FilterFactory factory,
+            Expression expression1, Expression expression2, boolean matchCase) {
+        super(factory, expression1, expression2, matchCase);
+
     }
-    
-        protected IsLessThenOrEqualToImpl(org.opengis.filter.FilterFactory factory, Expression expression1, Expression expression2, MatchAction matchAction) {
-            this(factory, expression1, expression2,false, matchAction);
-        }
-        
-        protected IsLessThenOrEqualToImpl(org.opengis.filter.FilterFactory factory, Expression expression1, Expression expression2,boolean matchCase, MatchAction matchAction ) {
-                super(factory, expression1, expression2,matchCase, matchAction);
-                
-                //backwards compat with old type system
-                this.filterType = COMPARE_LESS_THAN_EQUAL;
-        }
+
+    protected IsLessThenOrEqualToImpl(org.opengis.filter.FilterFactory factory,
+            Expression expression1, Expression expression2, MatchAction matchAction) {
+        this(factory, expression1, expression2, false, matchAction);
+    }
+
+    protected IsLessThenOrEqualToImpl(org.opengis.filter.FilterFactory factory,
+            Expression expression1, Expression expression2, boolean matchCase,
+            MatchAction matchAction) {
+        super(factory, expression1, expression2, matchCase, matchAction);
+    }
 
         @Override
 	public boolean evaluateInternal(Object v1, Object v2) {

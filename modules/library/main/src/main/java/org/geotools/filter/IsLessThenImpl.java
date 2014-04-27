@@ -37,22 +37,19 @@ public class IsLessThenImpl extends MultiCompareFilterImpl implements
             this(factory, expression1, expression2,false);
     }
      
-    protected IsLessThenImpl(org.opengis.filter.FilterFactory factory, Expression expression1, Expression expression2,boolean matchCase) {
-            super(factory, expression1, expression2,matchCase);
-            
-            //backwards compat with old type system
-            this.filterType = COMPARE_LESS_THAN;
+    protected IsLessThenImpl(org.opengis.filter.FilterFactory factory, Expression expression1,
+            Expression expression2, boolean matchCase) {
+        super(factory, expression1, expression2, matchCase);
     }
-    
-    protected IsLessThenImpl(org.opengis.filter.FilterFactory factory, Expression expression1, Expression expression2, MatchAction matchAction) {
-        this(factory, expression1, expression2,false, matchAction);
+
+    protected IsLessThenImpl(org.opengis.filter.FilterFactory factory, Expression expression1,
+            Expression expression2, MatchAction matchAction) {
+        this(factory, expression1, expression2, false, matchAction);
     }
-     
-    protected IsLessThenImpl(org.opengis.filter.FilterFactory factory, Expression expression1, Expression expression2,boolean matchCase, MatchAction matchAction) {
-            super(factory, expression1, expression2,matchCase, matchAction);
-            
-            //backwards compat with old type system
-            this.filterType = COMPARE_LESS_THAN;
+
+    protected IsLessThenImpl(org.opengis.filter.FilterFactory factory, Expression expression1,
+            Expression expression2, boolean matchCase, MatchAction matchAction) {
+        super(factory, expression1, expression2, matchCase, matchAction);
     }
 	
 	@Override

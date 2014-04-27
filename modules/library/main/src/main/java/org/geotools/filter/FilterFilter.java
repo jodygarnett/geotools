@@ -377,7 +377,7 @@ public class FilterFilter extends XMLFilterImpl implements GMLHandlerJTS {
                 }
             } catch (IllegalFilterException e) {
                 throw new SAXException(
-                    "Attempted to construct illegal filter: " + e.getMessage());
+                    "Attempted to construct illegal filter: " + e.getMessage(),e);
             }
         } else {
             parent.endElement(namespaceURI, localName, qName);

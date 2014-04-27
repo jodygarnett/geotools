@@ -29,8 +29,6 @@ public class IsNullImpl extends CompareFilterImpl implements NullFilter {
     public IsNullImpl(org.opengis.filter.FilterFactory factory,
             org.opengis.filter.expression.Expression expression) {
         super(factory, expression, null);
-
-        filterType = FilterType.NULL;
     }
 
     public boolean evaluate(Object feature) {

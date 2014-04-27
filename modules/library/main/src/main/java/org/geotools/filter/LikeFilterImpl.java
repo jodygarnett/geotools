@@ -319,7 +319,6 @@ public class LikeFilterImpl extends AbstractFilter implements LikeFilter {
     
     protected LikeFilterImpl(MatchAction matchAction) {
         super(CommonFactoryFinder.getFilterFactory(null));
-        filterType = LIKE;
         this.matchAction = matchAction;
     }
 
@@ -629,7 +628,8 @@ public class LikeFilterImpl extends AbstractFilter implements LikeFilter {
             LikeFilterImpl lFilter = (LikeFilterImpl) obj;
 
             //REVISIT: check for nulls.
-            return ((lFilter.getFilterType() == this.filterType)
+            
+            return ((Filters.getFilterType( lFilter ) == Filters.getFilterType( this ))
             && lFilter.getValue().equals(this.attribute)
             && lFilter.getPattern().equals(this.pattern));
         }

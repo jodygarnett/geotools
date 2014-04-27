@@ -22,10 +22,10 @@ class CompareImageDialog extends JDialog {
 
     boolean accept = false;
 
-    public CompareImageDialog(RenderedImage expected, RenderedImage actual, boolean showCommands) {
+    public CompareImageDialog(String text, RenderedImage expected, RenderedImage actual, boolean showCommands) {
         JPanel content = new JPanel(new BorderLayout());
         this.setContentPane(content);
-        this.setTitle("ImageAssert");
+        this.setTitle("ImageAssert "+text);
         final JLabel topLabel = new JLabel(
                 "<html><body>PerceptualDiff thinks the two images are perceptibly different.</html></body>");
         topLabel.setBorder(new EmptyBorder(4, 4, 4, 4));
@@ -70,8 +70,8 @@ class CompareImageDialog extends JDialog {
         return panel;
     }
 
-    public static boolean show(RenderedImage expected, RenderedImage actual, boolean showCommands) {
-        CompareImageDialog dialog = new CompareImageDialog(expected, actual, showCommands);
+    public static boolean show(String text, RenderedImage expected, RenderedImage actual, boolean showCommands) {
+        CompareImageDialog dialog = new CompareImageDialog(text, expected, actual, showCommands);
         dialog.setModal(true);
         dialog.setVisible(true);
 

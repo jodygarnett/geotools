@@ -44,6 +44,24 @@ public class ImageAssert {
     
     static final Logger LOGGER = Logging.getLogger(Logger.class);
 
+    static File reference( File file){
+        return reference(file,false);
+    }
+    static File reference( File file, boolean create ){
+        String path = file.getPath();
+        String osName = System.getProperty("os.name", "unknown");
+        String osVersion = System.getProperty("os.version","unknown");
+        if( osName.equals("Mac OS X") && osVersion.startsWith("10.9")){
+            int split = path.lastIndexOf('.');
+            String osxPath = path.substring(0,split)+"-osx"+path.substring(split);
+            File osxFile = new File(osxPath);
+            if( create || osxFile.exists() ){
+                return osxFile;
+            }
+        }
+        return new File(path);
+    }
+    
     /**
      * Checks the image in the reference file and the actual image are equals from a human
      * perception p.o.v
@@ -91,14 +109,16 @@ public class ImageAssert {
     private static void assertImagesResemble(File expectedFile, RenderedImage actualImage,
             Mode mode, int threshold, boolean actualReferenceFile) throws IOException {
         // do we have the reference image at all?
-        if (!expectedFile.exists()) {
+        File referenceFile = reference(expectedFile);
+        if (!referenceFile.exists()) {
 
             // see what the user thinks of the image
             boolean useAsReference = actualReferenceFile && INTERACTIVE
                     && ReferenceImageDialog.show(realignImage(actualImage));
             if (useAsReference) {
                 try {
-                    new ImageWorker(actualImage).writePNG(expectedFile, "FILTERED", 0.9f, false,
+                    File generateFile = reference(expectedFile,true); // create
+                    new ImageWorker(actualImage).writePNG(generateFile, "FILTERED", 0.9f, false,
                             false);
                 } catch (IOException e) {
                     throw (Error) new AssertionError("Failed to write the image to disk")
@@ -108,18 +128,19 @@ public class ImageAssert {
                 throw new AssertionError("Reference image is missing: " + expectedFile);
             }
         } else {
-            RenderedImage expectedImage = ImageIO.read(expectedFile);
+            RenderedImage expectedImage = ImageIO.read(referenceFile);
             ImageComparator comparator = new ImageComparator(mode, expectedImage, actualImage);
             if (comparator.getMismatchCount() > threshold) {
                 // check with the user
                 boolean overwrite = false;
                 if (INTERACTIVE) {
-                    overwrite = CompareImageDialog.show(realignImage(expectedImage),
+                    overwrite = CompareImageDialog.show("Difference "+comparator.getMismatchCount()+"/"+threshold,realignImage(expectedImage),
                             realignImage(actualImage), actualReferenceFile);
                 }
 
                 if (overwrite) {
-                    ImageIO.write(actualImage, "PNG", expectedFile);
+                    File generateFile = reference(expectedFile,true); // create
+                    ImageIO.write(actualImage, "PNG", generateFile);
                 } else {
                     throw new AssertionError("Images are visibly different, found "
                             + comparator.getMismatchCount()

@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.Converters;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.FilterVisitor;
 
 
@@ -87,6 +88,7 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract
      * @throws IllegalFilterException Filter is not internally consistent.
      *
      * @task REVISIT: immutability?
+     * @deprecated Use {@link #setExpression1(org.opengis.filter.expression.Expression)}
      */
     public final void addLeftValue(Expression leftValue)
         throws IllegalFilterException {
@@ -119,6 +121,7 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract
      * @throws IllegalFilterException Filter is not internally consistent.
      *
      * @task REVISIT: make immutable.
+     * @deprecated Use {@link #setExpression2(org.opengis.filter.expression.Expression)}
      */
     public final void addRightValue(Expression rightValue)
         throws IllegalFilterException {
@@ -151,7 +154,7 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract
      * * @deprecated use {@link #getExpression1()}
      */
     public final Expression getLeftValue() {
-        return (Expression)getExpression1();
+        return expressionCast( this.expression1 );
     }
 
     /**
@@ -162,7 +165,7 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract
      * @deprecated use {@link #getExpression2()}
      */
     public final Expression getRightValue() {
-        return (Expression)getExpression2();
+        return expressionCast( this.expression2 );
     }
   
     /**
@@ -294,19 +297,16 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract
      *         otherwise.
      */
     public boolean equals(Object obj) {
-        if (obj instanceof CompareFilter) {
-            CompareFilter cFilter = (CompareFilter) obj;
+        if (obj instanceof BinaryComparisonOperator) {
+            BinaryComparisonOperator cFilter = (BinaryComparisonOperator) obj;
 
             // todo - check for nulls here, or make immutable.
             //
-            return
-                filterType == cFilter.getFilterType()
-            	&& (    expression1 == cFilter.getLeftValue()
-            			|| (expression1 != null && expression1.equals( cFilter.getLeftValue() ) )
-            	    )
-            	&& (    expression2 == cFilter.getRightValue()
-            			|| (expression2 != null && expression2.equals( cFilter.getRightValue() ) )
-            			);            
+            return filterType == Filters.getFilterType(cFilter)
+                    && (expression1 == cFilter.getExpression1() || (expression1 != null && expression1
+                            .equals(cFilter.getExpression1())))
+                    && (expression2 == cFilter.getExpression2() || (expression2 != null && expression2
+                            .equals(cFilter.getExpression2())));
         } else {
             return false;
         }

@@ -36,7 +36,6 @@ public abstract class AbstractFilter extends FilterAbstract implements Filter {
 	/** The logger for the default core module. */
     protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.core");
 
-
     /** Defines filter type (all valid types defined below). */
     protected short filterType;
 
@@ -172,7 +171,19 @@ public abstract class AbstractFilter extends FilterAbstract implements Filter {
     public short getFilterType() {
         return filterType;
     }
-
+    
+    /**
+     * Safe cast used to return org.geotools.filter.Expression if supported
+     * 
+     * @param expression
+     * @return org.geotools.filter.Expression instance, or null if not implemented
+     */
+    protected Expression expressionCast( org.opengis.filter.expression.Expression expression){
+        if( expression != null && expression instanceof Expression){
+            return (Expression) expression;
+        }
+        return null;
+    }
     /**
      * Used by FilterVisitors to perform some action on this filter instance.
      * Typicaly used by Filter decoders, but may also be used by any thing

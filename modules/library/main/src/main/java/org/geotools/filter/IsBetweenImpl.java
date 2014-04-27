@@ -169,7 +169,7 @@ public class IsBetweenImpl extends CompareFilterImpl implements BetweenFilter {
 	 * @deprecated use {@link #getExpression()}
 	 */
 	public final org.geotools.filter.Expression getMiddleValue() {
-		return (org.geotools.filter.Expression) getExpression();
+	    return expressionCast(expression);
 	}
 	
 	/**

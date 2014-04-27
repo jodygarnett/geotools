@@ -49,7 +49,7 @@ public class IsNullImpl extends CompareFilterImpl implements NullFilter {
     }
 
     public org.geotools.filter.Expression getNullCheckValue() {
-        return (org.geotools.filter.Expression) getExpression();
+        return expressionCast( getExpression() );
     }
 
     public Expression getExpression() {

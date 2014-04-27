@@ -191,7 +191,7 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
      * @deprecated use {@link org.opengis.filter.spatial.BinarySpatialOperator#getExpression1()}
      */
     public final Expression getLeftGeometry() {
-        return (Expression)getExpression1();
+        return expressionCast( getExpression1() );
     }
     
     /**
@@ -201,7 +201,7 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
      * @deprecated use {@link org.opengis.filter.spatial.BinarySpatialOperator#getExpression2()}
      */
     public final Expression getRightGeometry() {
-        return (Expression)getExpression2();
+        return expressionCast( getExpression2() );
     }
 
     /**

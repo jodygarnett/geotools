@@ -26,6 +26,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.MultiValuedFilter.MatchAction;
+import org.opengis.filter.expression.Literal;
 
 
 /**
@@ -40,7 +41,7 @@ import org.opengis.filter.MultiValuedFilter.MatchAction;
 public class LikeFilterImpl extends AbstractFilter implements LikeFilter {
 
     /** The attribute value, which must be an attribute expression. */
-    private Expression attribute = null;
+    private org.opengis.filter.expression.Expression attribute = null;
 
     /** The (limited) REGEXP pattern. */
     private String pattern = null;
@@ -351,7 +352,7 @@ public class LikeFilterImpl extends AbstractFilter implements LikeFilter {
      * @deprecated use {@link #getExpression()}.
      */
     public final org.geotools.filter.Expression getValue() {
-        return attribute;
+        return expressionCast(attribute);
     }
 
     /**
@@ -366,10 +367,8 @@ public class LikeFilterImpl extends AbstractFilter implements LikeFilter {
     }
     
     public void setExpression(org.opengis.filter.expression.Expression e) {
-        Expression attribute = (Expression)e;
-        if ((attribute.getType() != ExpressionType.ATTRIBUTE_STRING)
-                || permissiveConstruction) {
-            this.attribute = attribute;
+        if( permissiveConstruction || e instanceof Literal && ((Literal)e).getValue() instanceof String){
+            this.attribute = e;
         } else {
             throw new IllegalFilterException(
                 "Attempted to add something other than a string attribute "

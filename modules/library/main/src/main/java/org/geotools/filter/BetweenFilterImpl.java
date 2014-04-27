@@ -87,7 +87,7 @@ public class BetweenFilterImpl extends CompareFilterImpl
      * @deprecated use {@link #getExpression()}
      */
     public final Expression getMiddleValue() {
-        return (Expression) getExpression();
+        return expressionCast( middleValue );
     }
 
     /**
@@ -195,8 +195,7 @@ public class BetweenFilterImpl extends CompareFilterImpl
      * @return String representation of the between filter.
      */
     public String toString() {
-        return "[ " + expression1.toString() + " < " + middleValue.toString()
-        + " < " + expression2.toString() + " ]";
+        return "[ " + expression1.toString() + " < " + middleValue + " < " + expression2 + " ]";
     }
 
     /**
@@ -212,10 +211,13 @@ public class BetweenFilterImpl extends CompareFilterImpl
         if (oFilter.getClass() == this.getClass()) {
             BetweenFilterImpl bFilter = (BetweenFilterImpl) oFilter;
 
-            return ((bFilter.getFilterType() == this.filterType)
-            && bFilter.getLeftValue().equals(this.expression1)
-            && bFilter.getMiddleValue().equals(this.middleValue)
-            && bFilter.getRightValue().equals(this.expression2));
+            return filterType == Filters.getFilterType(bFilter)
+                    && (expression1 == bFilter.getExpression1() || (expression1 != null && expression1
+                            .equals(bFilter.getExpression1())))
+                    && (expression2 == bFilter.getExpression2() || (expression2 != null && expression2
+                            .equals(bFilter.getExpression2())))
+                    && (expression1 == bFilter.getExpression() || (middleValue != null && middleValue
+                            .equals(bFilter.getExpression())));
         } else {
             return false;
         }

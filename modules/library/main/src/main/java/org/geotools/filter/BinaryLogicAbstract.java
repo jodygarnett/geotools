@@ -45,15 +45,4 @@ public abstract class BinaryLogicAbstract extends AbstractFilter {
 		this.children = children;
 	}
 
-	public Filter and(org.opengis.filter.Filter filter) {
-		return (Filter) factory.and(this, filter);
-	}
-
-	public Filter or(org.opengis.filter.Filter filter) {
-		return (Filter) factory.or(this, filter);
-	}
-
-	public Filter not() {
-		return (Filter) factory.not(this);
-	}
 }

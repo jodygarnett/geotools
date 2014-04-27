@@ -1385,17 +1385,17 @@ public class FilterFactoryImpl implements FilterFactory {
         return new TOverlapsImpl(expr1, expr2, matchAction);
     }
 
-    public org.geotools.filter.Filter and( org.geotools.filter.Filter filter1, org.geotools.filter.Filter filter2 ) {
-        return (org.geotools.filter.Filter) and( (Filter) filter1, (Filter) filter2 );         
-    } 
-
-    public org.geotools.filter.Filter not( org.geotools.filter.Filter filter ) {
-        return (org.geotools.filter.Filter) not( (Filter) filter );
-    }
-
-    public org.geotools.filter.Filter or( org.geotools.filter.Filter filter1, org.geotools.filter.Filter filter2 ) {
-        return (org.geotools.filter.Filter) or( (Filter) filter1, (Filter) filter2 );
-    }
+//    public org.geotools.filter.Filter and( org.geotools.filter.Filter filter1, org.geotools.filter.Filter filter2 ) {
+//        return (org.geotools.filter.Filter) and( (Filter) filter1, (Filter) filter2 );         
+//    } 
+//
+//    public org.geotools.filter.Filter not( org.geotools.filter.Filter filter ) {
+//        return (org.geotools.filter.Filter) not( (Filter) filter );
+//    }
+//
+//    public org.geotools.filter.Filter or( org.geotools.filter.Filter filter1, org.geotools.filter.Filter filter2 ) {
+//        return (org.geotools.filter.Filter) or( (Filter) filter1, (Filter) filter2 );
+//    }
     
     public Beyond beyond( Expression geometry1, Geometry geometry2, double distance, String units ) {
         return beyond( geometry1, literal( geometry2), distance, units );        

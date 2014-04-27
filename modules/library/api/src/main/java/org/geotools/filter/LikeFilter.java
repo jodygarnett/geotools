@@ -127,16 +127,4 @@ public interface LikeFilter extends Filter, PropertyIsLike {
      */
     String getWildcardSingle();
 
-    /**
-     * Determines whether or not a given feature matches this pattern.
-     *
-     * @param feature Specified feature to examine.
-     *
-     * @return Flag confirming whether or not this feature is inside the
-     *         filter.
-     *
-     * @task REVISIT: could the pattern be null such that a null = null?
-     * @deprecated use {@link org.opengis.filter.Filter#evaluate(Feature)}
-     */
-    boolean contains(SimpleFeature feature);
 }

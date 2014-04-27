@@ -36,17 +36,6 @@ import org.opengis.filter.identity.FeatureId;
  * @deprecated use {@link org.opengis.filter.identity.FeatureId}
  */
 public interface FidFilter extends Filter, Id {
-    /**
-     * Determines whether or not the given feature's ID matches this filter.
-     *
-     * @param feature Specified feature to examine.
-     *
-     * @return <tt>true</tt> if the feature's ID matches an fid held by this
-     *         filter, <tt>false</tt> otherwise.
-     *
-     * @deprecated use {@link org.opengis.filter.Filter#evaluate(Feature)}
-     */
-    boolean contains(SimpleFeature feature);
 
     /**
      * Adds a feature ID to the filter.

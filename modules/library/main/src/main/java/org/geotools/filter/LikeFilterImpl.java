@@ -37,7 +37,7 @@ import org.opengis.filter.MultiValuedFilter.MatchAction;
  * @source $URL$
  * @version $Id$
  */
-public class LikeFilterImpl extends AbstractFilterImpl implements LikeFilter {
+public class LikeFilterImpl extends AbstractFilter implements LikeFilter {
 
     /** The attribute value, which must be an attribute expression. */
     private Expression attribute = null;

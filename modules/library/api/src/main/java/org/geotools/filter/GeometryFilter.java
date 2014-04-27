@@ -88,17 +88,6 @@ public interface GeometryFilter extends Filter, BinarySpatialOperator {
     void addLeftGeometry(Expression leftGeometry) throws IllegalFilterException;
 
     /**
-     * Determines whether the given feature's geometry passes the geometric
-     * relationship of this filter.
-     *
-     * @param feature the feature to inspect.
-     *
-     * @return whether the feature meets the conditions of filtering imposed by
-     *         this geometry filter.
-     */
-    boolean contains(SimpleFeature feature);
-
-    /**
      * Retrieves the expression on the right side of the spatial comparison.
      *
      * @return the geometry expression on the right.

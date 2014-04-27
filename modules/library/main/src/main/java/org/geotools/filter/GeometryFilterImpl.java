@@ -262,17 +262,6 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
          
          return Converters.convert(o, Geometry.class);
     }
-    
-    /**
-     * Determines whether or not a given feature is 'inside' this filter.
-     *
-     * @param feature Specified feature to examine.
-     *
-     * @return Flag confirming whether or not this feature is inside filter.
-     */
-    public boolean evaluate(SimpleFeature feature) {
-        return evaluate((Object)feature);
-    }
 
     /**
      * Return this filter as a string.

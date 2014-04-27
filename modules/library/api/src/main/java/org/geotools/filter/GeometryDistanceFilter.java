@@ -77,19 +77,6 @@ public interface GeometryDistanceFilter extends GeometryFilter, DistanceBufferOp
     void setDistance(double distance) throws IllegalFilterException;
 
     /**
-     * Determines whether or not a given feature is 'inside' this filter.
-     *
-     * @param feature Specified feature to examine.
-     *
-     * @return Flag confirming whether or not this feature is inside the
-     *         filter.
-     *
-     * @deprecated use {@link org.opengis.filter.Filter#evaluate(Feature)}
-     *
-     */
-    boolean contains(SimpleFeature feature);
-
-    /**
      * Gets the distance allowed by this filter.
      *
      * @return distance the length beyond which this filter is valid or not.

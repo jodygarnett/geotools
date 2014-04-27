@@ -30,7 +30,7 @@ import org.opengis.filter.PropertyIsNull;
  * @source $URL$
  * @version $Id$
  */
-public class NullFilterImpl extends AbstractFilterImpl implements NullFilter {
+public class NullFilterImpl extends AbstractFilter implements NullFilter {
     /** The null check value, which must be an attribute expression. */
     private org.opengis.filter.expression.Expression nullCheck = null;
 

@@ -56,7 +56,7 @@ public abstract class FilterFactoryFinder {
      */
     public static FilterFactory createFilterFactory() throws FactoryRegistryException {
         Hints hints = GeoTools.getDefaultHints();
-        return (FilterFactory) CommonFactoryFinder.getFilterFactory( hints );
+        return (FilterFactory) CommonFactoryFinder.getFilterFactory();
     }
 
 }

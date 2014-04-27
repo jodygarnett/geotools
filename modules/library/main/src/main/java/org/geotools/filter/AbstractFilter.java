@@ -50,23 +50,7 @@ public abstract class AbstractFilter extends FilterAbstract implements Filter {
     protected AbstractFilter(org.opengis.filter.FilterFactory factory) {
 		super(factory);
 	}
-    
-    /**
-     * Implements a 'contained by' check for a given feature, defaulting to
-     * true.
-     * <p>
-     * This calls through to {@link #evaluate(Feature)}.
-     * </p>
-     *
-     * @param feature Specified feature to examine.
-     *
-     * @return Result of 'contains' test.
-     * 
-     * @deprecated use {@link Filter#evaluate(Feature)}
-     */
-    public final boolean contains(SimpleFeature feature) {
-    	return evaluate(feature);
-    }
+
     
     /**
      * This method checks if the object is an instance of {@link Feature} and 

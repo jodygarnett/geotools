@@ -53,7 +53,7 @@ import org.opengis.filter.identity.Identifier;
  * @source $URL$
  * @version $Id$
  */
-public class FidFilterImpl extends AbstractFilterImpl implements FidFilter {
+public class FidFilterImpl extends AbstractFilter implements FidFilter {
     /** Logger for the default core module. */
     private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.core");
 

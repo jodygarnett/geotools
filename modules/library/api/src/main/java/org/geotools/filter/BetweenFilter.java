@@ -40,16 +40,6 @@ import org.opengis.filter.PropertyIsBetween;
  * @deprecated use {@link org.opengis.filter.PropertyIsBetween}
  */
 public interface BetweenFilter extends CompareFilter, PropertyIsBetween {
-    /**
-     * Determines whether or not a given feature is 'inside' this filter.
-     *
-     * @param feature Specified feature to examine.
-     *
-     * @return Whether or not this feature is inside the filter.
-     *
-     * @deprecated use {@link org.opengis.filter.Filter#evaluate(Feature)}
-     */
-    boolean contains(SimpleFeature feature);
 
     /**
      * @deprecated use {@link PropertyIsBetween#getLowerBoundary()}

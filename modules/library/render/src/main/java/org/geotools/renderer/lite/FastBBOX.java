@@ -165,10 +165,6 @@ class FastBBOX implements BBOX, BinarySpatialOperator, BinaryComparisonOperator,
         throw new UnsupportedOperationException("This filter cannot be modified");
     }
 
-    public boolean contains(SimpleFeature feature) {
-        return evaluate((Object) feature);
-    }
-
     public org.geotools.filter.Expression getLeftGeometry() {
         return (org.geotools.filter.Expression) getExpression1();
     }
@@ -179,22 +175,6 @@ class FastBBOX implements BBOX, BinarySpatialOperator, BinaryComparisonOperator,
 
     public void accept(org.geotools.filter.FilterVisitor visitor) {
         accept(new FilterVisitorFilterWrapper(visitor),null);        
-    }
-
-    public Filter and(org.opengis.filter.Filter filter) {        
-        return (Filter) factory.and(this, filter);
-    }
-
-    public Filter or(org.opengis.filter.Filter filter) {
-        return (Filter) factory.or(this, filter);
-    }
-
-    public Filter not() {
-        return (Filter) factory.not(this);
-    }
-
-    public boolean evaluate(SimpleFeature feature) {
-        return evaluate((Object) feature);
     }
 
     public short getFilterType() {

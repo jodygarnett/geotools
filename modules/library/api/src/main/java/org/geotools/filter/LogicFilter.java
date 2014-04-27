@@ -36,18 +36,6 @@ import org.opengis.feature.simple.SimpleFeature;
  * @deprecated use {@link org.opengis.filter.BinaryLogicOperator}
  */
 public interface LogicFilter extends Filter {
-    /**
-     * Determines whether the feature matches the appropriate logic
-     * relationships.
-     *
-     * @param feature Specified feature to examine.
-     *
-     * @return Flag confirming whether or not this feature is inside the
-     *         filter.
-     *
-     * @deprecated use {@link Filter#evaluate(Feature)}.
-     */
-    boolean contains(SimpleFeature feature);
 
     /**
      * Returns a list containing all of the child filters of this object.

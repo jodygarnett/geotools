@@ -164,18 +164,6 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract
     public final Expression getRightValue() {
         return (Expression)getExpression2();
     }
-
-    /**
-     * Determines whether or not a given feature is 'inside' this filter.
-     *
-     * @param feature Specified feature to examine.
-     *
-     * @return Flag confirming whether or not this feature is inside the
-     *         filter.
-     */
-    public boolean evaluate(SimpleFeature feature){
-    	return evaluate((Object)feature);
-    }
   
     /**
      * Subclass convenience method which compares to instances of comparables

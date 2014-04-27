@@ -78,19 +78,6 @@ public abstract class BinaryComparisonAbstract extends AbstractFilter
 	public MatchAction getMatchAction() {
 	       return MatchAction.ANY; //default
 	}
-	
-	public Filter and(org.opengis.filter.Filter filter) {        
-		return (Filter) factory.and(this, filter);
-	}
-
-	public Filter or(org.opengis.filter.Filter filter) {
-		return (Filter) factory.or(this, filter);
-	}
-
-	public Filter not() {
-		return (Filter) factory.not(this);
-	}
-	
     /**
      * Convenience method which evaluates the expressions and trys to align the values to be of the
      * same type.

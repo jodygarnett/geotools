@@ -41,26 +41,17 @@ public class AndImpl extends LogicFilterImpl implements And {
 		this.filterType = LOGIC_AND;
 	}
 	
-	//@Override
-	public boolean evaluate(SimpleFeature feature) {        
-		for (Iterator itr = children.iterator(); itr.hasNext();) {
-            org.opengis.filter.Filter filter = (org.opengis.filter.Filter)itr.next();
-			if( !filter.evaluate( feature )) {
-                return false; // short circuit
-            }
-		}
-		return true;
-	}
-    public boolean evaluate( Object object ) {
+
+    public boolean evaluate(Object object) {
         for (Iterator itr = children.iterator(); itr.hasNext();) {
             org.opengis.filter.Filter filter = (org.opengis.filter.Filter) itr.next();
-            if( !filter.evaluate( object )) {
+            if (!filter.evaluate(object)) {
                 return false; // short circuit
             }
         }
         return true;
     }
-	
+
 	public Object accept(FilterVisitor visitor, Object extraData) {
 		return visitor.visit(this,extraData);
 	}

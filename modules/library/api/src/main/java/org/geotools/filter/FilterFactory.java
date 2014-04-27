@@ -379,20 +379,20 @@ public interface FilterFactory extends Factory, org.opengis.filter.FilterFactory
      */
     public EnvironmentVariable createEnvironmentVariable(String name);
 
-    /**
-     * @deprecated use {@link org.opengis.filter.FilterFactory#or(org.opengis.filter.Filter, org.opengis.filter.Filter)}
-     */
-    public Filter or(Filter f1, Filter f2);
-
-    /**
-     * @deprecated use {@link org.opengis.filter.FilterFactory#and(org.opengis.filter.Filter, org.opengis.filter.Filter)}
-     */
-    public Filter and(Filter f1, Filter f2);
-
-    /**
-     * @deprecated use {@link org.opengis.filter.FilterFactory#not(org.opengis.filter.Filter)}
-     */
-    public Filter not(Filter f);
+//    /**
+//     * @deprecated use {@link org.opengis.filter.FilterFactory#or(org.opengis.filter.Filter, org.opengis.filter.Filter)}
+//     */
+//    public Filter or(Filter f1, Filter f2);
+//
+//    /**
+//     * @deprecated use {@link org.opengis.filter.FilterFactory#and(org.opengis.filter.Filter, org.opengis.filter.Filter)}
+//     */
+//    public Filter and(Filter f1, Filter f2);
+//
+//    /**
+//     * @deprecated use {@link org.opengis.filter.FilterFactory#not(org.opengis.filter.Filter)}
+//     */
+//    public Filter not(Filter f);
 
     ////////////////////////////////////////////////////////////////////////////////
     //

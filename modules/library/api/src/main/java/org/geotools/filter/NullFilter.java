@@ -57,16 +57,4 @@ public interface NullFilter extends Filter, PropertyIsNull {
      */
     Expression getNullCheckValue();
 
-    /**
-     * Determines whether or not a given feature is null for the nullCheck
-     * attribute.
-     *
-     * @param feature Specified feature to examine.
-     *
-     * @return Flag confirming whether or not this feature is inside the
-     *         filter.
-     *
-     * @deprecated use {@link org.opengis.filter.Filter#evaluate(Feature)}
-     */
-    boolean contains(SimpleFeature feature);
 }

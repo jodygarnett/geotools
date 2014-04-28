@@ -18,7 +18,6 @@ package org.geotools.renderer.lite;
 
 import org.geotools.filter.Filter;
 import org.geotools.filter.GeometryFilter;
-import org.geotools.filter.FilterVisitorFilterWrapper;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.simple.SimpleFeature;
@@ -171,10 +170,6 @@ class FastBBOX implements BBOX, BinarySpatialOperator, BinaryComparisonOperator,
 
     public org.geotools.filter.Expression getRightGeometry() {
         return (org.geotools.filter.Expression) getExpression2();
-    }
-
-    public void accept(org.geotools.filter.FilterVisitor visitor) {
-        accept(new FilterVisitorFilterWrapper(visitor),null);        
     }
 
     public MatchAction getMatchAction() {

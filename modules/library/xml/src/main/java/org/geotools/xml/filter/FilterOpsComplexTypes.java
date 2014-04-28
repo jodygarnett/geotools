@@ -876,21 +876,18 @@ public class FilterOpsComplexTypes {
             if (!canEncode(element, value, hints)) {
                 return;
             }
-
             // we may only encode one type of filter ...
+            if (value == null) {
+                return;
+            }
+            if (value == Filter.INCLUDE) {
+                return;
+            }
+
+            if (value == Filter.EXCLUDE) {
+                return;
+            }
             Filter filter = (Filter) value;
-
-            if (filter == null) {
-                return;
-            }
-
-            if (filter == org.geotools.filter.Filter.NONE) {
-                return;
-            }
-
-            if (filter == org.geotools.filter.Filter.ALL) {
-                return;
-            }
 
             if (element != null) {
                 output.startElement(element.getNamespace(), element.getName(),
@@ -900,7 +897,7 @@ public class FilterOpsComplexTypes {
 //                    null);
             }
             FilterEncodingPreProcessor visitor=getFilterEncodingPreProcessor(hints);
-            filter.accept(visitor);
+            filter.accept(visitor,null);
             // valid filter can have either a normal "filter" defining an test 
             if( !visitor.getFilter().equals(Filter.EXCLUDE) ){
             	encodeFilter(visitor.getFilter(),output,hints);

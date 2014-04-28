@@ -31,20 +31,4 @@ import org.opengis.feature.simple.SimpleFeature;
  * @deprecated use {@link org.opengis.filter.Filter}
  */
 public interface Filter extends FilterType, org.opengis.filter.Filter {
-    static final org.opengis.filter.Filter ALL = org.opengis.filter.Filter.EXCLUDE;
-    static final org.opengis.filter.Filter NONE = org.opengis.filter.Filter.INCLUDE;
-
-    /**
-     * Used by FilterVisitors to perform some action on this filter instance.
-     * Typicaly used by Filter decoders, but may also be used by any thing
-     * which needs infomration from filter structure. Implementations should
-     * always call: visitor.visit(this); It is importatant that this is not
-     * left to a parent class unless the parents API is identical.
-     *
-     * @param visitor The visitor which requires access to this filter, the
-     *        method must call visitor.visit(this);
-     *
-     * @deprecated use {@link org.opengis.filter.Filter#accept(FilterVisitor, Object)}.
-     */
-    void accept(FilterVisitor visitor);
 }

@@ -33,8 +33,6 @@ import org.geotools.filter.Expression;
 import org.geotools.filter.FidFilter;
 import org.geotools.filter.Filter;
 import org.geotools.filter.FilterType;
-import org.geotools.filter.FilterVisitor;
-import org.geotools.filter.FilterVisitor2;
 import org.geotools.filter.Filters;
 import org.geotools.filter.FunctionExpression;
 import org.geotools.filter.GeometryFilter;
@@ -45,15 +43,57 @@ import org.geotools.filter.LogicFilter;
 import org.geotools.filter.MathExpression;
 import org.geotools.filter.NullFilter;
 import org.geotools.xml.XMLHandlerHints;
+import org.opengis.filter.And;
 import org.opengis.filter.BinaryLogicOperator;
 import org.opengis.filter.ExcludeFilter;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.Id;
 import org.opengis.filter.IncludeFilter;
+import org.opengis.filter.FilterVisitor;
+import org.opengis.filter.Not;
+import org.opengis.filter.Or;
+import org.opengis.filter.PropertyIsBetween;
+import org.opengis.filter.PropertyIsEqualTo;
+import org.opengis.filter.PropertyIsGreaterThan;
+import org.opengis.filter.PropertyIsGreaterThanOrEqualTo;
+import org.opengis.filter.PropertyIsLessThan;
+import org.opengis.filter.PropertyIsLessThanOrEqualTo;
+import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.PropertyIsNil;
+import org.opengis.filter.PropertyIsNotEqualTo;
+import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.identity.FeatureId;
+import org.opengis.filter.spatial.BBOX;
+import org.opengis.filter.spatial.Beyond;
+import org.opengis.filter.spatial.Contains;
+import org.opengis.filter.spatial.Crosses;
+import org.opengis.filter.spatial.DWithin;
+import org.opengis.filter.spatial.Disjoint;
+import org.opengis.filter.spatial.Equals;
+import org.opengis.filter.spatial.Intersects;
+import org.opengis.filter.spatial.Overlaps;
+import org.opengis.filter.spatial.SpatialOperator;
+import org.opengis.filter.spatial.Touches;
+import org.opengis.filter.spatial.Within;
+import org.opengis.filter.temporal.After;
+import org.opengis.filter.temporal.AnyInteracts;
+import org.opengis.filter.temporal.Before;
+import org.opengis.filter.temporal.Begins;
+import org.opengis.filter.temporal.BegunBy;
+import org.opengis.filter.temporal.BinaryTemporalOperator;
+import org.opengis.filter.temporal.During;
+import org.opengis.filter.temporal.EndedBy;
+import org.opengis.filter.temporal.Ends;
+import org.opengis.filter.temporal.Meets;
+import org.opengis.filter.temporal.MetBy;
+import org.opengis.filter.temporal.OverlappedBy;
+import org.opengis.filter.temporal.TContains;
+import org.opengis.filter.temporal.TEquals;
+import org.opengis.filter.temporal.TOverlaps;
 
 
 /**
- * Prepares a filter for xml encoded for interoperability with another system.  It will behave differently depeding on
+ * Prepares a filter for XML encoded for interoperability with another system.  It will behave differently depending on
  * the compliance level chosen.  A new request will have to be made and the features will have
  * to be tested again on the client side if there are any FidFilters in the filter.  Consider the following to understand why:
  * <pre>
@@ -93,13 +133,11 @@ import org.opengis.filter.identity.FeatureId;
  * <li>{@link XMLHandlerHints#VALUE_FILTER_COMPLIANCE_HIGH}</li>
  * </ul>
  *
- * @author Jesse
- *
- *
+ * @author Jesse Eichar
  *
  * @source $URL$
  */
-public class FilterEncodingPreProcessor implements FilterVisitor, FilterVisitor2 {
+public class FilterEncodingPreProcessor implements FilterVisitor {
     private static final int LOW = 0;
     private static final int MEDIUM = 1;
     private static final int HIGH = 2;
@@ -165,7 +203,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor, FilterVisitor2
                 || filter instanceof LikeFilter
                 || filter instanceof LogicFilter
                 || filter instanceof NullFilter || filter instanceof FidFilter) {
-            filter.accept(this);
+            filter.accept(this,null);
         } else {
             current.push(new Data(filter));
         }
@@ -201,10 +239,9 @@ public class FilterEncodingPreProcessor implements FilterVisitor, FilterVisitor2
 
                 for (Iterator iter = filter.getFilterIterator();
                         iter.hasNext();) {
-                    Filter component = (Filter) iter.next();
-                    component.accept(this);
+                    org.opengis.filter.Filter component = (org.opengis.filter.Filter) iter.next();
+                    component.accept(this, null );
                 }
-
                 current.push(createMediumLevelLogicFilter(
                         Filters.getFilterType(filter), startSize));
 
@@ -214,8 +251,8 @@ public class FilterEncodingPreProcessor implements FilterVisitor, FilterVisitor2
 
                 for (Iterator iter = filter.getFilterIterator();
                         iter.hasNext();) {
-                    Filter component = (Filter) iter.next();
-                    component.accept(this);
+                    org.opengis.filter.Filter component = (org.opengis.filter.Filter) iter.next();
+                    component.accept(this,null);
                 }
 
                 current.push(createHighLevelLogicFilter(
@@ -423,7 +460,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor, FilterVisitor2
 
             for (Object item : f.getChildren() ) {
                 org.opengis.filter.Filter filter = (org.opengis.filter.Filter) item;
-                if (filter == org.geotools.filter.Filter.ALL) {
+                if (filter == Filter.EXCLUDE) {
                     continue;
                 }
                 added++;
@@ -474,7 +511,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor, FilterVisitor2
             Data data = new Data(  ff.not( tmp.filter) );
 
             if (!tmp.fids.isEmpty()) {
-                data.filter = Filter.NONE;
+                data.filter = Filter.INCLUDE;
                 data.fids.clear();
                 requiresPostProcessing=true;
             }
@@ -598,7 +635,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor, FilterVisitor2
         org.opengis.filter.Filter filter;
 
         public Data() {
-            this( Filter.ALL );
+            this( Filter.EXCLUDE);
         }
 
         public Data(org.opengis.filter.Filter f ){
@@ -621,6 +658,244 @@ public class FilterEncodingPreProcessor implements FilterVisitor, FilterVisitor2
      */
     public boolean requiresPostProcessing() {
         return requiresPostProcessing;
+    }
+    
+    // FilterVisitor2 methods formally from FilterVisitorFilterWrapper
+    protected void visitLogicFilter(org.opengis.filter.Filter filter) {
+        if (filter instanceof LogicFilter) {
+            visit((LogicFilter) filter);
+        }
+    }
+
+protected void visitCompareFilter(org.opengis.filter.Filter filter) {
+        if (filter instanceof BetweenFilter) {
+                visit((BetweenFilter)filter);
+                return;
+        }
+        
+        if (filter instanceof NullFilter) {
+                visit((NullFilter)filter);
+                return;
+        }
+        
+        if (filter instanceof LikeFilter) {
+                visit((LikeFilter)filter);
+        }
+        
+        if (filter instanceof CompareFilter) {
+                visit((CompareFilter)filter);
+        }
+}
+
+protected void visitGeometryFilter(SpatialOperator filter) {
+        if (filter instanceof GeometryFilter) {
+                visit((GeometryFilter)filter);
+        }
+}
+
+public Object visit(And filter, Object extraData) {
+        visitLogicFilter(filter);
+        return extraData;
+}
+
+public Object visit( Id filter, Object extraData) {
+        if (filter instanceof FidFilter) {
+                visit((FidFilter)filter);
+        }
+        
+        return extraData;
+}
+
+    public Object visitNullFilter( Object extraData) {        
+        return extraData;
+    }
+    public Object visit( IncludeFilter filter, Object extraData) {
+        visit(filter);
+        return extraData;
+    }
+    public Object visit( ExcludeFilter filter, Object extraData) {   
+        visit(filter);
+        return extraData;
+    }
+    //
+    // Filter Visitor Methods
+    //
+    public Object visit(Not filter, Object extraData) {
+            visitLogicFilter(filter);
+            return extraData;
+    }
+    
+    public Object visit(Or filter, Object extraData) {
+            visitLogicFilter(filter);
+            return extraData;
+    }
+    
+    public Object visit(PropertyIsBetween filter, Object extraData) {
+            visitCompareFilter(filter);
+            return extraData;
+    }
+    
+    public Object visit(PropertyIsEqualTo filter, Object extraData) {
+            visitCompareFilter(filter);
+            return extraData;
+    }
+    
+    public Object visit(PropertyIsNotEqualTo filter, Object extraData) {
+            visitCompareFilter(filter);
+            return extraData;
+    }
+    
+    public Object visit(PropertyIsGreaterThan filter, Object extraData) {
+            visitCompareFilter(filter);
+            return extraData;
+    }
+    
+    public Object visit(PropertyIsGreaterThanOrEqualTo filter, Object extraData) {
+            visitCompareFilter(filter);
+            return extraData;
+    }
+    
+    public Object visit(PropertyIsLessThan filter, Object extraData) {
+            visitCompareFilter(filter);
+            return extraData;
+    }
+    
+    public Object visit(PropertyIsLessThanOrEqualTo filter, Object extraData) {
+            visitCompareFilter(filter);
+            return extraData;
+    }
+    
+    public Object visit(PropertyIsLike filter, Object extraData) {
+            visitCompareFilter(filter);
+            return extraData;
+    }
+    
+    public Object visit(PropertyIsNull filter, Object extraData) {
+            visitCompareFilter(filter);
+            return extraData;
+    }
+    
+    public Object visit(PropertyIsNil filter, Object extraData) {
+    visitCompareFilter(filter);
+    return extraData;
+    }
+    
+    public Object visit(BBOX filter, Object extraData) {
+            visitGeometryFilter(filter);
+            return extraData;
+    }
+    
+    public Object visit(Beyond filter, Object extraData) {
+            visitGeometryFilter(filter);
+            return extraData;
+    }
+    
+    public Object visit(Contains filter, Object extraData) {
+            visitGeometryFilter(filter);
+            return extraData;
+    }
+    
+    public Object visit(Crosses filter, Object extraData) {
+            visitGeometryFilter(filter);
+            return extraData;
+    }
+    
+    public Object visit(Disjoint filter, Object extraData) {
+            visitGeometryFilter(filter);
+            return extraData;
+    }
+    
+    public Object visit(DWithin filter, Object extraData) {
+            visitGeometryFilter(filter);
+            return extraData;
+    }
+    
+    public Object visit(Equals filter, Object extraData) {
+            visitGeometryFilter(filter);
+            return extraData;
+    }
+    
+    public Object visit(Intersects filter, Object extraData) {
+            visitGeometryFilter(filter);
+            return extraData;
+    }
+    
+    public Object visit(Overlaps filter, Object extraData) {
+            visitGeometryFilter(filter);
+            return extraData;
+    }
+
+    public Object visit(Touches filter, Object extraData) {
+            visitGeometryFilter(filter);
+            return extraData;
+    }
+
+    public Object visit(Within filter, Object extraData) {
+            visitGeometryFilter(filter);
+            return extraData;
+    }
+    //
+    // Temporal Filters (UNSUPPORTED)
+    //
+
+    public Object visit(After after, Object extraData) {
+        return visitTemporalFilter((BinaryTemporalOperator) after);
+    }
+
+    public Object visit(AnyInteracts anyInteracts, Object extraData) {
+        return visitTemporalFilter((BinaryTemporalOperator) anyInteracts);
+    }
+
+    public Object visit(Before before, Object extraData) {
+        return visitTemporalFilter((BinaryTemporalOperator) before);
+    }
+
+    public Object visit(Begins begins, Object extraData) {
+        return visitTemporalFilter((BinaryTemporalOperator) begins);
+    }
+
+    public Object visit(BegunBy begunBy, Object extraData) {
+        return visitTemporalFilter((BinaryTemporalOperator) begunBy);
+    }
+
+    public Object visit(During during, Object extraData) {
+        return visitTemporalFilter((BinaryTemporalOperator) during);
+    }
+
+    public Object visit(EndedBy endedBy, Object extraData) {
+        return visitTemporalFilter((BinaryTemporalOperator) endedBy);
+    }
+
+    public Object visit(Ends ends, Object extraData) {
+        return visitTemporalFilter((BinaryTemporalOperator) ends);
+    }
+
+    public Object visit(Meets meets, Object extraData) {
+        return visitTemporalFilter((BinaryTemporalOperator) meets);
+    }
+
+    public Object visit(MetBy metBy, Object extraData) {
+        return visitTemporalFilter((BinaryTemporalOperator) metBy);
+    }
+
+    public Object visit(OverlappedBy overlappedBy, Object extraData) {
+        return visitTemporalFilter((BinaryTemporalOperator) overlappedBy);
+    }
+
+    public Object visit(TContains contains, Object extraData) {
+        return visitTemporalFilter((BinaryTemporalOperator) contains);
+    }
+
+    public Object visit(TEquals equals, Object extraData) {
+        return visitTemporalFilter((BinaryTemporalOperator) equals);
+    }
+
+    public Object visit(TOverlaps contains, Object extraData) {
+        return visitTemporalFilter((BinaryTemporalOperator) contains);
+    }
+
+    protected Object visitTemporalFilter(BinaryTemporalOperator filter) {
+        throw new UnsupportedOperationException("Temporal filters not supported");
     }
 
 }

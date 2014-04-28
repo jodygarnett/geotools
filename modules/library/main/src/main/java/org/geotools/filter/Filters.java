@@ -35,11 +35,8 @@ import org.geotools.util.Utilities;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.And;
 import org.opengis.filter.BinaryLogicOperator;
-import org.opengis.filter.ExcludeFilter;
 import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Id;
-import org.opengis.filter.IncludeFilter;
 import org.opengis.filter.Not;
 import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsBetween;
@@ -243,53 +240,7 @@ public class Filters {
         }
     }
     
-    /**
-     * Safely visit the provided filter.
-     * <p>
-     * This method handles the case of:
-     * <ul>
-     * <li>Filter.INCLUDES: will call FilterVisitor2 method if available
-     * <li>Filter.EXCLUDES: will call FilterVisitor2 method if available
-     * <li>org.geotools.filter.Filter: will visit
-     * </ul>
-     * Please note that when called with a strict *org.opengis.filter.Filter* this
-     * method will fail with a ClassCastException
-     * 
-     * @param filter
-     * @param visitor
-     * @deprecated Please update your code to a org.opengis.filter.FilterVisitor
-     */
-    public static void accept( org.opengis.filter.Filter filter, FilterVisitor visitor ){        
-       if( filter == Filter.EXCLUDE ){
-           if( visitor instanceof FilterVisitor2 ){
-               ((FilterVisitor2)visitor).visit( (ExcludeFilter) Filter.EXCLUDE );
-           }
-           return;
-       }
-       else if( filter == Filter.INCLUDE ){
-           if( visitor instanceof FilterVisitor2 ){
-               ((FilterVisitor2)visitor).visit( (IncludeFilter) Filter.INCLUDE);
-           }
-           return;
-       }
-       
-       if( filter instanceof org.geotools.filter.Filter ){
-           ((org.geotools.filter.Filter) filter).accept( visitor );
-       }
-       else {
-           if( STRICT ){
-               // don't even try ..
-               throw new ClassCastException("Please update your code to a org.opengis.filter.FilterVisitor");
-           }
-           // Copy the provided filter into the old org.geotools.filter.Filter api           
-           FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
-           DuplicatingFilterVisitor xerox = new DuplicatingFilterVisitor( ff );           
-           org.geotools.filter.Filter copy = (org.geotools.filter.Filter) filter.accept( xerox, ff );
-           
-           // Visit the resulting copy
-           copy.accept(visitor);
-       }       
-    }
+
     /**
      * Deep copy the filter.
      * <p>

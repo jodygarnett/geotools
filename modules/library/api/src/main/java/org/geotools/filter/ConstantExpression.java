@@ -114,47 +114,6 @@ public class ConstantExpression implements LiteralExpression, Cloneable {
         return getValue();
     }
 
-    /**
-     * @deprecated use {@link #accept(ExpressionVisitor, Object)}.
-     */
-    public void accept(final FilterVisitor visitor) {
-        accept(new ExpressionVisitor() {
-                public Object visit(Add expression, Object extraData) {
-                    return null;
-                }
-
-                public Object visit(Divide expression, Object extraData) {
-                    return null;
-                }
-
-                public Object visit(Function expression, Object extraData) {
-                    return null;
-                }
-
-                public Object visit(Literal expression, Object extraData) {
-                    visitor.visit(ConstantExpression.this);
-
-                    return null;
-                }
-
-                public Object visit(Multiply expression, Object extraData) {
-                    return null;
-                }
-
-                public Object visit(PropertyName expression, Object extraData) {
-                    return null;
-                }
-
-                public Object visit(Subtract expression, Object extraData) {
-                    return null;
-                }
-
-                public Object visit(NilExpression arg0, Object arg1) {
-                    return null;
-                }
-            }, null);
-    }
-
     public Object accept(ExpressionVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }

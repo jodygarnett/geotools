@@ -110,10 +110,10 @@ public class MapServerWFSStrategyOnlineTest extends TestCase {
         SimpleFeatureCollection reader = source.getFeatures(Query.ALL);
         assertCorrectSize(reader, totalFeatures);
 
-        reader = source.getFeatures(Filter.NONE);
+        reader = source.getFeatures(Filter.INCLUDE);
         assertCorrectSize(reader, totalFeatures);
 
-        reader = source.getFeatures(new Query(TYPE_NAME, Filter.NONE));
+        reader = source.getFeatures(new Query(TYPE_NAME, Filter.INCLUDE));
         assertCorrectSize(reader, totalFeatures);
 }
 

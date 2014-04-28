@@ -17,12 +17,10 @@
 package org.geotools.filter;
 
 import org.geotools.filter.expression.ExpressionAbstract;
-import org.geotools.filter.expression.FilterVisitorExpressionWrapper;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.expression.Add;
 import org.opengis.filter.expression.Divide;
-import org.opengis.filter.expression.ExpressionVisitor;
 import org.opengis.filter.expression.Multiply;
 import org.opengis.filter.expression.Subtract;
 
@@ -88,14 +86,6 @@ public abstract class DefaultExpression extends ExpressionAbstract implements Ex
      */
     public Object evaluate(Object object) {
     	return new Object();
-    }
-    
-    /**
-     * 
-     * @deprecated use {@link org.opengis.filter.expression.Expression#accept(ExpressionVisitor, Object)}
-     */
-    public final void accept(FilterVisitor visitor) {
-    	accept(new FilterVisitorExpressionWrapper(visitor),null);
     }
     
     /* ***********************************************************************

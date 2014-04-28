@@ -29,27 +29,27 @@ import org.opengis.filter.expression.Expression;
 public class IsGreaterThanOrEqualToImpl extends MultiCompareFilterImpl
 		implements PropertyIsGreaterThanOrEqualTo {
 
-	protected IsGreaterThanOrEqualToImpl(org.opengis.filter.FilterFactory factory) {
-		this(factory, null, null);
-	}
-	
-        protected IsGreaterThanOrEqualToImpl(org.opengis.filter.FilterFactory factory, Expression expression1, Expression expression2) {
-            this(factory, expression1, expression2,false);
+    @Deprecated
+    protected IsGreaterThanOrEqualToImpl() {
+        this(null, null);
+    }
+
+    protected IsGreaterThanOrEqualToImpl(Expression expression1, Expression expression2) {
+        this(expression1, expression2, false);
+    }
+
+    public IsGreaterThanOrEqualToImpl(Expression expr1, Expression expr2, boolean matchCase) {
+        super(expr1, expr2, matchCase);
+    }
+
+    protected IsGreaterThanOrEqualToImpl(Expression expression1, Expression expression2,
+            MatchAction matchAction) {
+        this(expression1, expression2, false, matchAction);
     }
     
-    public IsGreaterThanOrEqualToImpl(org.opengis.filter.FilterFactory factory, Expression expr1,
-            Expression expr2, boolean matchCase) {
-        super(factory, expr1, expr2, matchCase);
-    }
-    
-        protected IsGreaterThanOrEqualToImpl(org.opengis.filter.FilterFactory factory,
-                Expression expression1, Expression expression2, MatchAction matchAction) {
-            this(factory, expression1, expression2, false, matchAction);
-        }
-    
-    public IsGreaterThanOrEqualToImpl(org.opengis.filter.FilterFactory factory, Expression expr1,
+    public IsGreaterThanOrEqualToImpl( Expression expr1,
             Expression expr2, boolean matchCase, MatchAction matchAction) {
-        super(factory, expr1, expr2, matchCase, matchAction);
+        super(expr1, expr2, matchCase, matchAction);
     }
 	
 	@Override

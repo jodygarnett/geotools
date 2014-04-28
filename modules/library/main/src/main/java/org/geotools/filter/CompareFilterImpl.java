@@ -63,20 +63,15 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract
      * @throws IllegalFilterException Non-compare type.
      * @deprecated use {@link #CompareFilterImpl(org.opengis.filter.FilterFactory, org.opengis.filter.expression.Expression, org.opengis.filter.expression.Expression)}
      */
-    protected CompareFilterImpl(short filterType) throws IllegalFilterException {
-    	super(CommonFactoryFinder.getFilterFactory(null));
-    	if (!isCompareFilter(filterType)) {
-            throw new IllegalFilterException(
-                "Attempted to create compare filter with non-compare type.");
-        }
+    protected CompareFilterImpl() throws IllegalFilterException {
     }
 
-    protected CompareFilterImpl(org.opengis.filter.FilterFactory factory, org.opengis.filter.expression.Expression e1, org.opengis.filter.expression.Expression e2) {
-    	this(factory,e1,e2,true);
+    protected CompareFilterImpl(org.opengis.filter.expression.Expression e1, org.opengis.filter.expression.Expression e2) {
+    	this(e1,e2,true);
     }
     
-    protected CompareFilterImpl(org.opengis.filter.FilterFactory factory, org.opengis.filter.expression.Expression e1, org.opengis.filter.expression.Expression e2, boolean matchCase ) {
-    	super(factory,e1,e2,matchCase);
+    protected CompareFilterImpl(org.opengis.filter.expression.Expression e1, org.opengis.filter.expression.Expression e2, boolean matchCase ) {
+    	super(e1,e2,matchCase);
     }
     
     /**
@@ -146,27 +141,6 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract
         } else {
             this.expression2 = rightValue;
         }
-    }
-    /**
-     * Gets the left expression.
-     *
-     * @return The expression on the left of the comparison.
-     * 
-     * * @deprecated use {@link #getExpression1()}
-     */
-    public final Expression getLeftValue() {
-        return expressionCast( this.expression1 );
-    }
-
-    /**
-     * Gets the right expression.
-     *
-     * @return The expression on the right of the comparison.
-     *
-     * @deprecated use {@link #getExpression2()}
-     */
-    public final Expression getRightValue() {
-        return expressionCast( this.expression2 );
     }
   
     /**

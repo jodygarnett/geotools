@@ -28,12 +28,11 @@ import org.opengis.filter.Not;
  */
 public class NotImpl extends LogicFilterImpl implements Not {
 
-    protected NotImpl(org.opengis.filter.FilterFactory factory) {
-        super(factory);
+    @Deprecated
+    protected NotImpl() {
     }
 
-    protected NotImpl(org.opengis.filter.FilterFactory factory, Filter filter) {
-        super(factory);
+    protected NotImpl(Filter filter) {
         this.children.add(filter);
     }
 

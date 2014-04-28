@@ -47,31 +47,30 @@ public class BBOXImpl extends AbstractPreparedGeometryFilter implements BBOX {
 
     String srs;
 
-    public BBOXImpl(org.opengis.filter.FilterFactory factory, Expression e1, Expression e2) {
-        super(factory, e1, e2);
+    public BBOXImpl(Expression e1, Expression e2) {
+        super(e1, e2);
         if (e1 != null)
             setExpression1(e1);
         if (e2 != null)
             setExpression2(e2);
     }
 
-    public BBOXImpl(FilterFactoryImpl factory, Expression name, double minx, double miny,
-            double maxx, double maxy, String srs) {
-        this(factory, name, factory.createBBoxExpression(new Envelope(minx, maxx, miny, maxy)));
+    public BBOXImpl(Expression name, double minx, double miny, double maxx, double maxy, String srs) {
+        this(name, new BBoxExpressionImpl(new Envelope(minx, maxx, miny, maxy)));
         this.srs = srs;
     }
-    
-    public BBOXImpl(org.opengis.filter.FilterFactory factory, Expression e1, Expression e2, MatchAction matchAction) {
-        super(factory, e1, e2, matchAction);
+
+    public BBOXImpl(Expression e1, Expression e2, MatchAction matchAction) {
+        super(e1, e2, matchAction);
         if (e1 != null)
             setExpression1(e1);
         if (e2 != null)
             setExpression2(e2);
     }
 
-    public BBOXImpl(FilterFactoryImpl factory, Expression name, double minx, double miny,
-            double maxx, double maxy, String srs, MatchAction matchAction) {
-        this(factory, name, factory.createBBoxExpression(buildEnvelope(minx, maxx, miny, maxy, srs)), matchAction);
+    public BBOXImpl(Expression name, double minx, double miny, double maxx, double maxy,
+            String srs, MatchAction matchAction) {
+        this(name, new BBoxExpressionImpl(buildEnvelope(minx, maxx, miny, maxy, srs)), matchAction);
         this.srs = srs;
     }
 

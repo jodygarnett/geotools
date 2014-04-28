@@ -37,10 +37,12 @@ public class NullFilterImpl extends AbstractFilter implements NullFilter {
     /**
      * Constructor which sets the type as null check.
      */
+    @Deprecated
     protected NullFilterImpl() {
-        super(CommonFactoryFinder.getFilterFactory(null));
     }
-
+    protected NullFilterImpl(org.opengis.filter.expression.Expression expresion ){
+        setExpression(expresion);
+    }
     /**
      * Determines whether or not a given feature is 'inside' this filter.
      *
@@ -52,7 +54,7 @@ public class NullFilterImpl extends AbstractFilter implements NullFilter {
      * @task REVISIT: change arg to AttributeExpression?
      * @task REVISIT: change name to setNullCheckValue.
      * 
-     * @deprecated use {@link PropertyIsNull#setExpression(Expression)}
+     * @deprecated use {@link #setExpression(Expression)}
      */
     public final void nullCheckValue(Expression nullCheck)
         throws IllegalFilterException {

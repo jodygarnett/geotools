@@ -30,13 +30,12 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 public class DWithinImpl extends CartesianDistanceFilter implements DWithin {
 
-    public DWithinImpl(org.opengis.filter.FilterFactory factory, Expression e1, Expression e2) {
-        super(factory, e1, e2);
+    public DWithinImpl(Expression e1, Expression e2) {
+        super(e1, e2);
     }
 
-    public DWithinImpl(org.opengis.filter.FilterFactory factory, Expression e1, Expression e2,
-            MatchAction matchAction) {
-        super(factory, e1, e2, matchAction);
+    public DWithinImpl(Expression e1, Expression e2, MatchAction matchAction) {
+        super(e1, e2, matchAction);
     }
 
 	@Override

@@ -77,42 +77,30 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
     private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
     
     protected MatchAction matchAction;
+    
+    @Deprecated
+    protected GeometryFilterImpl() throws IllegalFilterException {
+    }
 
-    protected GeometryFilterImpl(org.opengis.filter.FilterFactory factory, MatchAction matchAction) {
-        super(factory);
+    protected GeometryFilterImpl(MatchAction matchAction) {
         this.matchAction = matchAction;
     }
-    
-    protected GeometryFilterImpl(org.opengis.filter.FilterFactory factory,org.opengis.filter.expression.Expression e1,org.opengis.filter.expression.Expression e2, MatchAction matchAction) {
-        super(factory,e1,e2);
+
+    protected GeometryFilterImpl(org.opengis.filter.expression.Expression e1,
+            org.opengis.filter.expression.Expression e2, MatchAction matchAction) {
+        super(e1, e2);
         this.matchAction = matchAction;
     }
-    
+
     protected GeometryFilterImpl(org.opengis.filter.FilterFactory factory) {
-        this (factory, MatchAction.ANY);
+        this(MatchAction.ANY);
     }
-    
-    protected GeometryFilterImpl(org.opengis.filter.FilterFactory factory,org.opengis.filter.expression.Expression e1,org.opengis.filter.expression.Expression e2) {
-        this(factory,e1,e2, MatchAction.ANY);        
+
+    protected GeometryFilterImpl(org.opengis.filter.expression.Expression e1,
+            org.opengis.filter.expression.Expression e2) {
+        this(e1, e2, MatchAction.ANY);
     }
-    
-    /**
-     * Constructor with filter type.
-     *
-     * @param filterType The type of comparison.
-     *
-     * @throws IllegalFilterException Non-geometry type.
-     */
-    protected GeometryFilterImpl(short filterType)
-        throws IllegalFilterException {
-        
-        super(CommonFactoryFinder.getFilterFactory(null));
-        
-        if (!isGeometryFilter(filterType)) {
-            throw new IllegalFilterException("Attempted to create geometry "
-                + "filter with non-geometry type.");
-        }
-    }
+
 
     /**
      * Adds the 'left' value to this filter.

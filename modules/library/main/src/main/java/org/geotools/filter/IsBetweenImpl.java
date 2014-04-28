@@ -38,15 +38,16 @@ public class IsBetweenImpl extends CompareFilterImpl implements BetweenFilter {
 	
 	protected MatchAction matchAction;
 
-	protected IsBetweenImpl(org.opengis.filter.FilterFactory factory, Expression lower, Expression expression, Expression upper, MatchAction matchAction ){
-		super( factory, lower, upper );
-		this.expression = expression;
-		this.matchAction = matchAction;
-	}
-	
-	protected IsBetweenImpl(org.opengis.filter.FilterFactory factory, Expression lower, Expression expression, Expression upper ){
-            this( factory, lower, expression, upper, MatchAction.ANY );
-        }
+    protected IsBetweenImpl(Expression lower, Expression expression, Expression upper,
+            MatchAction matchAction) {
+        super(lower, upper);
+        this.expression = expression;
+        this.matchAction = matchAction;
+    }
+
+    protected IsBetweenImpl(Expression lower, Expression expression, Expression upper) {
+        this(lower, expression, upper, MatchAction.ANY);
+    }
 	
 	public Expression getExpression() {
 		return expression;

@@ -16,7 +16,6 @@
  */
 package org.geotools.filter;
 
-import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.PropertyIsBetween;
 
 
@@ -78,7 +77,7 @@ public interface BetweenFilter extends CompareFilter, PropertyIsBetween {
      * @param middleValue The expression to be compared.
      * @task REVISIT: rename to setMiddleValue?  You can't have more than 1.
      *
-     * @deprecated use {@link PropertyIsBetween#setExpression(Expression)}
+     * @deprecated use {@link BetweenFilterImpl#setExpression(Expression)}
      */
     void addMiddleValue(Expression middleValue);
 }

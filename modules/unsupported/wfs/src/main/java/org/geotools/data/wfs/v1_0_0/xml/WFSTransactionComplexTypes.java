@@ -43,8 +43,8 @@ import org.geotools.data.wfs.v1_0_0.xml.WFSBasicComplexTypes.QueryType;
 import org.geotools.data.wfs.v1_0_0.xml.WFSSchema.WFSAttribute;
 import org.geotools.data.wfs.v1_0_0.xml.WFSSchema.WFSComplexType;
 import org.geotools.data.wfs.v1_0_0.xml.WFSSchema.WFSElement;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FidFilter;
-import org.geotools.filter.FilterFactoryFinder;
 import org.geotools.xml.PrintHandler;
 import org.geotools.xml.SchemaFactory;
 import org.geotools.xml.filter.FilterSchema;
@@ -67,6 +67,10 @@ import org.geotools.xml.xsi.XSISimpleTypes;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
+import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.Id;
+import org.opengis.filter.identity.FeatureId;
+import org.opengis.filter.identity.Identifier;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotSupportedException;
@@ -1705,14 +1709,13 @@ public class WFSTransactionComplexTypes {
                 throw new SAXException("Invalid type name for element provided");
             }
 
-            Set fidSet = new HashSet();
-
-            for (int i = 0; i < value.length; i++)
-                fidSet.addAll(Arrays.asList(
-                        ((FidFilter) value[i].getValue()).getFids()));
-
-            FidFilter r = FilterFactoryFinder.createFilterFactory().createFidFilter();
-            r.addAllFids(fidSet);
+            Set<Identifier> fidSet = new HashSet<Identifier>();
+            for (int i = 0; i < value.length; i++){
+                Id fidFilter = (Id) value[i].getValue();
+                fidSet.addAll( fidFilter.getIdentifiers() );
+            }            
+            FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+            Id r = ff.id( fidSet );
 
             return r;
         }
@@ -1811,14 +1814,13 @@ public class WFSTransactionComplexTypes {
                 throw new SAXException("Invalid type name for element provided");
             }
 
-            Set fidSet = new HashSet();
-
-            for (int i = 0; i < value.length; i++)
-                fidSet.addAll(Arrays.asList(
-                        ((FidFilter) value[i].getValue()).getFids()));
-
-            FidFilter r = FilterFactoryFinder.createFilterFactory().createFidFilter();
-            r.addAllFids(fidSet);
+            Set<Identifier> fidSet = new HashSet<Identifier>();
+            for (int i = 0; i < value.length; i++){
+                Id fidFilter = (Id) value[i].getValue();
+                fidSet.addAll( fidFilter.getIdentifiers() );
+            }            
+            FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+            Id r = ff.id( fidSet );
 
             return r;
         }

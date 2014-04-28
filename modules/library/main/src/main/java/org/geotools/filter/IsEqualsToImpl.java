@@ -31,27 +31,28 @@ import org.opengis.filter.expression.Literal;
  * @source $URL$
  */
 public class IsEqualsToImpl extends MultiCompareFilterImpl implements PropertyIsEqualTo {
-
-    protected IsEqualsToImpl(org.opengis.filter.FilterFactory factory) {
-        this(factory, null, null);
+    
+    @Deprecated
+    public IsEqualsToImpl() {
+        this(null, null);
     }
 
-    protected IsEqualsToImpl(org.opengis.filter.FilterFactory factory, Expression expression1, Expression expression2) {
-        this(factory, expression1, expression2, true);
+    protected IsEqualsToImpl(Expression expression1, Expression expression2) {
+        this(expression1, expression2, true);
     }
     
-    protected IsEqualsToImpl(org.opengis.filter.FilterFactory factory, Expression expression1, Expression expression2, MatchAction matchAction) {
-        this(factory, expression1, expression2, true, matchAction);
+    protected IsEqualsToImpl(Expression expression1, Expression expression2, MatchAction matchAction) {
+        this(expression1, expression2, true, matchAction);
     }
 
-    protected IsEqualsToImpl(org.opengis.filter.FilterFactory factory, Expression expression1, Expression expression2,
+    protected IsEqualsToImpl(Expression expression1, Expression expression2,
             boolean matchCase) {
-        super(factory, expression1, expression2, matchCase);
+        super(expression1, expression2, matchCase);
     }
     
-    protected IsEqualsToImpl(org.opengis.filter.FilterFactory factory, Expression expression1, Expression expression2,
+    protected IsEqualsToImpl(Expression expression1, Expression expression2,
             boolean matchCase, MatchAction matchAction) {
-        super(factory, expression1, expression2, matchCase, matchAction);
+        super(expression1, expression2, matchCase, matchAction);
     }
 
     @Override

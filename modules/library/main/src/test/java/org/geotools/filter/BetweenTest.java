@@ -76,9 +76,9 @@ public class BetweenTest extends TestCase {
         ftb.setName("testSchema");
         SimpleFeatureType schema = ftb.buildFeatureType();
 
-        a.addLeftValue(new LiteralExpressionImpl(new Double(5)));
-        a.addRightValue(new LiteralExpressionImpl(new Double(15)));
-        a.addMiddleValue(new AttributeExpressionImpl(schema, "value"));
+        a.setExpression1(new LiteralExpressionImpl(new Double(5)));
+        a.setExpression2(new LiteralExpressionImpl(new Double(15)));
+        a.setExpression(new AttributeExpressionImpl(schema, "value"));
 
         //FlatFeatureFactory fFac = new FlatFeatureFactory(schema);
         LOGGER.fine("geometry is " + schema.getDescriptor("geometry"));

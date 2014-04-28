@@ -28,28 +28,26 @@ import org.opengis.filter.expression.Expression;
  */
 public class IsLessThenImpl extends MultiCompareFilterImpl implements
 		PropertyIsLessThan {
-
-	protected IsLessThenImpl(org.opengis.filter.FilterFactory factory) {
-		this(factory, null,null);
-	}
-	
-        protected IsLessThenImpl(org.opengis.filter.FilterFactory factory, Expression expression1, Expression expression2) {
-            this(factory, expression1, expression2,false);
-    }
-     
-    protected IsLessThenImpl(org.opengis.filter.FilterFactory factory, Expression expression1,
-            Expression expression2, boolean matchCase) {
-        super(factory, expression1, expression2, matchCase);
+    @Deprecated
+    protected IsLessThenImpl() {
+        this(null, null);
     }
 
-    protected IsLessThenImpl(org.opengis.filter.FilterFactory factory, Expression expression1,
-            Expression expression2, MatchAction matchAction) {
-        this(factory, expression1, expression2, false, matchAction);
+    protected IsLessThenImpl(Expression expression1, Expression expression2) {
+        this(expression1, expression2, false);
     }
 
-    protected IsLessThenImpl(org.opengis.filter.FilterFactory factory, Expression expression1,
-            Expression expression2, boolean matchCase, MatchAction matchAction) {
-        super(factory, expression1, expression2, matchCase, matchAction);
+    protected IsLessThenImpl(Expression expression1, Expression expression2, boolean matchCase) {
+        super(expression1, expression2, matchCase);
+    }
+
+    protected IsLessThenImpl(Expression expression1, Expression expression2, MatchAction matchAction) {
+        this(expression1, expression2, false, matchAction);
+    }
+
+    protected IsLessThenImpl(Expression expression1, Expression expression2, boolean matchCase,
+            MatchAction matchAction) {
+        super(expression1, expression2, matchCase, matchAction);
     }
 	
 	@Override

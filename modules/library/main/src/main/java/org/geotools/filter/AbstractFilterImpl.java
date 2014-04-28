@@ -35,8 +35,7 @@ import org.opengis.filter.FilterFactory;
 public abstract class AbstractFilterImpl
     extends org.geotools.filter.AbstractFilter {
    
-	protected AbstractFilterImpl(FilterFactory factory) {
-		super(factory);
+	protected AbstractFilterImpl() {
 	}
 
 }

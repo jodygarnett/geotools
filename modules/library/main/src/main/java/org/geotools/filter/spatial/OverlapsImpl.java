@@ -31,13 +31,13 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 public class OverlapsImpl extends GeometryFilterImpl implements Overlaps {
 
-    public OverlapsImpl(org.opengis.filter.FilterFactory factory, Expression e1, Expression e2) {
-        super(factory, e1, e2);
+    public OverlapsImpl( Expression e1, Expression e2) {
+        super(e1, e2);
     }
 
-    public OverlapsImpl(org.opengis.filter.FilterFactory factory, Expression e1, Expression e2,
+    public OverlapsImpl( Expression e1, Expression e2,
             MatchAction matchAction) {
-        super(factory, e1, e2, matchAction);
+        super(e1, e2, matchAction);
     }
 	
 	@Override

@@ -117,7 +117,19 @@ public class FilterOpsComplexTypes {
                             : filter.getClass().getName());
         }
     }
-    
+    /**
+     * Safe cast for {@link #encodeExpr(Expression, PrintHandler, Map)}
+     */
+    protected static void encodeExpr(org.opengis.filter.expression.Expression expr, PrintHandler output,
+            Map hints) throws OperationNotSupportedException, IOException {
+        if( expr instanceof Expression){
+            Expression expression = (Expression) expr;
+            encodeExpr( expression, output, hints);
+        }
+        else {
+            throw new OperationNotSupportedException("Unable to encode "+expr.getClass().getSimpleName()+" expression");
+        }
+    }
     protected static void encodeExpr(Expression expr, PrintHandler output,
         Map hints) throws OperationNotSupportedException, IOException {
         int i = 0;
@@ -1198,8 +1210,8 @@ public class FilterOpsComplexTypes {
             output.startElement(element.getNamespace(), element.getName(), null);
 
             // TODO is this order dependant?
-            encodeExpr(cf.getLeftValue(), output, hints);
-            encodeExpr(cf.getRightValue(), output, hints);
+            encodeExpr(cf.getExpression1(), output, hints);
+            encodeExpr(cf.getExpression2(), output, hints);
 
             output.endElement(element.getNamespace(), element.getName());
         }
@@ -1585,9 +1597,9 @@ public class FilterOpsComplexTypes {
             BetweenFilter lf = (BetweenFilter) value;
 
             output.startElement(element.getNamespace(), element.getName(), null);
-            encodeExpr(lf.getMiddleValue(),output,hints);
-            elems[1].getType().encode(elems[1], lf.getLeftValue(), output, hints); // LowerBoundary
-            elems[2].getType().encode(elems[2], lf.getRightValue(), output,
+            encodeExpr(lf.getExpression(),output,hints);
+            elems[1].getType().encode(elems[1], lf.getLowerBoundary(), output, hints); // LowerBoundary
+            elems[2].getType().encode(elems[2], lf.getUpperBoundary(), output,
                 hints); // UpperBoundary
             output.endElement(element.getNamespace(), element.getName());
         }

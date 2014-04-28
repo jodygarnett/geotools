@@ -31,13 +31,12 @@ import com.vividsolutions.jts.geom.Geometry;
 public class IntersectsImpl extends AbstractPreparedGeometryFilter implements
         Intersects {
 
-    public IntersectsImpl(org.opengis.filter.FilterFactory factory, Expression e1, Expression e2) {
-        super(factory, e1, e2);
+    public IntersectsImpl(Expression e1, Expression e2) {
+        super(e1, e2);
     }
 
-    public IntersectsImpl(org.opengis.filter.FilterFactory factory, Expression e1, Expression e2,
-            MatchAction matchAction) {
-        super(factory, e1, e2, matchAction);
+    public IntersectsImpl(Expression e1, Expression e2, MatchAction matchAction) {
+        super(e1, e2, matchAction);
     }
 
     @Override

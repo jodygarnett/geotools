@@ -46,53 +46,27 @@ public abstract class LogicFilterImpl extends BinaryLogicAbstract implements Log
     /** The logger for the default core module. */
     private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.core");
 
-      protected LogicFilterImpl(org.opengis.filter.FilterFactory factory) {
-        this(factory,new ArrayList());
+    @Deprecated
+    protected LogicFilterImpl() {
+        this(new ArrayList<org.opengis.filter.Filter>());
     }
     
-    protected LogicFilterImpl(org.opengis.filter.FilterFactory factory, List children) {
-        super(factory,children);
+    protected LogicFilterImpl(List<org.opengis.filter.Filter> children) {
+        super(children);
     }
     
-    /**
-     * Constructor with type (must be valid).
-     *
-     * @param filterType The final relation between all sub filters.
-     *
-     * @throws IllegalFilterException If the filtertype is not a logic type.
-     * @deprecated Consructing with type constants should be replaced with 
-     * an actual java type.
-     */
-    protected LogicFilterImpl(short filterType) throws IllegalFilterException {
-        super(CommonFactoryFinder.getFilterFactory(null), new ArrayList());
-        if( LOGGER.isLoggable(Level.FINEST)) {
-            LOGGER.finest("filtertype " + filterType);
-        }
-
-        if (!isLogicFilter(filterType)) {
-            throw new IllegalFilterException(
-                "Attempted to create logic filter with non-logic type.");
-        }
-    }
 
     /**
      * Convenience constructor to create a NOT logic filter.
      *
      * @param filter The initial sub filter.
-     * @param filterType The final relation between all sub filters.
-     *
      * @throws IllegalFilterException Does not conform to logic filter
      *         structure
      */
-    protected LogicFilterImpl(Filter filter, short filterType)
+    @Deprecated
+    protected LogicFilterImpl(Filter filter)
         throws IllegalFilterException {
-        
-        super(CommonFactoryFinder.getFilterFactory(null), new ArrayList());
-        if (!isLogicFilter(filterType)) {
-            throw new IllegalFilterException(
-                "Attempted to create logic filter with non-logic type.");
-        }
-
+        this();
         children.add(filter);
     }
 
@@ -108,12 +82,7 @@ public abstract class LogicFilterImpl extends BinaryLogicAbstract implements Log
      */
     protected LogicFilterImpl(Filter filter1, Filter filter2, short filterType)
         throws IllegalFilterException {
-        super(CommonFactoryFinder.getFilterFactory(null), new ArrayList());
-        
-        if (!isLogicFilter(filterType)) {
-            throw new IllegalFilterException(
-                "Attempted to create logic filter with non-logic type.");
-        }
+        this();
 
         // Push the initial filter on the stack
         children.add(filter1);

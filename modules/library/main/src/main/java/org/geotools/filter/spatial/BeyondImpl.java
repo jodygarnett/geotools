@@ -31,13 +31,13 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 public class BeyondImpl extends CartesianDistanceFilter implements Beyond {
 
-	public BeyondImpl(org.opengis.filter.FilterFactory factory,Expression e1,Expression e2) {
-		super(factory,e1,e2);
-	}
-	
-	public BeyondImpl(org.opengis.filter.FilterFactory factory,Expression e1,Expression e2,MatchAction matchAction) {
-            super(factory,e1,e2, matchAction);
-        }
+    public BeyondImpl(Expression e1, Expression e2) {
+        super(e1, e2);
+    }
+
+    public BeyondImpl(Expression e1, Expression e2, MatchAction matchAction) {
+        super(e1, e2, matchAction);
+    }
 	
 	@Override
 	public boolean evaluateInternal(Geometry left, Geometry right) {

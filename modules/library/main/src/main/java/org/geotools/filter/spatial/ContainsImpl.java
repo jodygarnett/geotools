@@ -30,13 +30,12 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 public class ContainsImpl extends AbstractPreparedGeometryFilter implements Contains {
 
-    public ContainsImpl(org.opengis.filter.FilterFactory factory, Expression e1, Expression e2) {
-        super(factory, e1, e2);
+    public ContainsImpl(Expression e1, Expression e2) {
+        super(e1, e2);
     }
 
-    public ContainsImpl(org.opengis.filter.FilterFactory factory, Expression e1, Expression e2,
-            MatchAction matchAction) {
-        super(factory, e1, e2, matchAction);
+    public ContainsImpl(Expression e1, Expression e2, MatchAction matchAction) {
+        super(e1, e2, matchAction);
     }
 	
 	@Override

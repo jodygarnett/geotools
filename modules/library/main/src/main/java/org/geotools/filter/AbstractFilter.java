@@ -43,9 +43,8 @@ public abstract class AbstractFilter extends FilterAbstract implements Filter {
      * 
      * @param factory
      */
-    protected AbstractFilter(org.opengis.filter.FilterFactory factory) {
-		super(factory);
-	}
+    protected AbstractFilter() {
+    }
 
     
     /**

@@ -318,7 +318,6 @@ public class LikeFilterImpl extends AbstractFilter implements LikeFilter {
     }
     
     protected LikeFilterImpl(MatchAction matchAction) {
-        super(CommonFactoryFinder.getFilterFactory(null));
         this.matchAction = matchAction;
     }
 

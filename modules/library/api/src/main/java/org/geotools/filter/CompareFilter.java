@@ -52,7 +52,7 @@ public interface CompareFilter extends Filter, BinaryComparisonOperator {
      * @throws IllegalFilterException Filter is not internally consistent.
      *
      * @task REVISIT: immutability?
-     * @deprecated use {@link BinaryComparisonOperator#setExpression1(Expression)}
+     * @deprecated use {@link BinaryComparisonAbstract#setExpression1(Expression)}
      */
     void addLeftValue(Expression leftValue) throws IllegalFilterException;
 
@@ -65,26 +65,8 @@ public interface CompareFilter extends Filter, BinaryComparisonOperator {
      *
      * @task REVISIT: make immutable.
      *
-     * @deprecated use {@link BinaryComparisonOperator#setExpression2(Expression)}
+     * @deprecated use {@link BinaryComparisonAbstract#setExpression2(Expression)}
      */
     void addRightValue(Expression rightValue) throws IllegalFilterException;
-
-    /**
-     * Gets the left expression.
-     *
-     * @return The expression on the left of the comparison.
-     *
-     * @deprecated use {@link BinaryComparisonOperator#getExpression1()}
-     */
-    Expression getLeftValue();
-
-    /**
-     * Gets the right expression.
-     *
-     * @return The expression on the right of the comparison.
-     *
-     * @deprecated use {@link BinaryComparisonOperator#getExpression2()}
-     */
-    Expression getRightValue();
 
 }

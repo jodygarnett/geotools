@@ -70,7 +70,7 @@ public interface GeometryFilter extends Filter, BinarySpatialOperator {
      *
      * @throws IllegalFilterException Filter is not internally consistent.
      *
-     * @deprecated use {@link BinarySpatialOperator#setExpression2(Expression)}
+     * @deprecated use {@link BinaryComparisonAbstract#setExpression2(Expression)}
      */
     void addRightGeometry(Expression rightGeometry) throws IllegalFilterException;
 
@@ -83,7 +83,7 @@ public interface GeometryFilter extends Filter, BinarySpatialOperator {
      *
      * @task REVISIT: make all filters immutable.
      *
-     * @deprecated use {@link BinarySpatialOperator#setExpression1(Expression)}
+     * @deprecated use {@link BinaryComparisonAbstract#setExpression1(Expression)}
      */
     void addLeftGeometry(Expression leftGeometry) throws IllegalFilterException;
 

@@ -30,13 +30,12 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 public class DisjointImpl extends AbstractPreparedGeometryFilter implements Disjoint {
 
-    public DisjointImpl(org.opengis.filter.FilterFactory factory, Expression e1, Expression e2) {
-        super(factory, e1, e2);
+    public DisjointImpl(Expression e1, Expression e2) {
+        super(e1, e2);
     }
 
-    public DisjointImpl(org.opengis.filter.FilterFactory factory, Expression e1, Expression e2,
-            MatchAction matchAction) {
-        super(factory, e1, e2, matchAction);
+    public DisjointImpl(Expression e1, Expression e2, MatchAction matchAction) {
+        super(e1, e2, matchAction);
     }
 	
 	@Override

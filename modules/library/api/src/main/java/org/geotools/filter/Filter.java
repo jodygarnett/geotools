@@ -16,8 +16,6 @@
  */
 package org.geotools.filter;
 
-import org.opengis.feature.simple.SimpleFeature;
-
 
 /**
  * Defines an OpenGIS Filter object, with default behaviors for all methods.

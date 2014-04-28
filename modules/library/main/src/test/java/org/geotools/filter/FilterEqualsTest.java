@@ -277,17 +277,17 @@ public class FilterEqualsTest extends TestCase {
 	testExp2 = new LiteralExpressionImpl(new Integer(45));
 	testExp3 = new AttributeExpressionImpl(testSchema, "testInteger");
 	testExp4 = new AttributeExpressionImpl(testSchema, "testInteger");
-	bFilter1.addLeftValue(testExp1);
-	bFilter2.addLeftValue(testExp2);
-	bFilter1.addMiddleValue(testExp3);
-	bFilter2.addMiddleValue(testExp4);
-	bFilter1.addRightValue(testLit1);
-	bFilter2.addRightValue(testLit2);
+	bFilter1.setExpression1(testExp1);
+	bFilter2.setExpression1(testExp2);
+	bFilter1.setExpression(testExp3);
+	bFilter2.setExpression(testExp4);
+	bFilter1.setExpression2(testLit1);
+	bFilter2.setExpression2(testLit2);
 	assertTrue(bFilter2.equals(bFilter1));
 	tFilter1 = ff.equals(org.opengis.filter.expression.Expression.NIL, 
 	        org.opengis.filter.expression.Expression.NIL);
 	assertTrue(!bFilter2.equals(tFilter1));
-	bFilter2.addRightValue(new LiteralExpressionImpl(new Integer(65)));
+	bFilter2.setExpression2(new LiteralExpressionImpl(new Integer(65)));
 	assertTrue(!bFilter2.equals(bFilter1));
     }
     

@@ -35,18 +35,11 @@ import org.opengis.filter.FilterVisitor;
  *
  * @source $URL$
  */
-public abstract class FilterAbstract implements org.opengis.filter.Filter 
-	 {
-	
-	/** filter factory **/
-	protected org.opengis.filter.FilterFactory factory;
-	
-	/**
-	 * @param factory FilterFactory injected into the filter.
-	 */
-	protected FilterAbstract(org.opengis.filter.FilterFactory factory) {
-		this.factory = factory;
-	}
+public abstract class FilterAbstract implements org.opengis.filter.Filter {
+
+    protected FilterAbstract() {
+    }
+
 	
 	/**
 	 * Subclass should overrride.

@@ -30,13 +30,12 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 public class TouchesImpl extends GeometryFilterImpl implements Touches {
 
-    public TouchesImpl(org.opengis.filter.FilterFactory factory, Expression e1, Expression e2) {
-        super(factory, e1, e2);
+    public TouchesImpl(Expression e1, Expression e2) {
+        super(e1, e2);
     }
 
-    public TouchesImpl(org.opengis.filter.FilterFactory factory, Expression e1, Expression e2,
-            MatchAction matchAction) {
-        super(factory, e1, e2, matchAction);
+    public TouchesImpl(Expression e1, Expression e2, MatchAction matchAction) {
+        super(e1, e2, matchAction);
     }
 	
 	public boolean evaluateInternal(Geometry left, Geometry right) {

@@ -30,6 +30,13 @@ import org.opengis.filter.And;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Not;
 import org.opengis.filter.Or;
+import org.opengis.filter.PropertyIsBetween;
+import org.opengis.filter.PropertyIsLessThan;
+import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.PropertyIsNull;
+import org.opengis.filter.expression.Add;
+import org.opengis.filter.expression.Literal;
+import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.Touches;
 
 
@@ -47,16 +54,16 @@ public class SQLUnpackerTest extends SQLFilterTestSupport {
     //private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.defaultcore");
 
     /** Filters on which to perform tests */
-    private BetweenFilterImpl btwnFilter;
-    private CompareFilter compFilter;
+    private PropertyIsBetween btwnFilter;
+    private PropertyIsLessThan compFilter;
     private Touches geomFilter;
-    private LikeFilterImpl likeFilter;
-    private NullFilterImpl nullFilter;
-    private AttributeExpressionImpl attrExp1;
-    private AttributeExpressionImpl attrExp2;
-    private LiteralExpressionImpl litExp1;
-    private LiteralExpressionImpl litExp2;
-    private MathExpressionImpl mathExp1;
+    private PropertyIsLike likeFilter;
+    private PropertyIsNull nullFilter;
+    private PropertyName attrExp1;
+    private PropertyName attrExp2;
+    private Literal litExp1;
+    private Literal litExp2;
+    private Add mathExp1;
 
     /** strings for Like filter */
     private String pattern = "te_st!";
@@ -131,33 +138,25 @@ public class SQLUnpackerTest extends SQLFilterTestSupport {
         unpacker = new SQLUnpacker(capabilities);
 
         try {
-            attrExp1 = new AttributeExpressionImpl(testSchema, "testInteger");
-            attrExp2 = new AttributeExpressionImpl(testSchema, "testGeometry");
-            litExp1 = new LiteralExpressionImpl(new Integer(65));
-            litExp2 = new LiteralExpressionImpl(new Integer(35));
-            mathExp1 = new AddImpl(null,null);
-            mathExp1.addLeftValue(litExp1);
-            mathExp1.addRightValue(litExp2);
+            FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+            
+            attrExp1 = ff.property("testInteger");
+            attrExp2 = ff.property( "testGeometry");
+            litExp1 = ff.literal(new Integer(65));
+            litExp2 =  ff.literal(new Integer(35));
+            
+            mathExp1 = ff.add(litExp1,litExp2);
 
-            btwnFilter = new BetweenFilterImpl();
-            btwnFilter.addLeftValue(litExp1);
-            btwnFilter.addMiddleValue(attrExp1);
-            btwnFilter.addRightValue(mathExp1);
+            btwnFilter = ff.between(attrExp1, litExp1, mathExp1);
 
-            FilterFactory factory = FilterFactoryFinder.createFilterFactory();
-            compFilter = factory.createCompareFilter(AbstractFilter.COMPARE_LESS_THAN);
-            compFilter.addLeftValue(attrExp1);
-            compFilter.addRightValue(litExp2);
+            compFilter = ff.less(attrExp1,litExp2);
 
             
-            geomFilter = factory.touches(attrExp2,litExp2);
+            geomFilter = ff.touches(attrExp2,litExp2);
 
-            likeFilter = new LikeFilterImpl();
-            likeFilter.setValue(attrExp1);
-            likeFilter.setPattern(pattern, wcMulti, wcSingle, escape);
+            likeFilter = ff.like(attrExp1,pattern, wcMulti, wcSingle, escape);
 
-            nullFilter = new NullFilterImpl();
-            nullFilter.nullCheckValue(attrExp2);
+            nullFilter = ff.isNull(attrExp2);
         } catch (IllegalFilterException e) {
             //should not happen.
             fail(e.getMessage());

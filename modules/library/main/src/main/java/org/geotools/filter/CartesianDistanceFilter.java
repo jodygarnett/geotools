@@ -60,37 +60,18 @@ public abstract class CartesianDistanceFilter extends GeometryFilterImpl
     /** the distnace units */
     private String units;
     
-    protected CartesianDistanceFilter(org.opengis.filter.FilterFactory factory) {
-    	super(factory);
+    @Deprecated
+    protected CartesianDistanceFilter() {
     }
     
-    protected CartesianDistanceFilter(org.opengis.filter.FilterFactory factory, Expression e1,Expression e2) {
-    	super(factory,e1,e2);
+    protected CartesianDistanceFilter( Expression e1,Expression e2) {
+    	super(e1,e2);
     }
     
-    protected CartesianDistanceFilter(org.opengis.filter.FilterFactory factory, Expression e1,Expression e2, MatchAction matchAction) {
-        super(factory,e1,e2, matchAction);
+    protected CartesianDistanceFilter( Expression e1,Expression e2, MatchAction matchAction) {
+        super(e1,e2, matchAction);
     }
     
-    /**
-     * Constructor which flags the operator as between.
-     *
-     * @param filterType The type of filter to create - dwithin and beyond are
-     *        allowed.
-     *
-     * @throws IllegalFilterException If a filter other than dwithin or beyond
-     *         is attempted.
-     */
-    protected CartesianDistanceFilter(short filterType)
-        throws IllegalFilterException {
-        super(filterType);
-
-        if (!isGeometryDistanceFilter(filterType)) {
-            throw new IllegalFilterException("Attempted to create distance "
-                + "geometry filter with nondistance" + " geometry type.");
-        }
-    }
-
     /**
      * Sets the distance allowed by this filter.
      *

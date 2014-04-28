@@ -33,6 +33,8 @@ import junit.framework.TestCase;
 import org.geotools.gml.GMLFilterDocument;
 import org.geotools.gml.GMLFilterGeometry;
 import org.geotools.util.logging.Logging;
+import org.opengis.filter.expression.Literal;
+import org.opengis.filter.expression.PropertyName;
 import org.xml.sax.InputSource;
 import org.xml.sax.helpers.ParserAdapter;
 import org.xml.sax.helpers.XMLFilterImpl;
@@ -289,14 +291,14 @@ StringReader reader = new StringReader( filter );
             for(int repCount = 0; repCount <= i; repCount++){
                 attName.append("eventtype-" + repCount + "_");
             }
-            String parsedName = ((AttributeExpression)subFitler.getLeftValue()).getAttributePath();
+            String parsedName = ((PropertyName)subFitler.getExpression1()).getPropertyName();
             try{
                 assertEquals("at index " + i, attName.toString(), parsedName);
             }catch(AssertionFailedError e){
                 Logging.getLogger("org.geotools.filter").warning("expected " + attName + ",\n but was " + parsedName);
                 throw e;
             }
-            assertEquals("literal-" + i, ((LiteralExpression)subFitler.getRightValue()).getLiteral());
+            assertEquals("literal-" + i, ((Literal)subFitler.getExpression2()).getValue());
         }
         assertEquals(filterCount, i);
     }

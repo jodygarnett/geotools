@@ -26,9 +26,8 @@ import org.opengis.filter.expression.Expression;
  */
 public class IsNullImpl extends CompareFilterImpl implements NullFilter {
 
-    public IsNullImpl(org.opengis.filter.FilterFactory factory,
-            org.opengis.filter.expression.Expression expression) {
-        super(factory, expression, null);
+    public IsNullImpl(org.opengis.filter.expression.Expression expression) {
+        super(expression, null);
     }
 
     public boolean evaluate(Object feature) {

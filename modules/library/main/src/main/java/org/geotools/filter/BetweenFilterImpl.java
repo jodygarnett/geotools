@@ -46,19 +46,11 @@ public class BetweenFilterImpl extends CompareFilterImpl
     /** The 'middle' value, which must be an attribute expression. */
     protected org.opengis.filter.expression.Expression middleValue = null;
 
-    protected BetweenFilterImpl(org.opengis.filter.FilterFactory factory) {
-        super(factory, null, null);
+    @Deprecated
+    protected BetweenFilterImpl() {
+        super();
     }
     
-    /**
-     * Constructor which flags the operator as between.
-     *
-     * @throws IllegalFilterException Should never happen.
-     */
-    protected BetweenFilterImpl() throws IllegalFilterException {
-        super(BETWEEN);
-    }
-
     /**
      * Sets the values to be compared as between the left and right values.
      *

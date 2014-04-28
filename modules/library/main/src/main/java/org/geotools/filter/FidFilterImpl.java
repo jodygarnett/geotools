@@ -28,6 +28,7 @@ import java.util.logging.Logger;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.expression.PropertyAccessor;
 import org.geotools.filter.expression.SimpleFeaturePropertyAccessorFactory;
+import org.geotools.filter.identity.FeatureIdImpl;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.identity.FeatureId;
@@ -67,7 +68,6 @@ public class FidFilterImpl extends AbstractFilter implements FidFilter {
      * @deprecated use {@link #FidFilterImpl(Set)}
      */
     protected FidFilterImpl() {
-        super(CommonFactoryFinder.getFilterFactory(null));
     }
 
     /**
@@ -78,7 +78,6 @@ public class FidFilterImpl extends AbstractFilter implements FidFilter {
      * @deprecated use {@link #FidFilterImpl(Set)}
      */
     protected FidFilterImpl(String initialFid) {
-        super(CommonFactoryFinder.getFilterFactory(null));
         addFid(initialFid);
     }
 
@@ -88,7 +87,6 @@ public class FidFilterImpl extends AbstractFilter implements FidFilter {
      * 
      */
     protected FidFilterImpl(Set/* <Identifier> */fids) {
-        super(CommonFactoryFinder.getFilterFactory(null));
         // check these are really identifiers
         for (Iterator it = fids.iterator(); it.hasNext();) {
             Object next = it.next();
@@ -116,6 +114,7 @@ public class FidFilterImpl extends AbstractFilter implements FidFilter {
     /**
      * @see org.opengis.filter.Id#getIDs()
      */
+    @SuppressWarnings("unchecked")
     public Set getIDs() {
         return getFidsSet();
     }
@@ -123,7 +122,7 @@ public class FidFilterImpl extends AbstractFilter implements FidFilter {
     /**
      * @see org.opengis.filter.Id#getIdentifiers()
      */
-    public Set getIdentifiers() {
+    public Set<Identifier> getIdentifiers() {
         return fids;
     }
 
@@ -140,7 +139,7 @@ public class FidFilterImpl extends AbstractFilter implements FidFilter {
      * 
      * @return the internally stored fids.
      */
-    public Set getFidsSet() {
+    public Set<String> getFidsSet() {
         return fids();
     }
 
@@ -149,7 +148,7 @@ public class FidFilterImpl extends AbstractFilter implements FidFilter {
      * 
      * @return
      */
-    private Set fids() {
+    private Set<String> fids() {
         return new HashSet<String>(ids);
     }
 
@@ -162,7 +161,7 @@ public class FidFilterImpl extends AbstractFilter implements FidFilter {
      */
     public final void addFid(String fid) {
         LOGGER.finest("got fid: " + fid);
-        fids.add(factory.featureId(fid));
+        fids.add( new FeatureIdImpl(fid));
         ids.add(fid);
     }
 

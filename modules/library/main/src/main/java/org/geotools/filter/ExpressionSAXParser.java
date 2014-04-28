@@ -21,7 +21,14 @@ package org.geotools.filter;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.expression.AddImpl;
+import org.geotools.filter.expression.DivideImpl;
+import org.geotools.filter.expression.MultiplyImpl;
+import org.geotools.filter.expression.SubtractImpl;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.expression.Function;
 import org.xml.sax.Attributes;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -42,7 +49,8 @@ public class ExpressionSAXParser {
     private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
 
     /** Factory to construct filters. */
-    private FilterFactory ff;
+    private FilterFactory2 ff;
+    private FunctionFinder functionFinder = new FunctionFinder( null );
 
     /** A nested expression parser for math sub expressions */
     private ExpressionSAXParser expFactory = null;
@@ -80,11 +88,11 @@ public class ExpressionSAXParser {
      */
     private boolean readChars = false;
 
-    public ExpressionSAXParser(){
-    	this( FilterFactoryFinder.createFilterFactory() );    	
-	}
-    public ExpressionSAXParser(FilterFactory factory ){
-        this( null, factory );    	
+    public ExpressionSAXParser() {
+        this(CommonFactoryFinder.getFilterFactory2());
+    }
+    public ExpressionSAXParser(FilterFactory2 factory ){
+        this( null, factory );
     }
     /**
      * Constructor with a schema to read the attribute againset.
@@ -93,15 +101,15 @@ public class ExpressionSAXParser {
      *        this is not in place.
      */
     public ExpressionSAXParser(SimpleFeatureType schema) {
-        this( schema, FilterFactoryFinder.createFilterFactory() );    	
+        this( schema, CommonFactoryFinder.getFilterFactory2() );    	
     }
     /** Constructor injection */
-    public ExpressionSAXParser( SimpleFeatureType schema, FilterFactory factory ){
+    public ExpressionSAXParser( SimpleFeatureType schema, FilterFactory2 factory ){
     	this.schema = schema;
         ff = factory;    	
     }
     /** Setter injection */
-    public void setFilterFactory( FilterFactory factory ){
+    public void setFilterFactory( FilterFactory2 factory ){
     	ff = factory;
     }
 
@@ -123,32 +131,51 @@ public class ExpressionSAXParser {
         {
             this.declaredType = declaredType;
             
-            if (DefaultExpression.isFunctionExpression(convertType(declaredType)))
+            short convertType = convertType(declaredType);
+            if (DefaultExpression.isFunctionExpression(convertType))
             {
             	 expFactory = new ExpressionSAXParser(schema);
-                 curExprssn = ff.createFunctionExpression( getFunctionName(atts) );
+            	 String name = getFunctionName(atts);
+            	 Function function = functionFinder.findFunction( name );
+            	 if( function != null && function instanceof FunctionExpression){
+            	     curExprssn = (FunctionExpression) function;
+            	 }
+            	 else {
+            	     throw new IllegalFilterException( name + " not availabel as FunctionExpressio:"+function);
+            	 }
                  LOGGER.finer("is <function> expression");
             }
 
             // if the expression is math, then create a factory for its
             // sub expressions, otherwise just instantiate the main expression
-            if (DefaultExpression.isMathExpression(convertType(declaredType))) {
+            if (DefaultExpression.isMathExpression(convertType)) {
                 expFactory = new ExpressionSAXParser(schema);
-                curExprssn = ff.createMathExpression(convertType(
-                            declaredType));
+                switch(convertType) {
+                case ExpressionType.MATH_ADD:
+                    curExprssn =  new AddImpl(null,null);
+                    break;
+                case ExpressionType.MATH_SUBTRACT:
+                    curExprssn =  new SubtractImpl(null,null);
+                    break;
+                case ExpressionType.MATH_MULTIPLY:
+                    curExprssn =  new MultiplyImpl(null,null);
+                    break;
+                case ExpressionType.MATH_DIVIDE:
+                    curExprssn =  new DivideImpl(null,null);
+                    break;
+                default:
+                    throw new IllegalFilterException("Unsupported math expression");
+                }
                 LOGGER.finer("is math expression");
-            } else if (DefaultExpression.isLiteralExpression(convertType(
-                            declaredType))) {
-                curExprssn = ff.createLiteralExpression();
+            } else if (DefaultExpression.isLiteralExpression(convertType)) {
+                curExprssn = new LiteralExpressionImpl();
                 readChars = true;
                 LOGGER.finer("is literal expression");
-            } else if (DefaultExpression.isAttributeExpression(convertType(
-                            declaredType))) {
-                curExprssn = ff.createAttributeExpression(schema);
+            } else if (DefaultExpression.isAttributeExpression(convertType)) {
+                curExprssn = new AttributeExpressionImpl(schema);
                 readChars = true;
                 LOGGER.finer("is attribute expression");
             }
-
             currentState = setInitialState(curExprssn);
             readyFlag = false;
         } else {
@@ -349,7 +376,7 @@ public class ExpressionSAXParser {
 
         //if(curExprssn.getType()==ExpressionDefault.LITERAL_GEOMETRY){
         //LOGGER.finer("got geometry: ");
-        curExprssn = ff.createLiteralExpression();
+        curExprssn = new LiteralExpressionImpl();
         ((LiteralExpression) curExprssn).setLiteral(geometry);
         LOGGER.finer("set expression: " + curExprssn.toString());
         currentState = "complete";

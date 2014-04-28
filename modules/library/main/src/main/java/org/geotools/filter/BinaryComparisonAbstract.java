@@ -40,16 +40,15 @@ public abstract class BinaryComparisonAbstract extends AbstractFilter
 
 	boolean matchingCase;
 	
-	protected BinaryComparisonAbstract(org.opengis.filter.FilterFactory factory) {
-		this(factory,null,null);
+	protected BinaryComparisonAbstract() {
+		this(null,null);
 	}
 	
-	protected BinaryComparisonAbstract(org.opengis.filter.FilterFactory factory, Expression expression1, Expression expression2 ) {
-		this(factory,expression1,expression2,true);
+	protected BinaryComparisonAbstract(Expression expression1, Expression expression2 ) {
+		this(expression1,expression2,true);
 	}
 	
-	protected BinaryComparisonAbstract(org.opengis.filter.FilterFactory factory, Expression expression1, Expression expression2, boolean matchingCase ) {
-		super(factory);
+	protected BinaryComparisonAbstract(Expression expression1, Expression expression2, boolean matchingCase ) {
 		this.expression1 = expression1;
 		this.expression2 = expression2;		
 		this.matchingCase = matchingCase;

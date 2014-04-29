@@ -162,13 +162,7 @@ public class IsBetweenImpl extends CompareFilterImpl implements BetweenFilter {
 	public void setUpperBoundary(Expression upperBoundary) {
 		setExpression2( upperBoundary );
 	}
-	
-	/**
-	 * @deprecated use {@link #getExpression()}
-	 */
-	public final org.geotools.filter.Expression getMiddleValue() {
-	    return expressionCast(expression);
-	}
+
 	
 	/**
 	 * @deprecated use {@link #setExpression(Expression) }

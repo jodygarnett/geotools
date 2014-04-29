@@ -80,8 +80,6 @@ public interface GeometryDistanceFilter extends GeometryFilter, DistanceBufferOp
      * Gets the distance allowed by this filter.
      *
      * @return distance the length beyond which this filter is valid or not.
-     *
-     * @deprecated use {@link DistanceBufferOperator#getDistance()}
      */
     double getDistance();
 }

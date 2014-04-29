@@ -74,22 +74,6 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract
     	super(e1,e2,matchCase);
     }
     
-    /**
-     * Adds the 'left' value to this filter.
-     *
-     * @param leftValue Expression for 'left' value.
-     *
-     * @throws IllegalFilterException Filter is not internally consistent.
-     *
-     * @task REVISIT: immutability?
-     * @deprecated Use {@link #setExpression1(org.opengis.filter.expression.Expression)}
-     */
-    public final void addLeftValue(Expression leftValue)
-        throws IllegalFilterException {
-        
-    	setExpression1(leftValue);
-    }
-    
     public void setExpression1(org.opengis.filter.expression.Expression leftValue) {
     	//Checks if this is math filter or not and handles appropriately
         int filterType = Filters.getFilterType(this);
@@ -106,22 +90,6 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract
         } else {
             this.expression1 = leftValue;
         }
-    }
-
-    /**
-     * Adds the 'right' value to this filter.
-     *
-     * @param rightValue Expression for 'right' value.
-     *
-     * @throws IllegalFilterException Filter is not internally consistent.
-     *
-     * @task REVISIT: make immutable.
-     * @deprecated Use {@link #setExpression2(org.opengis.filter.expression.Expression)}
-     */
-    public final void addRightValue(Expression rightValue)
-        throws IllegalFilterException {
-       
-    	setExpression2(rightValue);
     }
 
     public void setExpression2(org.opengis.filter.expression.Expression rightValue) {

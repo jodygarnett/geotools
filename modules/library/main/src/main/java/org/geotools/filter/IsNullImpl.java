@@ -45,10 +45,6 @@ public class IsNullImpl extends CompareFilterImpl implements NullFilter {
         setExpression(nullCheck);
     }
 
-    public org.geotools.filter.Expression getNullCheckValue() {
-        return expressionCast( getExpression() );
-    }
-
     public Expression getExpression() {
         return getExpression1();
     }

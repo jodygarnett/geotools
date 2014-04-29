@@ -41,43 +41,27 @@ import org.opengis.filter.PropertyIsBetween;
 public interface BetweenFilter extends CompareFilter, PropertyIsBetween {
 
     /**
-     * @deprecated use {@link PropertyIsBetween#getLowerBoundary()}
+     * Lower boundary.
+     * 
+     * @return Same as {@link PropertyIsBetween#getLowerBoundary()}
      */
     org.opengis.filter.expression.Expression getExpression1();
 
     /**
-     * @deprecated use {@link PropertyIsBetween#getUpperBoundary()()}
+     * Upper boundary
+     * 
+     * @return Same as {@link PropertyIsBetween#getUpperBoundary()}
      */
     org.opengis.filter.expression.Expression getExpression2();
 
     /**
-     * @deprecated use {@link PropertyIsBetween#setLowerBoundary(Expression)()}
+     * @deprecated Use IsBetweenImpl setExpression1
      */
     void setExpression1(org.opengis.filter.expression.Expression expression);
 
     /**
-     * @deprecated use {@link PropertyIsBetween#setUpperBoundary(Expression)()}
+     * @deprecated  Use IsBetweenImpl setExpression2
      */
     void setExpression2(org.opengis.filter.expression.Expression expression);
 
-    /**
-     * Gets the middle value of the between.  Should generally be an
-     * AttributeExpression: 1 <= area <= 200 makes sense,
-     * 1 <= 200 <= area should just use a less-than-or-equal filter.
-     *
-     * @return the expression in the middle.
-     *
-     * @deprecated use {@link PropertyIsBetween#getExpression()}
-     */
-    Expression getMiddleValue();
-
-    /**
-     * Sets the values to be compared as between the left and right values.
-     *
-     * @param middleValue The expression to be compared.
-     * @task REVISIT: rename to setMiddleValue?  You can't have more than 1.
-     *
-     * @deprecated use {@link BetweenFilterImpl#setExpression(Expression)}
-     */
-    void addMiddleValue(Expression middleValue);
 }

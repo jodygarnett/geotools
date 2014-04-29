@@ -337,20 +337,10 @@ public class LikeFilterImpl extends AbstractFilter implements LikeFilter {
      * @param attribute The value of the attribute for comparison.
      *
      * @throws IllegalFilterException Filter is illegal.
+     * @deprecated Use {@link #setExpression(org.opengis.filter.expression.Expression)}
      */
     public final void setValue(Expression attribute) throws IllegalFilterException {
         setExpression(attribute);
-    }
-
-     /**
-     * Gets the Value (left hand side) of this filter.
-     *
-     * @return The expression that is the value of the filter.
-     * 
-     * @deprecated use {@link #getExpression()}.
-     */
-    public final org.geotools.filter.Expression getValue() {
-        return expressionCast(attribute);
     }
 
     /**
@@ -361,7 +351,7 @@ public class LikeFilterImpl extends AbstractFilter implements LikeFilter {
      * </p>
      */
     public org.opengis.filter.expression.Expression getExpression() {
-        return getValue();
+        return attribute;
     }
     
     public void setExpression(org.opengis.filter.expression.Expression e) {
@@ -391,9 +381,23 @@ public class LikeFilterImpl extends AbstractFilter implements LikeFilter {
      *  {@link PropertyIsLike#setSingleChar(String)}
      *  {@link PropertyIsLike#setEscape(String)}
      */
-    public final void setPattern(org.geotools.filter.Expression p, String wildcardMulti,
+    public final void setPattern(org.opengis.filter.expression.Expression p, String wildcardMulti,
         String wildcardSingle, String escape) {
-        setPattern(p.toString(), wildcardMulti, wildcardSingle, escape);
+        if( p instanceof Literal){
+            Literal literal = (Literal) p;
+            Object value = literal.getValue();
+            if( value != null && value instanceof String){
+                String pattern = (String) value;
+                setPattern(pattern, wildcardMulti, wildcardSingle, escape);
+            }
+            else {
+                throw new ClassCastException("Pattern Literal must be a string:"+value);
+            }
+        }
+        else {
+            throw new ClassCastException("Pattern must be a literal String");
+        }
+        
     }
 
     /**
@@ -629,7 +633,7 @@ public class LikeFilterImpl extends AbstractFilter implements LikeFilter {
             //REVISIT: check for nulls.
             
             return ((Filters.getFilterType( lFilter ) == Filters.getFilterType( this ))
-            && lFilter.getValue().equals(this.attribute)
+            && lFilter.getExpression().equals(this.attribute)
             && lFilter.getPattern().equals(this.pattern));
         }
         return false;

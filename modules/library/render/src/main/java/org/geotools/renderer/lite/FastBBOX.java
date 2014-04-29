@@ -164,14 +164,6 @@ class FastBBOX implements BBOX, BinarySpatialOperator, BinaryComparisonOperator,
         throw new UnsupportedOperationException("This filter cannot be modified");
     }
 
-    public org.geotools.filter.Expression getLeftGeometry() {
-        return (org.geotools.filter.Expression) getExpression1();
-    }
-
-    public org.geotools.filter.Expression getRightGeometry() {
-        return (org.geotools.filter.Expression) getExpression2();
-    }
-
     public MatchAction getMatchAction() {
         return MatchAction.ANY;
     }

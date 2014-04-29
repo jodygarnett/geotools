@@ -22,6 +22,7 @@ import org.opengis.filter.BinaryComparisonOperator;
 
 /**
  * Defines a comparison filter (can be a math comparison or generic equals).
+ * <p>
  * This filter implements a comparison - of some sort - between two
  * expressions. The comparison may be a math comparison or a generic equals
  * comparison.  If it is a math comparison, only math expressions are allowed;
@@ -44,29 +45,5 @@ import org.opengis.filter.BinaryComparisonOperator;
  * @deprecated use {@link org.opengis.filter.BinaryComparisonOperator}
  */
 public interface CompareFilter extends Filter, BinaryComparisonOperator {
-    /**
-     * Adds the 'left' value to this filter.
-     *
-     * @param leftValue Expression for 'left' value.
-     *
-     * @throws IllegalFilterException Filter is not internally consistent.
-     *
-     * @task REVISIT: immutability?
-     * @deprecated use {@link BinaryComparisonAbstract#setExpression1(Expression)}
-     */
-    void addLeftValue(Expression leftValue) throws IllegalFilterException;
-
-    /**
-     * Adds the 'right' value to this filter.
-     *
-     * @param rightValue Expression for 'right' value.
-     *
-     * @throws IllegalFilterException Filter is not internally consistent.
-     *
-     * @task REVISIT: make immutable.
-     *
-     * @deprecated use {@link BinaryComparisonAbstract#setExpression2(Expression)}
-     */
-    void addRightValue(Expression rightValue) throws IllegalFilterException;
 
 }

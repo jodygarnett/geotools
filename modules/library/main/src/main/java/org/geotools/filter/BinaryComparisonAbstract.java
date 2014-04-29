@@ -24,11 +24,15 @@ import org.opengis.filter.MultiValuedFilter.MatchAction;
 import org.opengis.filter.expression.Expression;
 
 /**
- * Abstract implemention for binary filters.
+ * Abstract implementation for binary filters.
+ * <p>
+ * This implementation gathers up expression1, expression2 and match action support.
+ * <p>
+ * For the SAX parsers setExpression1 and setExpression2 can be used to fill in the filter
+ * after creation. Everyone else is asked to treat the filter as immutable and use the appropriate
+ * FilterFactory2 creation method.
  * 
- * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
- *
- *
+ * @author Justin Deoliveira (Boundless)
  *
  * @source $URL$
  */
@@ -40,14 +44,18 @@ public abstract class BinaryComparisonAbstract extends AbstractFilter
 
 	boolean matchingCase;
 	
+	/**
+	 * No argument constructor for use by SAX parsers.
+	 */
 	protected BinaryComparisonAbstract() {
 		this(null,null);
 	}
 	
+	/** Immutable constructor for use by FilterFactory2 */
 	protected BinaryComparisonAbstract(Expression expression1, Expression expression2 ) {
 		this(expression1,expression2,true);
 	}
-	
+	/** Immutable constructor for use by FilterFactory2 */
 	protected BinaryComparisonAbstract(Expression expression1, Expression expression2, boolean matchingCase ) {
 		this.expression1 = expression1;
 		this.expression2 = expression2;		

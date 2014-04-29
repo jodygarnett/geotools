@@ -63,45 +63,5 @@ import org.opengis.filter.spatial.BinarySpatialOperator;
  *  @deprecated use {@link org.opengis.filter.spatial.BinarySpatialOperator}.
  */
 public interface GeometryFilter extends Filter, BinarySpatialOperator {
-    /**
-     * Adds the 'right' value to this filter.
-     *
-     * @param rightGeometry Expression for 'right' value.
-     *
-     * @throws IllegalFilterException Filter is not internally consistent.
-     *
-     * @deprecated use {@link BinaryComparisonAbstract#setExpression2(Expression)}
-     */
-    void addRightGeometry(Expression rightGeometry) throws IllegalFilterException;
 
-    /**
-     * Adds the 'left' value to this filter.
-     *
-     * @param leftGeometry Expression for 'left' value.
-     *
-     * @throws IllegalFilterException Filter is not internally consistent.
-     *
-     * @task REVISIT: make all filters immutable.
-     *
-     * @deprecated use {@link BinaryComparisonAbstract#setExpression1(Expression)}
-     */
-    void addLeftGeometry(Expression leftGeometry) throws IllegalFilterException;
-
-    /**
-     * Retrieves the expression on the right side of the spatial comparison.
-     *
-     * @return the geometry expression on the right.
-     *
-     * @deprecated use {@link BinarySpatialOperator#getExpression2()}.
-     */
-    Expression getRightGeometry();
-
-    /**
-     * Retrieves the expression on the left side of the spatial comparison.
-     *
-     * @return the geometry expression on the left.
-     *
-     * @deprecated use {@link BinarySpatialOperator#getExpression1()}.
-     */
-    Expression getLeftGeometry();
 }

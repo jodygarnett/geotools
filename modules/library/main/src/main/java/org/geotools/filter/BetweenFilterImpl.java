@@ -17,6 +17,7 @@
 package org.geotools.filter;
 
 import org.opengis.filter.FilterVisitor;
+import org.opengis.filter.expression.Expression;
 
 
 /**
@@ -68,17 +69,6 @@ public class BetweenFilterImpl extends CompareFilterImpl
     public void setExpression(org.opengis.filter.expression.Expression expression) {
     	this.middleValue = expression;
     	
-    }
-
-    /**
-     * Gets the middle value of the between.
-     *
-     * @return The expression in the middle.
-     * 
-     * @deprecated use {@link #getExpression()}
-     */
-    public final Expression getMiddleValue() {
-        return expressionCast( middleValue );
     }
 
     /**

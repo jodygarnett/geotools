@@ -237,9 +237,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
 
             case MEDIUM:
 
-                for (Iterator iter = filter.getFilterIterator();
-                        iter.hasNext();) {
-                    org.opengis.filter.Filter component = (org.opengis.filter.Filter) iter.next();
+                for (org.opengis.filter.Filter component : filter.getChildren()) {
                     component.accept(this, null );
                 }
                 current.push(createMediumLevelLogicFilter(
@@ -249,12 +247,9 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
 
             case HIGH:
 
-                for (Iterator iter = filter.getFilterIterator();
-                        iter.hasNext();) {
-                    org.opengis.filter.Filter component = (org.opengis.filter.Filter) iter.next();
+                for (org.opengis.filter.Filter component : filter.getChildren()) {
                     component.accept(this,null);
                 }
-
                 current.push(createHighLevelLogicFilter(
                         Filters.getFilterType(filter), startSize));
 
@@ -436,9 +431,8 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
                 return Filter.EXCLUDE;
             }
 
-            for (Object item : f.getChildren() ) {
-                org.opengis.filter.Filter filter = (org.opengis.filter.Filter) item;
-                if (filter == Filter.INCLUDE) {
+            for (org.opengis.filter.Filter filter : f.getChildren() ) {
+                if (filter == org.opengis.filter.Filter.INCLUDE) {
                     continue;
                 }
                 added++;
@@ -484,7 +478,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
             return Filter.EXCLUDE;
 
         case 1:
-            return (Filter) result.getFilterIterator().next();
+            return (Filter) result.getChildren().iterator().next();
 
         default:
             return result;

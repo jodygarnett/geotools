@@ -353,10 +353,10 @@ public class FilterEqualsTest extends TestCase {
 	    testExp3 = new  AttributeExpressionImpl(testSchema, "testBoolean");
 	    NullFilterImpl nullFilter1 = new NullFilterImpl();
 	    NullFilterImpl nullFilter2 = new NullFilterImpl();
-	    nullFilter1.nullCheckValue(testExp1);
-	    nullFilter2.nullCheckValue(testExp2);
+	    nullFilter1.setExpression(testExp1);
+	    nullFilter2.setExpression(testExp2);
 	    assertTrue(nullFilter1.equals(nullFilter2));
-	    nullFilter1.nullCheckValue(testExp3);
+	    nullFilter1.setExpression(testExp3);
 	    assertTrue(!nullFilter1.equals(nullFilter2));
 	    assertTrue(!nullFilter1.equals(new BetweenFilterImpl()));
 	}

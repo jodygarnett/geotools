@@ -130,8 +130,8 @@ public class NullFilterImpl extends AbstractFilter implements NullFilter {
         if (obj!=null && obj.getClass() == this.getClass()) {
             NullFilterImpl nullFilter = (NullFilterImpl) obj;
 
-            return ((Filters.getFilterType( nullFilter ) == Filters.getFilterType( this ))
-            && nullFilter.getNullCheckValue().equals(this.nullCheck));
+            return ((Filters.getFilterType(nullFilter) == Filters.getFilterType(this)) && nullFilter
+                    .getExpression().equals(this.nullCheck));
         } else {
             return false;
         }

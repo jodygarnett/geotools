@@ -171,63 +171,6 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
     }
 
     /**
-     * Retrieves the expression on the left side of the comparison.
-     * 
-     * @return the expression on the left.
-     * @deprecated use {@link org.opengis.filter.spatial.BinarySpatialOperator#getExpression1()}
-     */
-    public final Expression getLeftGeometry() {
-        return expressionCast( getExpression1() );
-    }
-    
-    /**
-     * Retrieves the expression on the right side of the comparison.
-     *
-     * @return the expression on the right.
-     * @deprecated use {@link org.opengis.filter.spatial.BinarySpatialOperator#getExpression2()}
-     */
-    public final Expression getRightGeometry() {
-        return expressionCast( getExpression2() );
-    }
-
-    /**
-     * Subclass convenience method for returning left expression as a 
-     * JTS geometry.
-     * 
-     * * @deprecated use {@link org.geotools.filter#getGeometries(org.opengis.filter.expression.Expression expr, Object feature)}
-     */
-    protected Geometry getLeftGeometry(Object feature) {
-        org.opengis.filter.expression.Expression leftGeometry = getExpression1();
-        
-         if (leftGeometry != null) {
-             Object obj = leftGeometry.evaluate(feature,Geometry.class);
-
-             //LOGGER.finer("leftGeom = " + o.toString()); 
-             return (Geometry) obj;
-         } else if (feature instanceof SimpleFeature) {
-             return (Geometry) ((SimpleFeature)feature).getDefaultGeometry();
-         }
-         return null;
-    }
-    
-    /**
-     * Subclass convenience method for returning right expression as a 
-     * JTS geometry.
-     * 
-     * @deprecated use {@link org.geotools.filter#getGeometries(org.opengis.filter.expression.Expression expr, Object feature)}
-     */
-    protected Geometry getRightGeometry(Object feature) {
-        org.opengis.filter.expression.Expression rightGeometry = getExpression2();
-        
-         if (rightGeometry != null) {
-             return (Geometry) rightGeometry.evaluate(feature,Geometry.class);
-         } else if(feature instanceof SimpleFeature){
-             return (Geometry) ((SimpleFeature)feature).getDefaultGeometry();
-         }
-         return null;
-    }
-    
-    /**
      * NC - support for multiple values
      * Convenience method for returning expression as either a geometry or a list of geometries.
      */

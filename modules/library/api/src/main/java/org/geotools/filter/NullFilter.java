@@ -16,7 +16,6 @@
  */
 package org.geotools.filter;
 
-import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.PropertyIsNull;
 
 
@@ -33,28 +32,5 @@ import org.opengis.filter.PropertyIsNull;
  * @deprecated use {@link org.opengis.filter.PropertyIsNull}
  */
 public interface NullFilter extends Filter, PropertyIsNull {
-    /**
-     * Determines whether or not a given feature is 'inside' this filter.
-     *
-     * @param nullCheck The attribute expression to null check.
-     *
-     * @throws IllegalFilterException If attempting to add a non-attribute
-     *         expression.
-     *
-     * @task REVISIT: change arg to AttributeExpression?
-     * @task REVISIT: change name to setNullCheckValue.
-     *
-     * @deprecated use {@link PropertyIsNull#setExpression(Expression)}
-     */
-    void nullCheckValue(Expression nullCheck) throws IllegalFilterException;
-
-    /**
-     * Returns the expression being checked for null.
-     *
-     * @return the Expression to null check.
-     *
-     * @deprecated use {@link PropertyIsNull#getExpression()}
-     */
-    Expression getNullCheckValue();
-
+    
 }

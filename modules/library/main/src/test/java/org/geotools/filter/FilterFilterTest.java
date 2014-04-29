@@ -285,8 +285,8 @@ StringReader reader = new StringReader( filter );
         assertEquals(FilterType.LOGIC_OR, Filters.getFilterType(f));
         
         int i = 0;
-        for(Iterator filters = ((LogicFilter)f).getFilterIterator(); filters.hasNext(); i++){
-            CompareFilter subFitler = (CompareFilter)filters.next();
+        for(Iterator<org.opengis.filter.Filter> filters = ((LogicFilter)f).getChildren().iterator(); filters.hasNext(); i++){
+            CompareFilter subFitler = (CompareFilter) filters.next();
             StringBuffer attName = new StringBuffer();
             for(int repCount = 0; repCount <= i; repCount++){
                 attName.append("eventtype-" + repCount + "_");

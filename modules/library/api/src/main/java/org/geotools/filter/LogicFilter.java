@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.filter.BinaryLogicOperator;
 
 /**
  * Defines a logic filter (the only filter type that contains other filters).
@@ -42,29 +43,8 @@ public interface LogicFilter extends Filter {
      * <p>
      * This list will contain at least two elements, and each element will be an
      * instance of {@code Filter}.
-     * </p>
      */
     @SuppressWarnings("rawtypes")
-    List getChildren();
-        
-    /**
-     * Gets an iterator for the filters held by this logic filter.
-     *
-     * @return the iterator of the filters.
-     */
-    @SuppressWarnings("rawtypes")
-    Iterator getFilterIterator();
+    List<org.opengis.filter.Filter> getChildren();
 
-    /**
-     * Adds a sub filter to this filter.
-     *
-     * @param filter Specified filter to add to the sub filter list.
-     *
-     * @throws IllegalFilterException Does not conform to logic filter
-     *         structure
-     *
-     * @task REVISIT: make all filters immutable.  This should return a new
-     *       filter.
-     */
-    void addFilter(org.opengis.filter.Filter filter) throws IllegalFilterException;
 }

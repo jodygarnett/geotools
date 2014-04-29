@@ -85,9 +85,8 @@ public interface LikeFilter extends Filter, PropertyIsLike {
      *         {@link PropertyIsLike#setWildCard(String)}
      *         {@link PropertyIsLike#setSingleChar(String)}
      *         {@link PropertyIsLike#setEscape(String)}
-     *
      */
-    void setPattern(Expression p, String wildcardMulti, String wildcardSingle, String escape);
+    void setPattern(org.opengis.filter.expression.Expression p, String wildcardMulti, String wildcardSingle, String escape);
 
     /**
      * Accessor method to retrieve the pattern.
@@ -108,15 +107,6 @@ public interface LikeFilter extends Filter, PropertyIsLike {
      * @deprecated use {@link PropertyIsLike#setExpression(Expression)}
      */
     void setValue(Expression attribute) throws IllegalFilterException;
-
-    /**
-     * Gets the Value (left hand side) of this filter.
-     *
-     * @return The expression that is the value of the filter.
-     *
-     * @deprecated use {@link PropertyIsLike#getExpression()}
-     */
-    Expression getValue();
 
     /**
      * Accessor for property wildcardSingle.

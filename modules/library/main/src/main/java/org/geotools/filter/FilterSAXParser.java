@@ -248,7 +248,7 @@ public class FilterSAXParser {
             }
         } else if (filterType == FilterType.NULL) {
             if (curState.equals("attribute")) {
-                ((NullFilter) curFilter).nullCheckValue(expression);
+                ((NullFilterImpl) curFilter).setExpression(expression);
                 curState = "complete";
             } else {
                 throw new IllegalFilterException(
@@ -257,10 +257,10 @@ public class FilterSAXParser {
             }
         } else if (AbstractFilter.isGeometryFilter(filterType)) {
             if (curState.equals("leftValue")) {
-                ((GeometryFilter) curFilter).addLeftGeometry(expression);
+                ((BinaryComparisonAbstract) curFilter).setExpression1(expression);
                 curState = "rightValue";
             } else if (curState.equals("rightValue")) {
-                ((GeometryFilter) curFilter).addRightGeometry(expression);
+                ((BinaryComparisonAbstract) curFilter).setExpression2(expression);
 
                 if (AbstractFilter.isGeometryDistanceFilter(filterType)) {
                     curState = "distance";

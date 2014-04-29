@@ -31,8 +31,6 @@ import org.opengis.filter.FilterVisitor;
  *
  * @author Jody Garnett
  *
- *
- *
  * @source $URL$
  */
 public abstract class FilterAbstract implements org.opengis.filter.Filter {
@@ -40,15 +38,6 @@ public abstract class FilterAbstract implements org.opengis.filter.Filter {
     protected FilterAbstract() {
     }
 
-	
-	/**
-	 * Subclass should overrride.
-	 * 
-	 * Default value is false
-	 */
-	public boolean evaluate(SimpleFeature feature) {
-		return evaluate((Object)feature);
-	}
 	
 	/**
 	 * Subclass should overrride.
@@ -66,23 +55,6 @@ public abstract class FilterAbstract implements org.opengis.filter.Filter {
 	 */
 	public boolean accepts(SimpleFeature feature) {
 		return evaluate( feature );
-	}
-	
-	
-	/** Subclass should override, default implementation just returns extraData */
-	public Object accept(FilterVisitor visitor, Object extraData) {
-		return extraData;
-	}
-	
-	/**
-	 * Helper method for subclasses to reduce null checks
-	 * @param expression
-	 * @param feature
-	 * @return value or null
-	 */
-	protected Object eval( Expression expression, SimpleFeature feature ){
-		if( expression == null || feature == null ) return null;
-		return expression.evaluate( feature );
 	}
 	
 	/**
@@ -117,7 +89,8 @@ public abstract class FilterAbstract implements org.opengis.filter.Filter {
 	 * @param object
 	 * @return value or null
 	 */
-	protected Object eval(org.opengis.filter.expression.Expression expression, Object object) {
+	@SuppressWarnings("unchecked")
+        protected Object eval(org.opengis.filter.expression.Expression expression, Object object) {
 		if( expression == null ) return null;
 		Object value = expression.evaluate( object );
 	

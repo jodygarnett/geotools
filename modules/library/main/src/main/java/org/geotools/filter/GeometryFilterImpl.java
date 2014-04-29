@@ -115,25 +115,6 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
 
         setExpression1(leftGeometry);
     }
-    
-    public void setExpression1(org.opengis.filter.expression.Expression expression) {
-        if (expression instanceof Expression) {
-            Expression leftGeometry = (Expression) expression;
-
-            // Checks if this is geometry filter or not and handles appropriately
-            if (DefaultExpression.isGeometryExpression(Filters.getExpressionType(leftGeometry))
-                    || permissiveConstruction) {
-                super.setExpression1(leftGeometry);
-            } else {
-                throw new IllegalFilterException("Attempted to add (left)"
-                        + " non-geometry expression" + " to geometry filter.");
-            }
-        } else {
-            // I guess we assume it is a good expression...
-            super.setExpression1(expression);
-        }
-
-    }
 
     /**
      * Adds the 'right' value to this filter.
@@ -150,25 +131,7 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
         
         setExpression2(rightGeometry);
     }
-  
-    public void setExpression2(org.opengis.filter.expression.Expression expression) {
-        if (expression instanceof Expression) {
-            Expression rightGeometry = (Expression) expression;
-
-            // Checks if this is math filter or not and handles appropriately
-            if (DefaultExpression.isGeometryExpression(Filters.getExpressionType(rightGeometry))
-                    || permissiveConstruction) {
-                super.setExpression2(rightGeometry);
-            } else {
-                throw new IllegalFilterException("Attempted to add (right)" + " non-geometry"
-                        + "expression to geometry filter.");
-            }
-        } else {
-            // I guess we assume it is a good expression...
-            super.setExpression2(expression);
-        }
-    }
-
+    
     /**
      * NC - support for multiple values
      * Convenience method for returning expression as either a geometry or a list of geometries.

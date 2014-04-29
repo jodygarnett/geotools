@@ -16,7 +16,6 @@
  */
 package org.geotools.filter;
 
-import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.expression.PropertyName;
 
 
@@ -35,25 +34,5 @@ import org.opengis.filter.expression.PropertyName;
  * @deprecated use {@link org.opengis.filter.expression.PropertyName}
  */
 public interface AttributeExpression extends Expression, PropertyName {
-    /**
-     * Sets the path of the attribute of this expression. For simple,
-     * non-nested, features the 'path' is simply the name of an  attribute.
-     *
-     * @param attributePath A string of the path.
-     *
-     * @throws IllegalFilterException if the path is not valid.
-     *
-     * @deprecated use {@link PropertyName#setPropertyName(String)}
-     *
-     */
-    void setAttributePath(String attributePath) throws IllegalFilterException;
 
-    /**
-     * Gets the attribute path of this expression.
-     *
-     * @return the attribute to be queried.
-     *
-     * @deprecated use {@link PropertyName#getPropertyName()}
-     */
-    String getAttributePath();
 }

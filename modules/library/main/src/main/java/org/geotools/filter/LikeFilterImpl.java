@@ -355,13 +355,7 @@ public class LikeFilterImpl extends AbstractFilter implements LikeFilter {
     }
     
     public void setExpression(org.opengis.filter.expression.Expression e) {
-        if( permissiveConstruction || e instanceof Literal && ((Literal)e).getValue() instanceof String){
-            this.attribute = e;
-        } else {
-            throw new IllegalFilterException(
-                "Attempted to add something other than a string attribute "
-                + "expression to a like filter.");
-        }
+        this.attribute = e;
     }
     
     /**

@@ -23,7 +23,6 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -32,9 +31,11 @@ import org.geotools.filter.expression.AddImpl;
 import org.geotools.filter.expression.DivideImpl;
 import org.geotools.filter.expression.MultiplyImpl;
 import org.geotools.filter.expression.SubtractImpl;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
@@ -248,8 +249,8 @@ public class ExpressionTest extends TestCase {
 	public void testMinFunction() {
 	    PropertyName a = ff.property("testInteger");
 	    Literal b = ff.literal( 1004.0 );
-        Function min = ff.function("min", a, b );
-        
+            Function min = ff.function("min", a, b );
+            assertNotNull( min );
 	}
 	
 	/**
@@ -343,14 +344,14 @@ public class ExpressionTest extends TestCase {
 		Expression testAttribute1 = new LiteralExpressionImpl(new Integer(4));
 
 		MathExpressionImpl mathTest = new AddImpl(null, null);
-		mathTest.addLeftValue(testAttribute1);
+		mathTest.setExpression1(testAttribute1);
 		try {
 			mathTest.evaluate(testFeature);
 			fail("math expressions should not work if right hand side is not set");
 		} catch (IllegalArgumentException ife) {
 		}
 		mathTest = new AddImpl(null, null);
-		mathTest.addRightValue(testAttribute1);
+		mathTest.setExpression2(testAttribute1);
 		try {
 			mathTest.evaluate(testFeature);
 			fail("math expressions should not work if left hand side is not set");
@@ -371,8 +372,8 @@ public class ExpressionTest extends TestCase {
 
 		// Test addition
 		MathExpressionImpl mathTest = new AddImpl(null, null);
-		mathTest.addLeftValue(testAttribute1);
-		mathTest.addRightValue(testAttribute2);
+		mathTest.setExpression1(testAttribute1);
+		mathTest.setExpression2(testAttribute2);
 		LOGGER.fine("math test: " + testAttribute1.evaluate(testFeature)
 				+ " + " + testAttribute2.evaluate(testFeature) + " = "
 				+ mathTest.evaluate(testFeature));
@@ -381,8 +382,8 @@ public class ExpressionTest extends TestCase {
 
 		// Test subtraction
 		mathTest = new SubtractImpl(null, null);
-		mathTest.addLeftValue(testAttribute1);
-		mathTest.addRightValue(testAttribute2);
+		mathTest.setExpression1(testAttribute1);
+		mathTest.setExpression2(testAttribute2);
 		LOGGER.fine("math test: " + testAttribute1.evaluate(testFeature)
 				+ " - " + testAttribute2.evaluate(testFeature) + " = "
 				+ mathTest.evaluate(testFeature));
@@ -391,8 +392,8 @@ public class ExpressionTest extends TestCase {
 
 		// Test multiplication
 		mathTest = new MultiplyImpl(null, null);
-		mathTest.addLeftValue(testAttribute1);
-		mathTest.addRightValue(testAttribute2);
+		mathTest.setExpression1(testAttribute1);
+		mathTest.setExpression2(testAttribute2);
 		LOGGER.fine("math test: " + testAttribute1.evaluate(testFeature)
 				+ " * " + testAttribute2.evaluate(testFeature) + " = "
 				+ mathTest.evaluate(testFeature));
@@ -401,8 +402,8 @@ public class ExpressionTest extends TestCase {
 
 		// Test division
 		mathTest = new DivideImpl(null, null);
-		mathTest.addLeftValue(testAttribute1);
-		mathTest.addRightValue(testAttribute2);
+		mathTest.setExpression1(testAttribute1);
+		mathTest.setExpression2(testAttribute2);
 		LOGGER.fine("math test: " + testAttribute1.evaluate(testFeature)
 				+ " / " + testAttribute2.evaluate(testFeature) + " = "
 				+ mathTest.evaluate(testFeature));

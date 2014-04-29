@@ -17,12 +17,6 @@
 package org.geotools.filter;
 
 import org.geotools.filter.expression.ExpressionAbstract;
-import org.opengis.feature.Feature;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.filter.expression.Add;
-import org.opengis.filter.expression.Divide;
-import org.opengis.filter.expression.Multiply;
-import org.opengis.filter.expression.Subtract;
 
 
 /**
@@ -35,9 +29,6 @@ import org.opengis.filter.expression.Subtract;
  * @version $Id$
  */
 public abstract class DefaultExpression extends ExpressionAbstract implements Expression {
-
-    /** Defines the type of this expression. */
-    protected boolean permissiveConstruction;
 
     
     /* ***********************************************************************
@@ -68,26 +59,11 @@ public abstract class DefaultExpression extends ExpressionAbstract implements Ex
      * @param expressionType Type of expression for check.
      *
      * @return Whether or not this is a math expression type.
-     * @deprecated use {@link #is}
      */
     protected static boolean isMathExpression(short expressionType) {
         return ((expressionType == MATH_ADD)
         || (expressionType == MATH_SUBTRACT)
         || (expressionType == MATH_MULTIPLY) || (expressionType == MATH_DIVIDE));
-    }
-
-    /**
-     * Checks to see if this expression is a math expresson based on its type.
-     * 
-     * @param expression expression to check.
-     *
-     * @return Whether or not this is a math expression.
-     */
-    protected static boolean isMathExpression(org.opengis.filter.expression.Expression expression) {
-    	return expression instanceof Add || 
-    		expression instanceof Subtract || 
-    		expression instanceof Multiply || 
-    		expression instanceof Divide;
     }
     
     /**
@@ -130,7 +106,7 @@ public abstract class DefaultExpression extends ExpressionAbstract implements Ex
         || isFunctionExpression(expressionType);
     }
 
-	public static boolean isFunctionExpression(short expressionType) {
-		return expressionType==FUNCTION;
-	}
+    protected static boolean isFunctionExpression(short expressionType) {
+        return expressionType == FUNCTION;
+    }
 }

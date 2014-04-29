@@ -27,7 +27,6 @@ import org.geotools.filter.expression.PropertyAccessor;
 import org.geotools.filter.expression.PropertyAccessorFactory;
 import org.geotools.filter.expression.PropertyAccessors;
 import org.geotools.util.Converters;
-import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.expression.ExpressionVisitor;
@@ -153,29 +152,6 @@ public class AttributeExpressionImpl extends DefaultExpression
     }
 
     /**
-     * Constructor with minimum dataset for a valid expression.
-     *
-     * @param attPath The initial (required) sub filter.
-     *
-     * @throws IllegalFilterException If the attribute path is not in the
-     *         schema.
-     *         
-     *  @deprecated use {@link #setPropertyName(String)}
-     */
-    public final void setAttributePath(String attPath) throws IllegalFilterException {
-       setPropertyName(attPath);
-    }
-
-    /**
-     * This method calls {@link #getPropertyName()}.
-     * 
-     * @deprecated use {@link #getPropertyName()}
-     */
-    public final String getAttributePath() {
-      	return getPropertyName();
-    }
-
-    /**
      * Gets the path to the attribute to be evaluated by this expression.
      *
      * {@link org.opengis.filter.expression.PropertyName#getPropertyName()}
@@ -220,7 +196,8 @@ public class AttributeExpressionImpl extends DefaultExpression
     * @param obj Object from which to extract attribute value.
     * @param target Target Class 
     */
-    public Object evaluate(Object obj, Class target) {
+    @SuppressWarnings("unchecked")
+    public <T> T evaluate(Object obj, Class<T> target) {
         // NC- new method
 
         PropertyAccessor accessor = getLastPropertyAccessor();
@@ -257,7 +234,7 @@ public class AttributeExpressionImpl extends DefaultExpression
         }
 
         if (target == null) {
-            return value.get();
+            return (T) value.get();
         }
 
         return Converters.convert(value.get(), target);
@@ -265,7 +242,7 @@ public class AttributeExpressionImpl extends DefaultExpression
     }
 
     // NC - helper method for evaluation - attempt to use property accessor
-    private boolean tryAccessor(PropertyAccessor accessor, Object obj, Class target,
+    private boolean tryAccessor(PropertyAccessor accessor, Object obj, Class<?> target,
             AtomicReference<Object> value, AtomicReference<Exception> ex) {
         try {
             value.set(accessor.get(obj, attPath, target));

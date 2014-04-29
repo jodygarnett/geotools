@@ -1939,11 +1939,11 @@ public class FilterOpsComplexTypes {
 
                 if (type2 == org.geotools.filter.ExpressionType.LITERAL_GEOMETRY) {
                     elems[1].getType().encode(elems[1],
-                        ((LiteralExpression) lf.getExpression2()).getLiteral(),
+                        ((Literal) lf.getExpression2()).getValue(),
                         output, hints); // geom
                 } else {
                     elems[2].getType().encode(elems[2],
-                        ((LiteralExpression) lf.getExpression2()).getLiteral(),
+                        ((Literal) lf.getExpression2()).getValue(),
                         output, hints); // geom
                 }
             } else {
@@ -1956,12 +1956,12 @@ public class FilterOpsComplexTypes {
 
                     if (type1 == org.geotools.filter.ExpressionType.LITERAL_GEOMETRY) {
                         elems[1].getType().encode(elems[1],
-                            ((LiteralExpression) lf.getExpression1())
-                            .getLiteral(), output, hints); // geom
+                            ((Literal) lf.getExpression1())
+                            .getValue(), output, hints); // geom
                     } else {
                         elems[2].getType().encode(elems[2],
-                            ((LiteralExpression) lf.getExpression1())
-                            .getLiteral(), output, hints); // geom
+                            ((Literal) lf.getExpression1())
+                            .getValue(), output, hints); // geom
                     }
                 } else {
                     throw new OperationNotSupportedException(
@@ -2113,23 +2113,22 @@ public class FilterOpsComplexTypes {
                 elems[0].getType().encode(elems[0], lf.getExpression2(),
                     output, hints); // prop name
 
-                Geometry g = ((Geometry) ((LiteralExpression) lf
-                    .getExpression1()).getLiteral()).getEnvelope();
+                Geometry g = ((Geometry) ((Literal) lf
+                    .getExpression1()).getValue()).getEnvelope();
                 elems[1].getType().encode(elems[1], g, output, hints); // geom
             } else {
                 if (TYPE2 == org.geotools.filter.ExpressionType.LITERAL_GEOMETRY) {
                     elems[0].getType().encode(elems[0], lf.getExpression1(),
                         output, hints); // prop name
 
-                    Geometry g = ((Geometry) ((LiteralExpression) lf
-                        .getExpression2()).getLiteral()).getEnvelope();
+                    Geometry g = ((Geometry) ((Literal) lf
+                        .getExpression2()).getValue()).getEnvelope();
                     elems[1].getType().encode(elems[1], g, output, hints); // geom
                 } else {
                     throw new OperationNotSupportedException(
                         "Either the left or right expr must be a literal for the property name : BBOXType");
                 }
             }
-
             output.endElement(element.getNamespace(), element.getName());
         }
     }

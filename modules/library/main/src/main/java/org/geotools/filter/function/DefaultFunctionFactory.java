@@ -141,10 +141,8 @@ public class DefaultFunctionFactory implements FunctionFactory {
             FunctionName functionName = getFunctionName( function );
             Name name = functionName.getFunctionName();
 
-            FunctionDescriptor fd = new FunctionDescriptor( functionName, function.getClass() );
-//            if("rint".equals(functionName.getName())){
-//                System.out.println("Loaded rint");
-//            }
+            FunctionDescriptor fd = new FunctionDescriptor( functionName, (Class<Function>) function.getClass() );
+
             // needed to insert justin's name hack here to ensure consistent lookup
             Name key = functionName(name);
             if( functionMap.containsKey(key)){
@@ -181,9 +179,9 @@ public class DefaultFunctionFactory implements FunctionFactory {
 
     static class FunctionDescriptor {
         FunctionName name;
-        Class clazz;
+        Class<Function> clazz;
         
-        FunctionDescriptor(FunctionName name, Class clazz) {
+        FunctionDescriptor(FunctionName name, Class<Function> clazz) {
             this.name = name;
             this.clazz = clazz;
         }
@@ -195,24 +193,21 @@ public class DefaultFunctionFactory implements FunctionFactory {
                 if(parameters != null) {
                     function.setParameters(parameters);
                 }
-                
-                if( fallback != null && function instanceof ClassificationFunction){
-                    ClassificationFunction classification = (ClassificationFunction) function;
-                    classification.setFallbackValue( fallback );
+                if( fallback != null ){
+                    function.setFallbackValue( fallback );
                 }
                 return function;
             }
-
             if(FunctionImpl.class.isAssignableFrom(clazz)) {
                 FunctionImpl function = (FunctionImpl) clazz.newInstance();
                 if(parameters != null){
-                    function.setParameters( (List) parameters );
+                    function.setParameters( parameters );
                 }
-                if(fallback != null)
-                        function.setFallbackValue( fallback );
+                if(fallback != null){
+                    function.setFallbackValue( fallback );
+                }
                 return function;
             }
-            
             //Function function = (Function) functionClass.newInstance();
             Constructor<Function> constructor = clazz.getConstructor( new Class[]{ List.class, Literal.class} );
             return constructor.newInstance( parameters, fallback );

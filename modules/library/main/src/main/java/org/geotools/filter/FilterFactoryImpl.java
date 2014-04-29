@@ -430,15 +430,16 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
             name = (PropertyName) e;
         }
         else {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("BBOX requires PropertyName expression");
         }
         
         Literal bbox = null;
         try {
-            bbox = new BBoxExpressionImpl(ReferencedEnvelope.reference(bounds));
+            ReferencedEnvelope env = ReferencedEnvelope.reference(bounds);
+            bbox = literal(BBOXImpl.boundingPolygon( env ) );
         } 
         catch (IllegalFilterException ife) {
-            new IllegalArgumentException().initCause(ife);
+            new IllegalArgumentException("Unable to convert to Polygon:"+bounds).initCause(ife);
         }
         
         return new BBOXImpl(name,bbox, matchAction);

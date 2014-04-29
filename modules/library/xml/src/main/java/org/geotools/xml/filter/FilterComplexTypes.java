@@ -1174,8 +1174,8 @@ public class FilterComplexTypes {
 
             MathExpression me = (MathExpression) value;
             output.startElement(element.getNamespace(), element.getName(), null);
-            elems[0].getType().encode(null, me.getLeftValue(), output, hints);
-            elems[0].getType().encode(null, me.getRightValue(), output, hints);
+            elems[0].getType().encode(null, me.getExpression1(), output, hints);
+            elems[0].getType().encode(null, me.getExpression2(), output, hints);
             output.endElement(element.getNamespace(), element.getName());
         }
     }
@@ -1297,9 +1297,9 @@ public class FilterComplexTypes {
                 "string", me.getName());
             output.startElement(element.getNamespace(), element.getName(), ai);
 
-            for (int i = 0; i < me.getArgCount(); i++)
-                elems[0].getType().encode(null, me.getArgs()[i], output, hints);
-
+            for( org.opengis.filter.expression.Expression arg : me.getParameters() ){
+                elems[0].getType().encode(null, arg, output, hints);
+            }
             output.endElement(element.getNamespace(), element.getName());
         }
     }
@@ -1553,7 +1553,7 @@ public class FilterComplexTypes {
                 output.characters((String) value);
             } else {
                 AttributeExpression name = (AttributeExpression) value;
-                output.characters(name.getAttributePath());
+                output.characters(name.getPropertyName());
             }
 
             output.endElement(element.getNamespace(), element.getName());

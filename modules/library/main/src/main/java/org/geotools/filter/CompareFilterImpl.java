@@ -75,40 +75,11 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract
     }
     
     public void setExpression1(org.opengis.filter.expression.Expression leftValue) {
-    	//Checks if this is math filter or not and handles appropriately
-        int filterType = Filters.getFilterType(this);
-        if (isMathFilter(filterType)) {
-            if (DefaultExpression.isMathExpression(leftValue)
-                    || permissiveConstruction) {
-                this.expression1 = leftValue;
-            } else {
-            	throw new IllegalFilterException(
-                    "Attempted to add non-math expression to math filter."
-				);	
-            }
-                
-        } else {
-            this.expression1 = leftValue;
-        }
+        this.expression1 = leftValue;
     }
 
     public void setExpression2(org.opengis.filter.expression.Expression rightValue) {
-    	 // Checks if this is math filter or not and handles appropriately
-        int filterType = Filters.getFilterType(this);
-        if (isMathFilter(filterType)) {
-            if (DefaultExpression.isMathExpression(rightValue)
-                    || permissiveConstruction) {
-                this.expression2 = rightValue;
-            } else {
-            	
-            	throw new IllegalFilterException(
-                    "Attempted to add non-math expression to math filter."
-    			);
-                
-            }
-        } else {
-            this.expression2 = rightValue;
-        }
+        this.expression2 = rightValue;
     }
   
     /**

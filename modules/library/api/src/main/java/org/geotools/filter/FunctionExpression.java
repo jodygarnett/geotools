@@ -17,9 +17,10 @@
 package org.geotools.filter;
 
 import java.util.List;
-import org.opengis.filter.expression.Function;
-import org.geotools.factory.Factory;
 
+import org.opengis.filter.expression.Function;
+import org.opengis.filter.expression.Literal;
+import org.geotools.factory.Factory;
 
 /**
  * Interface for a function expression implementation
@@ -33,49 +34,45 @@ import org.geotools.factory.Factory;
  */
 public interface FunctionExpression extends Expression, Factory, Function {
     /**
-     *   Returns the number of arguments this <Function> requires.
+     *  The number of arguments this <Function> requires.
      *
-     *   For example <Function name="strCat"> [arg1][arg2]</Function>.
-     *   This function must have EXACTLY 2 arguments, so this function
-     *   would return 2.
+     *  For example &lt;Function name="strCat"&gt; [arg1][arg2]&lt;/Function&gt;.
+     *  This function must have EXACTLY 2 arguments, so this function
+     *  would return 2.
+     *  <p>
+     *  The parser might use this information to ensure validity,
+     *  and its also for reporting <Function> capabilities. Users interfaces also
+     *  use this information to prompt users for an appropriate number of parameters.
+     *  <p>
+     *  Update: This same information is available from FunctionName getArgumentCount()
+     *  with the following description:
+     * <ul>
+     * <li>Use a positive number to indicate the number of arguments.
+     *     Example: <code>add( number1, number2 ) = 2 </code></li>
+     * <li>Use a negative number to indicate a minimum number:
+     *    Example:  <code>concat( str1, str2,... ) has -2 </code></li>
+     * </ul> 
+     * FunctionName provides is part of the Filter 2.0 specification and provides
+     * argument name information - in addition to this simple cunt.
      *
-     *   The parser might use this information to ensure validity,
-     *   and its also for reporting <Function> capabilities.
-     *
-     *  NOTE: this was previously javadoc-ed incorrectly, please note
-     *        the new definition.
-     *  NOTE: you cannot have a function with a variable number of
-     *        arguments.
-     *
-     * @return the number of args required by this function.
+     * @return the number of arguments required, same as FunctionName getArgumentCount()
      */
     int getArgCount();
-
+    
     /**
-     * Gets the arguments to be evaluated by this function.
-     *
-     * @return an array of the args to be evaluated.
-     * @deprecated use {@link Function#getParameters()}
+     * Fallback value to use in the event the function is unavailable in the requested environment.
+     * <p>
+     * The fallback value is not provided as one of the arguments, as it is an advanced option used
+     * in style layer descriptor documents to facilitate interoperability. It allows a user to specify
+     * an SQL function, and provide a value to use when the documented is used with a WFS that does
+     * not support the provided function.
+     * 
+     * @param parameters
      */
-    Expression[] getArgs();
+    void setFallbackValue(Literal fallback);
 
     /**
-     * Gets the name of this function.
-     *
-     * @return the name of the function.
-     */
-    String getName();
-
-    /**
-     * Sets the arguments to be evaluated by this function.
-     *
-     * @param args an array of expressions to be evaluated.
-     * @deprecated use {@link #setParameters(List)}
-     */
-    void setArgs(Expression[] args);
-
-    /**
-     * Sets the paramters for the function.
+     * Sets the Parameters for the function.
      */
     void setParameters(List<org.opengis.filter.expression.Expression> parameters);
 }

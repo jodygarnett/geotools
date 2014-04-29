@@ -16,8 +16,6 @@
  */
 package org.geotools.filter;
 
-import org.opengis.feature.simple.SimpleFeature;
-
 
 /**
  * Defines an expression, the units that make up Filters.   This filter holds

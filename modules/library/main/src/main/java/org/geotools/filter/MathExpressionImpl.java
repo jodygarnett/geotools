@@ -57,44 +57,6 @@ public abstract class MathExpressionImpl extends DefaultExpression
     	this.rightValue = e2;
     }
 
-    /**
-     * Adds the 'left' value to this expression.
-     *
-     * @param leftValue Expression to add to this expression.
-     *
-     * @throws IllegalFilterException Attempting to add non-math expression.
-     * 
-     * @deprecated use {@link #setExpression1(org.opengis.filter.expression.Expression)}
-     */
-    public final void addLeftValue(Expression leftValue)
-        throws IllegalFilterException {
-    	
-    	setExpression1(leftValue);
-    }
-
-    /**
-     * Adds the 'right' value to this expression.
-     *
-     * @param rightValue Expression to add to this expression.
-     *
-     * @throws IllegalFilterException Attempting to add non-math expression.
-     * 
-     * @deprecated use {@link #setExpression2(org.opengis.filter.expression.Expression)}
-     */
-    public final void addRightValue(Expression rightValue)
-        throws IllegalFilterException {
-        
-    	setExpression2(rightValue);
-    }
-
-    /**
-     * Gets the left or first expression.
-     * 
-     * @deprecated use {@link #getExpression1()}.
-     */
-    public final Expression getLeftValue() {
-        return (Expression)getExpression1();
-    }
     
     /**
      * 
@@ -118,17 +80,6 @@ public abstract class MathExpressionImpl extends DefaultExpression
             "Attempted to add Geometry expression to math expression.");
     	}
         this.leftValue = expression;
-    }
-
-    /**
-     * Gets the right expression.
-     *
-     * @return the expression on the right of the comparison.
-     * 
-     * @deprecated use {@link #getExpression2()}.
-     */
-    public final Expression getRightValue() {
-        return (Expression) getExpression2();
     }
     
     /**

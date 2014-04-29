@@ -16,7 +16,6 @@
  */
 package org.geotools.filter;
 
-import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.expression.Literal;
 
 
@@ -33,23 +32,4 @@ import org.opengis.filter.expression.Literal;
  * @deprecated use {@link org.opengis.filter.expression.Literal}
  */
 public interface LiteralExpression extends Expression, Literal {
-    /**
-     * Sets the literal.
-     *
-     * @param literal The literal to store inside this expression.
-     *
-     * @throws IllegalFilterException This literal type is not in scope.
-     *
-     * @deprecated use {@link Literal#setValue(Object)}
-     */
-    void setLiteral(Object literal) throws IllegalFilterException;
-
-    /**
-     * Retrieves the literal of this expression.
-     *
-     * @return the literal held by this expression.
-     *
-     * @deprecated use {@link Literal#getValue()}.
-     */
-    Object getLiteral();
 }

@@ -16,7 +16,6 @@
  */
 package org.geotools.filter;
 
-import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.expression.BinaryExpression;
 
 
@@ -41,41 +40,4 @@ import org.opengis.filter.expression.BinaryExpression;
  */
 public interface MathExpression extends Expression, BinaryExpression {
 
-    /**
-     * Adds the 'right' value to this expression.
-     *
-     * @param rightValue Expression to add to this expression.
-     *
-     * @throws IllegalFilterException Attempting to add non-math expression.
-     *
-     * @deprecated use {@link BinaryExpression#setExpression2(Expression)}
-     */
-    void addRightValue(Expression rightValue) throws IllegalFilterException;
-
-    /**
-     * Gets the left expression.
-     *
-     * @return the expression on the left of the comparison.
-     * @deprecated use {@link BinaryExpression#getExpression1()}.
-     */
-    Expression getLeftValue();
-
-    /**
-     * Gets the right expression.
-     *
-     * @return the expression on the right of the comparison.
-     * @deprecated use {@link BinaryExpression#getExpression2()}.
-     */
-    Expression getRightValue();
-
-    /**
-     * Adds the 'left' value to this expression.
-     *
-     * @param leftValue Expression to add to this expression.
-     *
-     * @throws IllegalFilterException Attempting to add non-math expression.
-     *
-     * @deprecated use {@link BinaryExpression#setExpression1(Expression)}
-     */
-    void addLeftValue(Expression leftValue) throws IllegalFilterException;
 }

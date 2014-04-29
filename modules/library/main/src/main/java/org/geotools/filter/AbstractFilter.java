@@ -36,9 +36,6 @@ public abstract class AbstractFilter extends FilterAbstract implements Filter {
     /** The logger for the default core module. */
     protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.core");
 
-    /** Sets the permissiveness of the filter construction handling. */
-    protected boolean permissiveConstruction = true;
-
     /**
      * 
      * @param factory
@@ -153,19 +150,6 @@ public abstract class AbstractFilter extends FilterAbstract implements Filter {
     protected static boolean isSimpleFilter(short filterType) {
         return (isCompareFilter(filterType) || isGeometryFilter(filterType)
         || (filterType == NULL) || (filterType == FID) || (filterType == LIKE));
-    }
-    
-    /**
-     * Safe cast used to return org.geotools.filter.Expression if supported
-     * 
-     * @param expression
-     * @return org.geotools.filter.Expression instance, or null if not implemented
-     */
-    protected Expression expressionCast( org.opengis.filter.expression.Expression expression){
-        if( expression != null && expression instanceof Expression){
-            return (Expression) expression;
-        }
-        return null;
     }
 
 }

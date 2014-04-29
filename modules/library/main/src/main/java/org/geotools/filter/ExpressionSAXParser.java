@@ -212,13 +212,13 @@ public class ExpressionSAXParser {
             // if in a bad state, throw exception
             if (expFactory.isReady()) {
                 if (currentState.equals("leftValue")) {
-                    ((MathExpression) curExprssn).addLeftValue(expFactory
+                    ((MathExpressionImpl) curExprssn).setExpression1(expFactory
                         .create());
                     currentState = "rightValue";
                     expFactory = new ExpressionSAXParser(schema);
                     LOGGER.finer("just added left value: " + currentState);
                 } else if (currentState.equals("rightValue")) {
-                    ((MathExpression) curExprssn).addRightValue(expFactory
+                    ((MathExpressionImpl) curExprssn).setExpression2(expFactory
                         .create());
                     currentState = "complete";
                     expFactory = null;
@@ -233,7 +233,9 @@ public class ExpressionSAXParser {
                         {
                         	//hay, we've parsed all the arguments!
                         	currentState = "complete";
-                        	((FunctionExpression) curExprssn).setArgs( (Expression[]) accumalationOfExpressions.toArray( new Expression[0] ));
+                        	
+                        	//accumalationOfExpressions
+                            ((FunctionExpression) curExprssn).setParameters( accumalationOfExpressions );
                         }
                         else
                         {
@@ -319,7 +321,7 @@ public class ExpressionSAXParser {
                 }
 
                 LOGGER.finer("setting attribute expression: " + newAttName);
-                ((AttributeExpression) curExprssn).setAttributePath(newAttName);
+                ((AttributeExpressionImpl) curExprssn).setPropertyName(newAttName);
                 LOGGER.finer("...");
                 currentState = "complete";
                 LOGGER.finer("...");
@@ -336,22 +338,22 @@ public class ExpressionSAXParser {
                 if (convertToNumber){
 	            	try {
 	                    Object temp = new Integer(message);
-	                    ((LiteralExpression) curExprssn).setLiteral(temp);
+	                    ((LiteralExpressionImpl) curExprssn).setValue(temp);
 	                    currentState = "complete";
 	                } catch (NumberFormatException nfe1) {
 	                    try {
 	                        Object temp = new Double(message);
-	                        ((LiteralExpression) curExprssn).setLiteral(temp);
+	                        ((LiteralExpressionImpl) curExprssn).setValue(temp);
 	                        currentState = "complete";
 	                    } catch (NumberFormatException nfe2) {
 	                        Object temp = message;
-	                        ((LiteralExpression) curExprssn).setLiteral(temp);
+	                        ((LiteralExpressionImpl) curExprssn).setValue(temp);
 	                        currentState = "complete";
 	                    }
 	                }
                 }else{
                     Object temp = message;
-                    ((LiteralExpression) curExprssn).setLiteral(temp);
+                    ((LiteralExpressionImpl) curExprssn).setValue(temp);
                     currentState = "complete";
                 }
             } else if (expFactory != null) {
@@ -377,7 +379,7 @@ public class ExpressionSAXParser {
         //if(curExprssn.getType()==ExpressionDefault.LITERAL_GEOMETRY){
         //LOGGER.finer("got geometry: ");
         curExprssn = new LiteralExpressionImpl();
-        ((LiteralExpression) curExprssn).setLiteral(geometry);
+        ((LiteralExpressionImpl) curExprssn).setValue(geometry);
         LOGGER.finer("set expression: " + curExprssn.toString());
         currentState = "complete";
         LOGGER.finer("set current state: " + currentState);

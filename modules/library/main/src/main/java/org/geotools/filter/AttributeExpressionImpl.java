@@ -79,7 +79,6 @@ public class AttributeExpressionImpl extends DefaultExpression
      */
     protected AttributeExpressionImpl(SimpleFeatureType schema) {
         this.schema = schema;
-        this.expressionType = ATTRIBUTE;
     }
 
     /**
@@ -92,7 +91,6 @@ public class AttributeExpressionImpl extends DefaultExpression
         this.schema = null;
         this.namespaceSupport = null;
         this.hints = null;
-        this.expressionType = ATTRIBUTE;
     }
     
     /**
@@ -109,7 +107,6 @@ public class AttributeExpressionImpl extends DefaultExpression
         } else {
         	namespaceSupport = null;
         }
-        expressionType = ATTRIBUTE;        
     }
     
     /**
@@ -122,7 +119,6 @@ public class AttributeExpressionImpl extends DefaultExpression
         attPath = xpath;
         schema = null;
         this.namespaceSupport = namespaceContext;
-        this.expressionType = ATTRIBUTE;
     }   
     
     /**
@@ -135,7 +131,6 @@ public class AttributeExpressionImpl extends DefaultExpression
         schema = null;
         this.namespaceSupport = null;
         this.hints = hints;
-        this.expressionType = ATTRIBUTE;
     } 
     
     public NamespaceSupport getNamespaceContext() {
@@ -154,8 +149,7 @@ public class AttributeExpressionImpl extends DefaultExpression
     protected AttributeExpressionImpl(SimpleFeatureType schema, String attPath)
         throws IllegalFilterException {
         this.schema = schema;
-        this.expressionType = ATTRIBUTE;
-        setAttributePath(attPath);
+        setPropertyName(attPath);
     }
 
     /**
@@ -209,18 +203,6 @@ public class AttributeExpressionImpl extends DefaultExpression
            this.attPath = attPath;
        }
     }	
-    
-    /**
-      * Gets the value of this attribute from the passed feature.
-      *
-      * @param feature Feature from which to extract attribute value.
-      */
-    public Object evaluate(SimpleFeature feature) {
-       //NC - is exact copy of code anyway, don't need to keep changing both
-       //this method can probably be removed all together
-        return evaluate((Object) feature, null); 
-       
-    }
   
     /**
      * Gets the value of this property from the passed object.
@@ -332,16 +314,16 @@ public class AttributeExpressionImpl extends DefaultExpression
         if (obj.getClass() == this.getClass()) {
             AttributeExpressionImpl expAttr = (AttributeExpressionImpl) obj;
 
-            boolean isEqual = (expAttr.getType() == this.expressionType);
+            boolean isEqual = (Filters.getExpressionType(expAttr) == Filters.getExpressionType(this));
             if(LOGGER.isLoggable(Level.FINEST))
                 LOGGER.finest("expression type match:" + isEqual + "; in:"
-                + expAttr.getType() + "; out:" + this.expressionType);
+                + Filters.getExpressionType(expAttr) + "; out:" + Filters.getExpressionType(this));
             isEqual = (expAttr.attPath != null)
                 ? (isEqual && expAttr.attPath.equals(this.attPath))
                 : (isEqual && (this.attPath == null));
             if(LOGGER.isLoggable(Level.FINEST))
                 LOGGER.finest("attribute match:" + isEqual + "; in:"
-                + expAttr.getAttributePath() + "; out:" + this.attPath);
+                + expAttr.getPropertyName() + "; out:" + this.attPath);
             isEqual = (expAttr.schema != null)
                 ? (isEqual && expAttr.schema.equals(this.schema))
                 : (isEqual && (this.schema == null));

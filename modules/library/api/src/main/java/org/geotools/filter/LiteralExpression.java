@@ -45,25 +45,6 @@ public interface LiteralExpression extends Expression, Literal {
     void setLiteral(Object literal) throws IllegalFilterException;
 
     /**
-     * Gets the value of this literal.
-     *
-     * @param feature Required by the interface but not used.
-     *
-     * @return the literal held by this expression.  Ignores the passed in
-     *         feature.
-     *
-     * @deprecated use {@link Expression#evaluate(Feature)}.
-     */
-    Object getValue(SimpleFeature feature);
-
-    /**
-     * Returns the literal type.
-     *
-     * @return the short representation of the literal expression type.
-     */
-    short getType();
-
-    /**
      * Retrieves the literal of this expression.
      *
      * @return the literal held by this expression.

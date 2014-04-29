@@ -173,14 +173,14 @@ public class ExpressionTest extends TestCase {
 		Expression testAttribute = new AttributeExpressionImpl(testSchema,
 				"testInteger");
 		LOGGER.fine("integer attribute expression equals: "
-				+ testAttribute.getValue(testFeature));
-		assertEquals(new Integer(1002), testAttribute.getValue(testFeature));
+				+ testAttribute.evaluate(testFeature));
+		assertEquals(new Integer(1002), testAttribute.evaluate(testFeature));
 
 		// Test string attribute
 		testAttribute = new AttributeExpressionImpl(testSchema, "testString");
 		LOGGER.fine("string attribute expression equals: "
-				+ testAttribute.getValue(testFeature));
-		assertEquals("test string data", testAttribute.getValue(testFeature));
+				+ testAttribute.evaluate(testFeature));
+		assertEquals("test string data", testAttribute.evaluate(testFeature));
 	}
 
 	/**
@@ -214,14 +214,14 @@ public class ExpressionTest extends TestCase {
 		// Test integer attribute
 		Expression testLiteral = new LiteralExpressionImpl(new Integer(1002));
 		LOGGER.fine("integer literal expression equals: "
-				+ testLiteral.getValue(testFeature));
-		assertEquals(new Integer(1002), testLiteral.getValue(testFeature));
+				+ testLiteral.evaluate(testFeature));
+		assertEquals(new Integer(1002), testLiteral.evaluate(testFeature));
 
 		// Test string attribute
 		testLiteral = new LiteralExpressionImpl("test string data");
 		LOGGER.fine("string literal expression equals: "
-				+ testLiteral.getValue(testFeature));
-		assertEquals("test string data", testLiteral.getValue(testFeature));
+				+ testLiteral.evaluate(testFeature));
+		assertEquals("test string data", testLiteral.evaluate(testFeature));
 	}
 
 	/**
@@ -345,14 +345,14 @@ public class ExpressionTest extends TestCase {
 		MathExpressionImpl mathTest = new AddImpl(null, null);
 		mathTest.addLeftValue(testAttribute1);
 		try {
-			mathTest.getValue(testFeature);
+			mathTest.evaluate(testFeature);
 			fail("math expressions should not work if right hand side is not set");
 		} catch (IllegalArgumentException ife) {
 		}
 		mathTest = new AddImpl(null, null);
 		mathTest.addRightValue(testAttribute1);
 		try {
-			mathTest.getValue(testFeature);
+			mathTest.evaluate(testFeature);
 			fail("math expressions should not work if left hand side is not set");
 		} catch (IllegalArgumentException ife) {
 		}
@@ -373,9 +373,9 @@ public class ExpressionTest extends TestCase {
 		MathExpressionImpl mathTest = new AddImpl(null, null);
 		mathTest.addLeftValue(testAttribute1);
 		mathTest.addRightValue(testAttribute2);
-		LOGGER.fine("math test: " + testAttribute1.getValue(testFeature)
-				+ " + " + testAttribute2.getValue(testFeature) + " = "
-				+ mathTest.getValue(testFeature));
+		LOGGER.fine("math test: " + testAttribute1.evaluate(testFeature)
+				+ " + " + testAttribute2.evaluate(testFeature) + " = "
+				+ mathTest.evaluate(testFeature));
 		assertEquals(new Integer(6), mathTest.evaluate(testFeature,
 				Integer.class));
 
@@ -383,9 +383,9 @@ public class ExpressionTest extends TestCase {
 		mathTest = new SubtractImpl(null, null);
 		mathTest.addLeftValue(testAttribute1);
 		mathTest.addRightValue(testAttribute2);
-		LOGGER.fine("math test: " + testAttribute1.getValue(testFeature)
-				+ " - " + testAttribute2.getValue(testFeature) + " = "
-				+ mathTest.getValue(testFeature));
+		LOGGER.fine("math test: " + testAttribute1.evaluate(testFeature)
+				+ " - " + testAttribute2.evaluate(testFeature) + " = "
+				+ mathTest.evaluate(testFeature));
 		assertEquals(new Integer(2), mathTest.evaluate(testFeature,
 				Integer.class));
 
@@ -393,9 +393,9 @@ public class ExpressionTest extends TestCase {
 		mathTest = new MultiplyImpl(null, null);
 		mathTest.addLeftValue(testAttribute1);
 		mathTest.addRightValue(testAttribute2);
-		LOGGER.fine("math test: " + testAttribute1.getValue(testFeature)
-				+ " * " + testAttribute2.getValue(testFeature) + " = "
-				+ mathTest.getValue(testFeature));
+		LOGGER.fine("math test: " + testAttribute1.evaluate(testFeature)
+				+ " * " + testAttribute2.evaluate(testFeature) + " = "
+				+ mathTest.evaluate(testFeature));
 		assertEquals(new Integer(8), mathTest.evaluate(testFeature,
 				Integer.class));
 
@@ -403,10 +403,10 @@ public class ExpressionTest extends TestCase {
 		mathTest = new DivideImpl(null, null);
 		mathTest.addLeftValue(testAttribute1);
 		mathTest.addRightValue(testAttribute2);
-		LOGGER.fine("math test: " + testAttribute1.getValue(testFeature)
-				+ " / " + testAttribute2.getValue(testFeature) + " = "
-				+ mathTest.getValue(testFeature));
-		assertEquals(new Double(2), mathTest.getValue(testFeature));
+		LOGGER.fine("math test: " + testAttribute1.evaluate(testFeature)
+				+ " / " + testAttribute2.evaluate(testFeature) + " = "
+				+ mathTest.evaluate(testFeature));
+		assertEquals(new Double(2), mathTest.evaluate(testFeature));
 	}
 
 	/**

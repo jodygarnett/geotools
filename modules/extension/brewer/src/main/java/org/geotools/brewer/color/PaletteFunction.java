@@ -119,7 +119,7 @@ public class PaletteFunction extends FunctionExpressionImpl implements FunctionE
         return prelim;
     }
 
-    public Object evaluate(SimpleFeature feature) {
+    public Object evaluate(Object feature) {
         int classNum = classifier.getClasses();
         ColorBrewer brewer = new ColorBrewer();
         int klass = ((Integer) classifier.evaluate(feature)).intValue();

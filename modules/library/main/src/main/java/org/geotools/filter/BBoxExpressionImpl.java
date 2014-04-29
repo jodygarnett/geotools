@@ -63,9 +63,7 @@ public class BBoxExpressionImpl
      * @throws IllegalFilterException if there are problems.
      */
     public BBoxExpressionImpl(Envelope env) throws IllegalFilterException {
-        expressionType = DefaultExpression.LITERAL_GEOMETRY;
         setBounds(env);
-        
     }
 
     /**

@@ -35,58 +35,10 @@ import org.opengis.filter.expression.Subtract;
  * @version $Id$
  */
 public abstract class DefaultExpression extends ExpressionAbstract implements Expression {
-    
-  	/** Defines the type of this expression. */
-    protected short expressionType;
 
     /** Defines the type of this expression. */
     protected boolean permissiveConstruction;
 
-    /**
-     * Gets the type of this expression.
-     *
-     * @return The short representation of the expression type.
-     */
-    public short getType() {
-        return expressionType;
-    }
-
-    /**
-     * This method calls {@link #evaluate(Feature)}.
-     * 
-     * @deprecated use {@link #evaluate(Feature)}.
-     */
-    public final Object getValue(SimpleFeature feature) {
-        return evaluate((Object)feature);
-    }
-    
-    /**
-     * Returns a value for this expression.  If the expression is an attribute
-     * expression then the attribute of the feature should be returned.  If a
-     * literal then the feature is ignored, the literal is returned as it has
-     * no relation to the feature.
-     *
-     * @param feature Specified feature to use when returning value.
-     *
-     * @return The value of this expression based on the feature.
-     *
-     * @task REVISIT: make abstract?
-     */
-    public Object evaluate(SimpleFeature feature) {
-    	return evaluate((Object)feature);
-    }
-    
-    /**
-     * 
-     * This method checks if the object is an instance of {@link Feature} and 
-     * if so, calls through to {@link #evaluate(Feature)}. This is done 
-     * to maintain backwards compatability with previous version of Expression api 
-     * which depended on Feature. If the object is not an instance of feature 
-     * the super implementation is called.
-     */
-    public Object evaluate(Object object) {
-    	return new Object();
-    }
     
     /* ***********************************************************************
      * Following static methods check for certain aggregate types, based on

@@ -24,6 +24,7 @@ import org.opengis.filter.expression.ExpressionVisitor;
 import org.opengis.filter.expression.Literal;
 
 import com.vividsolutions.jts.geom.Geometry;
+import static org.geotools.filter.Filters.getExpressionType;
 
 
 /**
@@ -131,15 +132,6 @@ public class LiteralExpressionImpl extends DefaultExpression
     }
 
     /**
-     * Returns the literal type.
-     *
-     * @return the short representation of the expression type.
-     */
-    public short getType() {
-        return expressionType;
-    }
-
-    /**
      * This method calls {@link #setValue(Object)}.
      * 
      * @deprecated use {@link #setValue(Object)}.
@@ -177,20 +169,6 @@ public class LiteralExpressionImpl extends DefaultExpression
      * @throws IllegalFilterException This literal type is not in scope.
      */
     public final void setValue(Object literal) {
-    	if (literal instanceof Double) {
-            expressionType = LITERAL_DOUBLE;
-        } else if (literal instanceof Integer) {
-            expressionType = LITERAL_INTEGER;
-        } else if (literal instanceof Long) {
-            expressionType = LITERAL_LONG;
-        } else if (literal instanceof String) {
-            expressionType = LITERAL_STRING;
-        } else if (literal instanceof Geometry) {
-            expressionType = LITERAL_GEOMETRY;
-        } else {
-            expressionType = LITERAL_UNDECLARED;
-        }
-
         this.literal = literal;
     }
     
@@ -220,7 +198,7 @@ public class LiteralExpressionImpl extends DefaultExpression
         return literal;
     }
     
-    public Object evaluate(Object feature, Class context) {
+    public <T> T evaluate(Object feature, Class<T> context) {
         return Converters.convert(literal, context);
     }
 
@@ -261,23 +239,24 @@ public class LiteralExpressionImpl extends DefaultExpression
             }
             
             // direct comparison if same type
-            if (this.expressionType == expLit.expressionType) {
+            if (getExpressionType(this) == getExpressionType(expLit)) {
                 if(this.literal.equals(expLit.literal)) {
                     return true;
                 }
             }
 
             // do the conversion dance
+            int expressionType = getExpressionType(this);
             if (expressionType == LITERAL_GEOMETRY) {
-                return ((Geometry) this.literal).equalsExact((Geometry) expLit.evaluate(null, Geometry.class));
+                return ((Geometry) this.literal).equalsExact( expLit.evaluate(null, Geometry.class));
             } else if (expressionType == LITERAL_INTEGER) {
-                return ((Integer) this.literal).equals((Integer) expLit.evaluate(null, Integer.class));
+                return ((Integer) this.literal).equals( expLit.evaluate(null, Integer.class));
             } else if (expressionType == LITERAL_STRING) {
-                return ((String) this.literal).equals((String) expLit.evaluate(null, String.class));
+                return ((String) this.literal).equals(expLit.evaluate(null, String.class));
             } else if (expressionType == LITERAL_DOUBLE) {
-                return ((Double) this.literal).equals((Double) expLit.evaluate(null, Double.class));
+                return ((Double) this.literal).equals(expLit.evaluate(null, Double.class));
             } else if (expressionType == LITERAL_LONG) {
-                return ((Long) this.literal).equals((Long) expLit.evaluate(null, Long.class));                
+                return ((Long) this.literal).equals(expLit.evaluate(null, Long.class));                
             } else {
                 // try to convert the other to the current type
                 Object other = expLit.evaluate(null, this.literal.getClass());
@@ -314,7 +293,7 @@ public class LiteralExpressionImpl extends DefaultExpression
         int result = 17;
 
         result = (37 * result) + ((literal == null) ? 0 : literal.hashCode());
-        result = (37 * result) + expressionType;
+        result = (37 * result) + Filters.getExpressionType( this );
 
         return result;
     }

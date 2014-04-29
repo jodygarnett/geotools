@@ -113,12 +113,11 @@ public abstract class MathExpressionImpl extends DefaultExpression
      * @throws IllegalFilterException
      */
     public void setExpression1(org.opengis.filter.expression.Expression expression) {
-    	Expression leftValue = (Expression)expression;
-    	if (isGeometryExpression(leftValue.getType()) ) {
+    	if (isGeometryExpression(Filters.getExpressionType(expression))) {
     		throw new IllegalFilterException(
             "Attempted to add Geometry expression to math expression.");
     	}
-        this.leftValue = leftValue;
+        this.leftValue = expression;
     }
 
     /**
@@ -147,22 +146,12 @@ public abstract class MathExpressionImpl extends DefaultExpression
      * @throws IllegalFilterException
      */
     public void setExpression2(org.opengis.filter.expression.Expression expression) {
-    	Expression rightValue = (Expression)expression;
     	//Check to see if this is a valid math expression before adding.
-        if (isGeometryExpression(rightValue.getType()) ) {
+        if (isGeometryExpression(Filters.getExpressionType(expression)) ) {
         	throw new IllegalFilterException(
             "Attempted to add Geometry expression to math expression.");
         }
-        this.rightValue = rightValue;        	
-    }
-
-    /**
-     * Gets the type of this expression.
-     *
-     * @return Expression type.
-     */
-    public short getType() {
-        return expressionType;
+        this.rightValue = expression;
     }
     
     /** 

@@ -28,7 +28,6 @@ import org.geotools.util.Converters;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.MultiValuedFilter.MatchAction;
 
-
 import com.vividsolutions.jts.geom.Geometry;
 
 
@@ -122,7 +121,7 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
             Expression leftGeometry = (Expression) expression;
 
             // Checks if this is geometry filter or not and handles appropriately
-            if (DefaultExpression.isGeometryExpression(leftGeometry.getType())
+            if (DefaultExpression.isGeometryExpression(Filters.getExpressionType(leftGeometry))
                     || permissiveConstruction) {
                 super.setExpression1(leftGeometry);
             } else {
@@ -157,7 +156,7 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
             Expression rightGeometry = (Expression) expression;
 
             // Checks if this is math filter or not and handles appropriately
-            if (DefaultExpression.isGeometryExpression(rightGeometry.getType())
+            if (DefaultExpression.isGeometryExpression(Filters.getExpressionType(rightGeometry))
                     || permissiveConstruction) {
                 super.setExpression2(rightGeometry);
             } else {

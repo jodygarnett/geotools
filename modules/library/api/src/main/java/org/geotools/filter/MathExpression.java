@@ -40,17 +40,6 @@ import org.opengis.filter.expression.BinaryExpression;
  * @deprecated use {@link org.opengis.filter.expression.BinaryExpression}
  */
 public interface MathExpression extends Expression, BinaryExpression {
-    /**
-     * Returns the value for this expression.
-     *
-     * @param feature Feature to use when return sub expression values.
-     *
-     * @return Value of this expression.
-     *
-     * @deprecated use {@link Expression#evaluate(Feature)}.
-     *
-     */
-    Object getValue(SimpleFeature feature);
 
     /**
      * Adds the 'right' value to this expression.
@@ -62,15 +51,6 @@ public interface MathExpression extends Expression, BinaryExpression {
      * @deprecated use {@link BinaryExpression#setExpression2(Expression)}
      */
     void addRightValue(Expression rightValue) throws IllegalFilterException;
-
-    /**
-     * Gets the type of this expression.
-     *
-     * @return Expression type.
-     * @deprecated The expression type system has been replaced by an actual
-     * class type system.
-     */
-    short getType();
 
     /**
      * Gets the left expression.

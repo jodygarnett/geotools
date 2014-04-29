@@ -60,7 +60,6 @@ public abstract class ClassificationFunction extends DefaultExpression implement
     
     public ClassificationFunction(FunctionName name) {
         this.name = name;
-        this.expressionType = ExpressionType.FUNCTION;
     }
     
     public int getArgCount() {
@@ -72,11 +71,6 @@ public abstract class ClassificationFunction extends DefaultExpression implement
      */
     public Object accept(ExpressionVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
-    }
-    
-    //overriding evaluate(feature) to point at evaluate(object)
-    public Object evaluate(SimpleFeature feature) {
-        return evaluate((Object) feature);
     }
 
     public abstract Object evaluate(Object arg);

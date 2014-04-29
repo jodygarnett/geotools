@@ -25,6 +25,7 @@ import javax.naming.OperationNotSupportedException;
 import org.geotools.filter.AttributeExpression;
 import org.geotools.filter.Expression;
 import org.geotools.filter.FilterCapabilities;
+import org.geotools.filter.Filters;
 import org.geotools.filter.FunctionExpression;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.LiteralExpression;
@@ -53,6 +54,7 @@ import org.geotools.xml.schema.impl.FacetGT;
 import org.geotools.xml.schema.impl.SequenceGT;
 import org.geotools.xml.xsi.XSISimpleTypes;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -999,7 +1001,7 @@ public class FilterComplexTypes {
             Map hints) throws IOException, OperationNotSupportedException {
             Expression e = (Expression) value;
 
-            switch (e.getType()) {
+            switch (Filters.getExpressionType(e)) {
             case ATTRIBUTE:
             case ATTRIBUTE_DOUBLE:
             case ATTRIBUTE_GEOMETRY:
@@ -1423,16 +1425,16 @@ public class FilterComplexTypes {
                 return;
             }
             
-            LiteralExpression me = (LiteralExpression) value;
+            Literal me = (Literal) value;
             output.startElement(element.getNamespace(), element.getName(), ai);
 
-            switch (me.getType()) {
+            switch (Filters.getExpressionType(me)) {
             case org.geotools.filter.ExpressionType.LITERAL_GEOMETRY:
 
-                if (me.getLiteral() instanceof Geometry) {
+                if (me.getValue() instanceof Geometry) {
                     GMLSchema.getInstance().getElements()[29].getType().encode(GMLSchema.getInstance()
                                                                                         .getElements()[29],
-                        me.getLiteral(), output, hints);
+                        me.getValue(), output, hints);
 
                     break;
                 }
@@ -1441,7 +1443,7 @@ public class FilterComplexTypes {
             case org.geotools.filter.ExpressionType.LITERAL_INTEGER:
             case org.geotools.filter.ExpressionType.LITERAL_STRING:
             case org.geotools.filter.ExpressionType.LITERAL_LONG:
-                output.characters(me.getLiteral().toString());
+                output.characters(me.getValue().toString());
 
                 break;
             }

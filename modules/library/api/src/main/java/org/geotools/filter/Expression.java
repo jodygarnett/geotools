@@ -33,39 +33,5 @@ import org.opengis.feature.simple.SimpleFeature;
  * @deprecated use {@link org.opengis.filter.expression.Expression}
  */
 public interface Expression extends ExpressionType, org.opengis.filter.expression.Expression {
-    /**
-     * Gets the type of this expression.
-     *
-     * @return Expression type.
-     *
-     * @deprecated The enumeration based type system has been replaced by a
-     * class based type system.
-     */
-    short getType();
-
-    /**
-     * Evaluates the expression against an instance of {@link Feature}.
-     *
-     * @param feature The feature being evaluated.
-     *
-     * @return The result.
-     */
-    Object evaluate(SimpleFeature feature);
-
-    /**
-     * Returns a value for this expression.  The feature argument is used if a
-     * feature is needed to evaluate the expression, as in the case of an
-     * AttributeExpression.
-     *
-     * @param feature Specified feature to use when returning value.   Some
-     *        expressions, such as LiteralExpressions, may ignore this as it
-     *        does not affect their return value.
-     *
-     * @return Value of the expression, evaluated with the feature object if
-     *         necessary.
-     *
-     * @deprecated use {@link org.opengis.filter.expression.Expression#evaluate(Feature)}
-     */
-    Object getValue(SimpleFeature feature);
 
 }

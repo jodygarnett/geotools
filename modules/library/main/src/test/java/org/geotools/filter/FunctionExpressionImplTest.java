@@ -87,7 +87,7 @@ public class FunctionExpressionImplTest extends TestCase {
     }
 
     public void testGetType() {
-        assertEquals(ExpressionType.FUNCTION, function.getType());
+        assertEquals(ExpressionType.FUNCTION, Filters.getExpressionType(function));
     }
 
     public void testGetName() {
@@ -282,7 +282,7 @@ public class FunctionExpressionImplTest extends TestCase {
             }
         }
 
-        if (ExpressionType.FUNCTION != function.getType()) {
+        if (ExpressionType.FUNCTION != Filters.getExpressionType(function)) {
             errors
                     .add(functionClass + ".getType != "
                             + ExpressionType.FUNCTION);

@@ -17,6 +17,7 @@
 package org.geotools.filter;
 
 import java.util.logging.Logger;
+
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.expression.ExpressionVisitor;
@@ -52,7 +53,6 @@ public class AttributeExpressionImpl2 extends DefaultExpression
      */
     protected AttributeExpressionImpl2(AttributeDescriptor at) {
         this.at = at;
-        this.expressionType = ATTRIBUTE;
     }
 
     /**
@@ -139,7 +139,7 @@ public class AttributeExpressionImpl2 extends DefaultExpression
         if (obj.getClass() == this.getClass()) {
             AttributeExpressionImpl2 expAttr = (AttributeExpressionImpl2) obj;
 
-            boolean isEqual = (expAttr.getType() == this.expressionType);
+            boolean isEqual = (Filters.getExpressionType(expAttr) == Filters.getExpressionType(this));
             isEqual = (expAttr.attPath != null)
                 ? (isEqual && expAttr.attPath.equals(this.attPath))
                 : (isEqual && (this.attPath == null));

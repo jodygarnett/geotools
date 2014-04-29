@@ -49,18 +49,6 @@ public interface AttributeExpression extends Expression, PropertyName {
     void setAttributePath(String attributePath) throws IllegalFilterException;
 
     /**
-     * Gets the attribute value at the path held by this expression from the
-     * feature.
-     *
-     * @param feature the feature to get this attribute from.
-     *
-     * @return the value of the attribute found by this expression.
-     *
-     * @deprecated use {@link org.opengis.filter.expression.Expression#evaluate(Feature)()}
-     */
-    Object getValue(SimpleFeature feature);
-
-    /**
      * Gets the attribute path of this expression.
      *
      * @return the attribute to be queried.

@@ -134,7 +134,7 @@ public class FilterOpsComplexTypes {
         Map hints) throws OperationNotSupportedException, IOException {
         int i = 0;
 
-        switch (expr.getType()) {
+        switch (Filters.getExpressionType(expr)) {
         /* Types implemented by ExpressionLiteral */
         case org.geotools.filter.ExpressionType.LITERAL_DOUBLE:
         case org.geotools.filter.ExpressionType.LITERAL_INTEGER:

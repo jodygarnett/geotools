@@ -52,13 +52,6 @@ public interface FunctionExpression extends Expression, Factory, Function {
     int getArgCount();
 
     /**
-     * Gets the type of this expression.
-     *
-     * @return the short representation of a function expression.
-     */
-    short getType();
-
-    /**
      * Gets the arguments to be evaluated by this function.
      *
      * @return an array of the args to be evaluated.

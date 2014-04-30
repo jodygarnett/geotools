@@ -20,6 +20,7 @@ import org.geotools.factory.Hints;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.Converters;
 import org.opengis.filter.BinaryComparisonOperator;
+import org.opengis.filter.MultiValuedFilter;
 import org.opengis.filter.MultiValuedFilter.MatchAction;
 import org.opengis.filter.expression.Expression;
 
@@ -36,8 +37,7 @@ import org.opengis.filter.expression.Expression;
  *
  * @source $URL$
  */
-public abstract class BinaryComparisonAbstract extends AbstractFilter 
-	implements BinaryComparisonOperator {
+public abstract class BinaryComparisonAbstract extends AbstractFilter implements MultiValuedFilter {
 
 	protected Expression expression1;
 	protected Expression expression2;

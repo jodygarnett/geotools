@@ -179,10 +179,10 @@ public class FilterEqualsTest extends TestCase {
     
 
     public void testFidFilter(){
-        FidFilter ff = new FidFilterImpl();
+        FidFilterImpl ff = new FidFilterImpl();
         ff.addFid("1");
         
-        FidFilter ff2 = new FidFilterImpl("1");
+        FidFilterImpl ff2 = new FidFilterImpl("1");
         assertNotNull(ff2);
         assertEquals(ff, ff2);
         assertTrue(!ff.equals(null));

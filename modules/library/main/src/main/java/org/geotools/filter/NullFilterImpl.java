@@ -18,6 +18,7 @@ package org.geotools.filter;
 
 
 import org.opengis.filter.FilterVisitor;
+import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 
@@ -30,7 +31,7 @@ import org.opengis.filter.expression.PropertyName;
  * @source $URL$
  * @version $Id$
  */
-public class NullFilterImpl extends AbstractFilter implements NullFilter {
+public class NullFilterImpl extends AbstractFilter implements PropertyIsNull {
     /** The null check value, which must be an attribute expression. */
     private org.opengis.filter.expression.Expression nullCheck = null;
 

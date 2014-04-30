@@ -939,8 +939,7 @@ public class WFS_1_0_0_DataStore extends AbstractDataStore implements WFSDataSto
     }
 
     /**
-     * @see org.geotools.data.AbstractDataStore#getUnsupportedFilter(java.lang.String,
-     *      org.geotools.filter.Filter)
+     * @see org.geotools.data.AbstractDataStore#getUnsupportedFilter(String,Filter)
      */
     protected Filter getUnsupportedFilter(String typeName, Filter filter) {
         try {

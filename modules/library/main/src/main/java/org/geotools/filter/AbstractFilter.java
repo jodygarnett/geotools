@@ -18,8 +18,7 @@ package org.geotools.filter;
 
 import java.util.logging.Logger;
 
-import org.opengis.feature.Feature;
-import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.filter.Filter;
 
 /**
  * Implements Filter interface, with constants and default behaviors for
@@ -31,7 +30,7 @@ import org.opengis.feature.simple.SimpleFeature;
  * @source $URL$
  * @version $Id$
  */
-public abstract class AbstractFilter extends FilterAbstract implements Filter {
+public abstract class AbstractFilter extends FilterAbstract implements FilterType, Filter {
    
     /** The logger for the default core module. */
     protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.core");

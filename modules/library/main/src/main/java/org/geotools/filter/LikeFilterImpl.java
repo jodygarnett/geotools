@@ -36,7 +36,7 @@ import org.opengis.filter.expression.Literal;
  * @source $URL$
  * @version $Id$
  */
-public class LikeFilterImpl extends AbstractFilter implements LikeFilter {
+public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
 
     /** The attribute value, which must be an attribute expression. */
     private org.opengis.filter.expression.Expression attribute = null;

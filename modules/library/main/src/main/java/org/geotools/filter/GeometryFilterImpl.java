@@ -24,8 +24,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.geotools.util.Converters;
-
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.spatial.BinarySpatialOperator;
 
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -70,7 +70,7 @@ import com.vividsolutions.jts.geom.Geometry;
  *       (comments by cholmes) - MUTABLE FACTORIES!  Sax and immutability.
  */
 public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
-    implements GeometryFilter {
+    implements BinarySpatialOperator {
     /** Class logger */
     private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
     

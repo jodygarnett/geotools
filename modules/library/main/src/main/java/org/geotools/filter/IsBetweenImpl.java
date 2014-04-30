@@ -21,6 +21,7 @@ import java.util.Collections;
 
 import org.geotools.util.Converters;
 import org.opengis.filter.FilterVisitor;
+import org.opengis.filter.PropertyIsBetween;
 import org.opengis.filter.expression.Expression;
 
 /**
@@ -32,7 +33,7 @@ import org.opengis.filter.expression.Expression;
  *
  * @source $URL$
  */
-public class IsBetweenImpl extends CompareFilterImpl implements BetweenFilter {
+public class IsBetweenImpl extends CompareFilterImpl implements PropertyIsBetween {
 
 	private Expression expression;
 	

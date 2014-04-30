@@ -26,22 +26,18 @@ import java.util.Set;
 import java.util.Stack;
 
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.BetweenFilter;
-import org.geotools.filter.CompareFilter;
-import org.geotools.filter.FidFilter;
-import org.geotools.filter.Filter;
 import org.geotools.filter.FilterType;
 import org.geotools.filter.Filters;
 import org.geotools.filter.FunctionExpression;
-import org.geotools.filter.GeometryFilter;
 import org.geotools.filter.IllegalFilterException;
-import org.geotools.filter.LikeFilter;
 import org.geotools.filter.LogicFilter;
-import org.geotools.filter.NullFilter;
 import org.geotools.xml.XMLHandlerHints;
 import org.opengis.filter.And;
+import org.opengis.filter.BinaryComparisonOperator;
+import org.opengis.filter.BinaryLogicOperator;
 import org.opengis.filter.ExcludeFilter;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.Filter;
 import org.opengis.filter.Id;
 import org.opengis.filter.IncludeFilter;
 import org.opengis.filter.FilterVisitor;
@@ -60,6 +56,7 @@ import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.filter.spatial.Beyond;
+import org.opengis.filter.spatial.BinarySpatialOperator;
 import org.opengis.filter.spatial.Contains;
 import org.opengis.filter.spatial.Crosses;
 import org.opengis.filter.spatial.DWithin;
@@ -158,10 +155,10 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
      *
      * @return the fid filter that contains all the fids.
      */
-    public FidFilter getFidFilter() {
+    public Id getFidFilter() {
         if (current.isEmpty()) {
             Set<FeatureId> empty = Collections.emptySet();
-            return (FidFilter) ff.id(empty);
+            return (Id) ff.id(empty);
         }
 
         Data data = (Data) current.peek();
@@ -172,11 +169,11 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
             for( String fid : fids ){
                 set.add( ff.featureId(fid));
             }
-            return (FidFilter) ff.id(set);
+            return (Id) ff.id(set);
         }
         else {
             Set<FeatureId> empty = Collections.emptySet();
-            return (FidFilter) ff.id(empty);
+            return (Id) ff.id(empty);
         }
     }
 
@@ -192,31 +189,34 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
     }
 
     public void visit(Filter filter) {
-        if (filter instanceof BetweenFilter || filter instanceof BetweenFilter
-                || filter instanceof CompareFilter
-                || filter instanceof GeometryFilter
-                || filter instanceof LikeFilter
-                || filter instanceof LogicFilter
-                || filter instanceof NullFilter || filter instanceof FidFilter) {
+        if (filter instanceof PropertyIsBetween
+                || filter instanceof BinaryComparisonOperator
+                || filter instanceof BinarySpatialOperator
+                || filter instanceof PropertyIsLike
+                || filter instanceof BinaryLogicOperator
+                || filter instanceof Not
+                || filter instanceof PropertyIsNull || filter instanceof Id) {
             filter.accept(this,null);
         } else {
             current.push(new Data(filter));
         }
     }
 
-    public void visit(BetweenFilter filter) {
+    public void visit(PropertyIsBetween filter) {
         current.push(new Data(filter));
     }
 
-    public void visit(CompareFilter filter) {
+    public void visit(BinaryComparisonOperator filter) {
+        current.push(new Data(filter));
+    }
+    public void visit(Not filter) {
+        current.push(new Data(filter));
+    }
+    public void visit(BinarySpatialOperator filter) {
         current.push(new Data(filter));
     }
 
-    public void visit(GeometryFilter filter) {
-        current.push(new Data(filter));
-    }
-
-    public void visit(LikeFilter filter) {
+    public void visit(PropertyIsLike filter) {
         current.push(new Data(filter));
     }
 
@@ -579,13 +579,13 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
         return false;
     }
 
-    public void visit(NullFilter filter) {
+    public void visit(PropertyIsNull filter) {
         current.push(new Data(filter));
     }
 
-    public void visit(FidFilter filter) {
+    public void visit(Id filter) {
         Data data = new Data();
-        data.fids.addAll(Arrays.asList(filter.getFids()));
+        data.fids.addAll(filter.getIDs());
         current.push(data);
     }
 
@@ -607,10 +607,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
             this( Filter.EXCLUDE);
         }
 
-        public Data(org.opengis.filter.Filter f ){
-            filter = f;
-        }
-        public Data(Filter f) {
+        public Data(Filter f ){
             filter = f;
         }
 
@@ -637,28 +634,27 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
     }
 
 protected void visitCompareFilter(org.opengis.filter.Filter filter) {
-        if (filter instanceof BetweenFilter) {
-                visit((BetweenFilter)filter);
+        if (filter instanceof PropertyIsNull) {
+                visit((PropertyIsNull)filter);
                 return;
         }
         
-        if (filter instanceof NullFilter) {
-                visit((NullFilter)filter);
-                return;
+        if (filter instanceof PropertyIsLike) {
+                visit((PropertyIsLike)filter);
         }
         
-        if (filter instanceof LikeFilter) {
-                visit((LikeFilter)filter);
+        if (filter instanceof BinaryComparisonOperator) {
+                visit((BinaryComparisonOperator)filter);
         }
         
-        if (filter instanceof CompareFilter) {
-                visit((CompareFilter)filter);
+        if (filter instanceof Not) {
+            visit((Not)filter);
         }
 }
 
 protected void visitGeometryFilter(SpatialOperator filter) {
-        if (filter instanceof GeometryFilter) {
-                visit((GeometryFilter)filter);
+        if (filter instanceof BinarySpatialOperator) {
+                visit((BinarySpatialOperator)filter);
         }
 }
 
@@ -700,7 +696,8 @@ public Object visit( Id filter, Object extraData) {
     }
     
     public Object visit(PropertyIsBetween filter, Object extraData) {
-            visitCompareFilter(filter);
+        current.push(new Data(filter));    
+        visitCompareFilter(filter);
             return extraData;
     }
     

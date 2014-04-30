@@ -17,6 +17,7 @@
 package org.geotools.filter;
 
 import org.opengis.filter.FilterVisitor;
+import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.expression.Expression;
 
 /**
@@ -24,7 +25,7 @@ import org.opengis.filter.expression.Expression;
  *
  * @source $URL$
  */
-public class IsNullImpl extends CompareFilterImpl implements NullFilter {
+public class IsNullImpl extends CompareFilterImpl implements PropertyIsNull {
 
     public IsNullImpl(org.opengis.filter.expression.Expression expression) {
         super(expression, null);

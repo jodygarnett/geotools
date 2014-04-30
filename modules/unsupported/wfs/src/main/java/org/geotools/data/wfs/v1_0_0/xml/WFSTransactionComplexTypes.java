@@ -44,7 +44,6 @@ import org.geotools.data.wfs.v1_0_0.xml.WFSSchema.WFSAttribute;
 import org.geotools.data.wfs.v1_0_0.xml.WFSSchema.WFSComplexType;
 import org.geotools.data.wfs.v1_0_0.xml.WFSSchema.WFSElement;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.FidFilter;
 import org.geotools.xml.PrintHandler;
 import org.geotools.xml.SchemaFactory;
 import org.geotools.xml.filter.FilterSchema;
@@ -1594,22 +1593,22 @@ public class WFSTransactionComplexTypes {
             }
 
             String lockId = (String) value[0].getValue();
-            FidFilter in = null;
-            FidFilter out = null;
+            Id in = null;
+            Id out = null;
             int i = 1;
 
             if ((i < value.length)
                     && elems[1].getType().getName().equals(value[i].getElement()
                                                                        .getType()
                                                                        .getName())) {
-                in = (FidFilter) value[i++];
+                in = (Id) value[i++];
             }
 
             if ((i < value.length)
                     && elems[2].getType().getName().equals(value[i].getElement()
                                                                        .getType()
                                                                        .getName())) {
-                out = (FidFilter) value[i++];
+                out = (Id) value[i++];
             }
 
             return new LockResult(lockId, in, out);
@@ -1731,7 +1730,7 @@ public class WFSTransactionComplexTypes {
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
         public Class getInstanceType() {
-            return FidFilter.class;
+            return Id.class;
         }
 
         /**
@@ -1836,7 +1835,7 @@ public class WFSTransactionComplexTypes {
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
         public Class getInstanceType() {
-            return FidFilter.class;
+            return Id.class;
         }
 
         /**
@@ -2248,12 +2247,12 @@ public class WFSTransactionComplexTypes {
                 throw new SAXException("Invalid type name for element provided");
             }
 
-            List fidList = new ArrayList();
+            List<Object> fidList = new ArrayList<Object>();
 
-            for (int i = 0; i < value.length; i++)
-                fidList.addAll(Arrays.asList(
-                        ((FidFilter) value[i].getValue()).getFids()));
-
+            for (int i = 0; i < value.length; i++){
+                Id id = (Id) value[i].getValue();
+                fidList.addAll( id.getIDs() );
+            }
             return fidList;
         }
 
@@ -2268,7 +2267,7 @@ public class WFSTransactionComplexTypes {
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
         public Class getInstanceType() {
-            return FidFilter.class;
+            return Id.class;
         }
 
         /**

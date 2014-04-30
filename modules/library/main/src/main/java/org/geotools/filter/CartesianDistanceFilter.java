@@ -19,6 +19,7 @@ package org.geotools.filter;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.spatial.Beyond;
 import org.opengis.filter.spatial.DWithin;
+import org.opengis.filter.spatial.DistanceBufferOperator;
 
 
 /**
@@ -54,7 +55,7 @@ import org.opengis.filter.spatial.DWithin;
  * @task REVISIT: add units for distance.
  */
 public abstract class CartesianDistanceFilter extends GeometryFilterImpl
-    implements GeometryDistanceFilter {
+    implements DistanceBufferOperator {
     /** The distance value */
     private double distance;
     /** the distnace units */

@@ -31,6 +31,7 @@ import org.geotools.filter.expression.SimpleFeaturePropertyAccessorFactory;
 import org.geotools.filter.identity.FeatureIdImpl;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterVisitor;
+import org.opengis.filter.Id;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.identity.Identifier;
 
@@ -54,7 +55,7 @@ import org.opengis.filter.identity.Identifier;
  * @source $URL$
  * @version $Id$
  */
-public class FidFilterImpl extends AbstractFilter implements FidFilter {
+public class FidFilterImpl extends AbstractFilter implements Id {
     /** Logger for the default core module. */
     private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.core");
 

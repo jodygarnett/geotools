@@ -50,8 +50,7 @@ import org.opengis.filter.PropertyIsNull;
  * @source $URL$
  * @version $Id$
  */
-public abstract class CompareFilterImpl extends BinaryComparisonAbstract
-    implements CompareFilter {
+public abstract class CompareFilterImpl extends BinaryComparisonAbstract {
     /** The logger for the default core module. */
     static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.core");
 
@@ -211,8 +210,8 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract
      *         otherwise.
      */
     public boolean equals(Object obj) {
-        if (obj instanceof BinaryComparisonOperator) {
-            BinaryComparisonOperator cFilter = (BinaryComparisonOperator) obj;
+        if (obj instanceof CompareFilterImpl) {
+            CompareFilterImpl cFilter = (CompareFilterImpl) obj;
 
             // todo - check for nulls here, or make immutable.
             //

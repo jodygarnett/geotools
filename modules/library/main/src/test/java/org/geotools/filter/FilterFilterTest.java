@@ -33,6 +33,8 @@ import junit.framework.TestCase;
 import org.geotools.gml.GMLFilterDocument;
 import org.geotools.gml.GMLFilterGeometry;
 import org.geotools.util.logging.Logging;
+import org.opengis.filter.Filter;
+import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.xml.sax.InputSource;
@@ -286,7 +288,7 @@ StringReader reader = new StringReader( filter );
         
         int i = 0;
         for(Iterator<org.opengis.filter.Filter> filters = ((LogicFilter)f).getChildren().iterator(); filters.hasNext(); i++){
-            CompareFilter subFitler = (CompareFilter) filters.next();
+            BinaryComparisonOperator subFitler = (BinaryComparisonOperator) filters.next();
             StringBuffer attName = new StringBuffer();
             for(int repCount = 0; repCount <= i; repCount++){
                 attName.append("eventtype-" + repCount + "_");

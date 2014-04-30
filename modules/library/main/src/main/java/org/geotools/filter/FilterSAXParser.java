@@ -34,7 +34,9 @@ import org.geotools.filter.spatial.TouchesImpl;
 import org.geotools.filter.spatial.WithinImpl;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.Filter;
 import org.xml.sax.Attributes;
+
 
 
 /**
@@ -312,7 +314,7 @@ public class FilterSAXParser {
                 LOGGER.fine("escape char is " + escapeChar);
 
               
-                ((LikeFilter) curFilter).setPattern(expression, wildcard,
+                ((LikeFilterImpl) curFilter).setPattern(expression, wildcard,
                     singleChar, escapeChar);
                 curState = "complete";
             } else {
@@ -397,7 +399,7 @@ public class FilterSAXParser {
         if (curState.equals("distance")) {
             try {
                 double distDouble = Double.parseDouble(distance);
-                ((GeometryDistanceFilter) curFilter).setDistance(distDouble);
+                ((CartesianDistanceFilter) curFilter).setDistance(distDouble);
                 curState = "complete";
             } catch (NumberFormatException nfe) {
                 throw new IllegalFilterException("could not parse distance: "
@@ -423,7 +425,7 @@ public class FilterSAXParser {
 
         if (curState.equals("fid")) {
             LOGGER.finer("is a fid");
-            ((FidFilter) curFilter).addFid(atts.getValue(0));
+            ((FidFilterImpl) curFilter).addFid(atts.getValue(0));
             LOGGER.finer("added fid");
         } else {
             for (int i = 0; i < atts.getLength(); i++) {

@@ -28,9 +28,7 @@ package org.geotools.filter;
  *
  * @author aaime
  *
- *
  * @source $URL$
- * @deprecated Use instance of check against org.opengis.Filter interfaces
  */
 public interface FilterType {
     /* ***********************************************************************

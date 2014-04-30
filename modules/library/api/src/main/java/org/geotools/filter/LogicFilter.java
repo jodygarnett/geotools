@@ -16,24 +16,21 @@
  */
 package org.geotools.filter;
 
-import java.util.Iterator;
 import java.util.List;
 
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.filter.BinaryLogicOperator;
+import org.opengis.filter.Filter;
 
 /**
- * Defines a logic filter (the only filter type that contains other filters).
- * This filter holds one or more filters together and relates them logically
- * with an internally defined type (AND, OR, NOT).
- *
+ * Maker interface for logic filters (the only filter type that contains other filters).
+ * 
+ * This filter holds one or more filters together and relates them logically with an internally defined type (AND, OR, NOT).
+ * 
  * @author Rob Hranac, TOPP
  * @author Chris Holmes, TOPP
- *
- *
+ * 
  * @source $URL$
  * @version $Id$
- *
+ * 
  * @deprecated use {@link org.opengis.filter.BinaryLogicOperator}
  */
 public interface LogicFilter extends Filter {
@@ -44,7 +41,6 @@ public interface LogicFilter extends Filter {
      * This list will contain at least two elements, and each element will be an
      * instance of {@code Filter}.
      */
-    @SuppressWarnings("rawtypes")
     List<org.opengis.filter.Filter> getChildren();
 
 }

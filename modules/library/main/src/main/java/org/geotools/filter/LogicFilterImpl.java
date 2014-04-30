@@ -16,20 +16,14 @@
  */
 package org.geotools.filter;
 
-
-// Geotools dependencies
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.geotools.factory.CommonFactoryFinder;
-import org.opengis.filter.And;
+import org.opengis.filter.Filter;
 import org.opengis.filter.FilterVisitor;
-import org.opengis.filter.Or;
-
-
 
 /**
  * Defines a logic filter (the only filter type that contains other filters).

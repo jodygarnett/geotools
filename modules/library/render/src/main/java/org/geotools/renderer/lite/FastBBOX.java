@@ -16,7 +16,6 @@
  */
 package org.geotools.renderer.lite;
 
-import org.geotools.filter.GeometryFilter;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.simple.SimpleFeature;
@@ -43,7 +42,7 @@ import com.vividsolutions.jts.geom.TopologyException;
  * @author aaime
  *
  */
-class FastBBOX implements BBOX, BinarySpatialOperator, BinaryComparisonOperator, GeometryFilter {
+class FastBBOX implements BBOX, BinarySpatialOperator, BinaryComparisonOperator {
     
     PropertyName property;
     Envelope envelope; 

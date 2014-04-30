@@ -40,11 +40,6 @@ public class IsNullImpl extends CompareFilterImpl implements NullFilter {
         return visitor.visit(this, extraData);
     }
 
-    public void nullCheckValue(org.geotools.filter.Expression nullCheck)
-            throws IllegalFilterException {
-        setExpression(nullCheck);
-    }
-
     public Expression getExpression() {
         return getExpression1();
     }

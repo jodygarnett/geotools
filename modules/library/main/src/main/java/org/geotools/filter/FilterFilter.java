@@ -28,7 +28,6 @@ import org.xml.sax.helpers.XMLFilterImpl;
 
 import com.vividsolutions.jts.geom.Geometry;
 
-
 /**
  * Creates an OGC filter using a SAX filter.
  * 
@@ -469,19 +468,19 @@ public class FilterFilter extends XMLFilterImpl implements GMLHandlerJTS {
         } else if (filterType.equals("FeatureId")) {
             return AbstractFilter.FID;
         } else if (filterType.equals("Add")) {
-            return DefaultExpression.MATH_ADD;
+            return ExpressionType.MATH_ADD;
         } else if (filterType.equals("Sub")) {
-            return DefaultExpression.MATH_SUBTRACT;
+            return ExpressionType.MATH_SUBTRACT;
         } else if (filterType.equals("Mul")) {
-            return DefaultExpression.MATH_MULTIPLY;
+            return ExpressionType.MATH_MULTIPLY;
         } else if (filterType.equals("Div")) {
-            return DefaultExpression.MATH_DIVIDE;
+            return ExpressionType.MATH_DIVIDE;
         } else if (filterType.equals("PropertyName")) {
-            return DefaultExpression.LITERAL_DOUBLE;
+            return ExpressionType.LITERAL_DOUBLE;
         } else if (filterType.equals("Literal")) {
-            return DefaultExpression.ATTRIBUTE_DOUBLE;
+            return ExpressionType.ATTRIBUTE_DOUBLE;
         } else if (filterType.equals("Function")) {
-            return DefaultExpression.FUNCTION;
+            return ExpressionType.FUNCTION;
         } else {
             return -1;
         }

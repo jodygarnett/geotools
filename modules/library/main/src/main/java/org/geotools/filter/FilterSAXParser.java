@@ -33,6 +33,7 @@ import org.geotools.filter.spatial.OverlapsImpl;
 import org.geotools.filter.spatial.TouchesImpl;
 import org.geotools.filter.spatial.WithinImpl;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.expression.Expression;
 import org.xml.sax.Attributes;
 
 
@@ -277,7 +278,7 @@ public class FilterSAXParser {
             }
         } else if (filterType == AbstractFilter.LIKE) {
             if (curState.equals("attribute")) {
-                ((LikeFilter) curFilter).setValue(expression);
+                ((LikeFilterImpl) curFilter).setExpression(expression);
                 curState = "pattern";
             } else if (curState.equals("pattern")) {
                 if (attributes.size() != NUM_LIKE_ATTS) {

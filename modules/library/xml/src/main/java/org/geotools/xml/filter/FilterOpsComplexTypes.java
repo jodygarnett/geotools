@@ -29,7 +29,6 @@ import javax.naming.OperationNotSupportedException;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.BetweenFilter;
 import org.geotools.filter.CompareFilter;
-import org.geotools.filter.Expression;
 import org.geotools.filter.FidFilter;
 import org.geotools.filter.Filter;
 import org.geotools.filter.FilterCapabilities;
@@ -38,7 +37,6 @@ import org.geotools.filter.GeometryDistanceFilter;
 import org.geotools.filter.GeometryFilter;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.LikeFilter;
-import org.geotools.filter.LiteralExpression;
 import org.geotools.filter.LogicFilter;
 import org.geotools.filter.NullFilter;
 import org.geotools.xml.PrintHandler;
@@ -64,6 +62,7 @@ import org.geotools.xml.xsi.XSISimpleTypes;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Id;
 import org.opengis.filter.expression.Literal;
+import org.opengis.filter.expression.Expression;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.identity.Identifier;
 import org.opengis.filter.spatial.Disjoint;
@@ -117,19 +116,7 @@ public class FilterOpsComplexTypes {
                             : filter.getClass().getName());
         }
     }
-    /**
-     * Safe cast for {@link #encodeExpr(Expression, PrintHandler, Map)}
-     */
-    protected static void encodeExpr(org.opengis.filter.expression.Expression expr, PrintHandler output,
-            Map hints) throws OperationNotSupportedException, IOException {
-        if( expr instanceof Expression){
-            Expression expression = (Expression) expr;
-            encodeExpr( expression, output, hints);
-        }
-        else {
-            throw new OperationNotSupportedException("Unable to encode "+expr.getClass().getSimpleName()+" expression");
-        }
-    }
+
     protected static void encodeExpr(Expression expr, PrintHandler output,
         Map hints) throws OperationNotSupportedException, IOException {
         int i = 0;

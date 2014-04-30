@@ -24,6 +24,7 @@ import org.geotools.util.Converters;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.expression.ExpressionVisitor;
+import org.opengis.filter.expression.Literal;
 
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -42,7 +43,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * @source $URL$
  */
 @SuppressWarnings("deprecation")
-public class ConstantExpression implements LiteralExpression, Cloneable {
+public class ConstantExpression implements Literal, Cloneable {
     public static final ConstantExpression NULL = constant(null);
     public static final ConstantExpression BLACK = color(Color.BLACK);
     public static final ConstantExpression ZERO = constant(0);
@@ -115,11 +116,11 @@ public class ConstantExpression implements LiteralExpression, Cloneable {
     }
 
     public boolean equals(Object obj) {
-        if (!(obj instanceof LiteralExpression)) {
+        if (!(obj instanceof Literal)) {
             return false;
         }
 
-        LiteralExpression other = (LiteralExpression) obj;
+        Literal other = (Literal) obj;
         Object otherLiteral = other.getValue();
 
         if (value == null) {

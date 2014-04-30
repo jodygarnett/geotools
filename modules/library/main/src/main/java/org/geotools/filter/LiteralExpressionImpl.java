@@ -18,14 +18,11 @@ package org.geotools.filter;
 
 import static org.geotools.filter.Filters.getExpressionType;
 
-import org.geotools.geometry.jts.JTS;
 import org.geotools.util.Converters;
 import org.opengis.filter.expression.ExpressionVisitor;
 import org.opengis.filter.expression.Literal;
 
-import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Polygon;
 
 
 /**
@@ -37,8 +34,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * @source $URL$
  * @version $Id$
  */
-public class LiteralExpressionImpl extends DefaultExpression
-    implements LiteralExpression {
+public class LiteralExpressionImpl extends DefaultExpression implements Literal {
     
     
     /** Holds a reference to the literal. */
@@ -201,15 +197,15 @@ public class LiteralExpressionImpl extends DefaultExpression
 
             // do the conversion dance
             int expressionType = getExpressionType(this);
-            if (expressionType == LITERAL_GEOMETRY) {
+            if (expressionType == ExpressionType.LITERAL_GEOMETRY) {
                 return ((Geometry) this.literal).equalsExact( expLit.evaluate(null, Geometry.class));
-            } else if (expressionType == LITERAL_INTEGER) {
+            } else if (expressionType == ExpressionType.LITERAL_INTEGER) {
                 return ((Integer) this.literal).equals( expLit.evaluate(null, Integer.class));
-            } else if (expressionType == LITERAL_STRING) {
+            } else if (expressionType == ExpressionType.LITERAL_STRING) {
                 return ((String) this.literal).equals(expLit.evaluate(null, String.class));
-            } else if (expressionType == LITERAL_DOUBLE) {
+            } else if (expressionType == ExpressionType.LITERAL_DOUBLE) {
                 return ((Double) this.literal).equals(expLit.evaluate(null, Double.class));
-            } else if (expressionType == LITERAL_LONG) {
+            } else if (expressionType == ExpressionType.LITERAL_LONG) {
                 return ((Long) this.literal).equals(expLit.evaluate(null, Long.class));                
             } else {
                 // try to convert the other to the current type

@@ -30,6 +30,7 @@ import org.geotools.util.Converters;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.expression.ExpressionVisitor;
+import org.opengis.filter.expression.PropertyName;
 import org.xml.sax.helpers.NamespaceSupport;
 
 
@@ -44,8 +45,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  * @source $URL$
  * @version $Id$
  */
-public class AttributeExpressionImpl extends DefaultExpression
-    implements AttributeExpression {
+public class AttributeExpressionImpl extends DefaultExpression implements PropertyName {
             
     /** The logger for the default core module. */
     private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.core");

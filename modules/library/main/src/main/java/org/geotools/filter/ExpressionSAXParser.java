@@ -28,11 +28,14 @@ import org.geotools.filter.expression.MultiplyImpl;
 import org.geotools.filter.expression.SubtractImpl;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.expression.BinaryExpression;
 import org.opengis.filter.expression.Function;
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Literal;
+import org.opengis.filter.expression.PropertyName;
 import org.xml.sax.Attributes;
 
 import com.vividsolutions.jts.geom.Geometry;
-
 
 /**
  * DOCUMENT ME!
@@ -294,7 +297,7 @@ public class ExpressionSAXParser {
 
         if (readChars) {
             // If an attribute path, set it.  Assumes undeclared type.
-            if (curExprssn instanceof AttributeExpression) {
+            if (curExprssn instanceof PropertyName) {
                 LOGGER.finer("...");
 
                 //HACK: this code is to get rid of the leading junk that can
@@ -325,7 +328,7 @@ public class ExpressionSAXParser {
                 LOGGER.finer("...");
                 currentState = "complete";
                 LOGGER.finer("...");
-            } else if (curExprssn instanceof LiteralExpression) {
+            } else if (curExprssn instanceof Literal) {
                 // This is a relatively loose assignment routine, which uses
                 //  the fact that the three allowed literal types have a strict
                 //  instatiation hierarchy (ie. double can be an int can be a 
@@ -413,12 +416,12 @@ public class ExpressionSAXParser {
      * @throws IllegalFilterException if the current expression is not math,
      *         attribute, or literal.
      */
-    private static String setInitialState(Expression expression)
+    private static String setInitialState(org.opengis.filter.expression.Expression expression)
         throws IllegalFilterException {
-        if (expression instanceof MathExpression) {
+        if (expression instanceof BinaryExpression) {
             return "leftValue";
-        } else if ((expression instanceof AttributeExpression)
-                || (expression instanceof LiteralExpression)) {
+        } else if ((expression instanceof PropertyName)
+                || (expression instanceof Literal)) {
             return "";
         }else if(expression instanceof FunctionExpression)
         {
@@ -441,23 +444,23 @@ public class ExpressionSAXParser {
     protected static short convertType(String expType) {
         // matches all filter types to the default logic type
         if (expType.equals("Add")) {
-            return DefaultExpression.MATH_ADD;
+            return ExpressionType.MATH_ADD;
         } else if (expType.equals("Sub")) {
-            return DefaultExpression.MATH_SUBTRACT;
+            return ExpressionType.MATH_SUBTRACT;
         } else if (expType.equals("Mul")) {
-            return DefaultExpression.MATH_MULTIPLY;
+            return ExpressionType.MATH_MULTIPLY;
         } else if (expType.equals("Div")) {
-            return DefaultExpression.MATH_DIVIDE;
+            return ExpressionType.MATH_DIVIDE;
         } else if (expType.equals("PropertyName")) {
-            return DefaultExpression.ATTRIBUTE_DOUBLE;
+            return ExpressionType.ATTRIBUTE_DOUBLE;
         } else if (expType.equals("Literal")) {
-            return DefaultExpression.LITERAL_DOUBLE;
+            return ExpressionType.LITERAL_DOUBLE;
         }
         else if (expType.equals("Function")) {
-            return DefaultExpression.FUNCTION;
+            return ExpressionType.FUNCTION;
         }
 
-        return DefaultExpression.ATTRIBUTE_UNDECLARED;
+        return ExpressionType.ATTRIBUTE_UNDECLARED;
     }
     
     /**

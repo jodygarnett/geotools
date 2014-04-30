@@ -20,11 +20,10 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
-import org.geotools.filter.Expression;
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.basic.BasicGraph;
 import org.opengis.feature.simple.SimpleFeature;
-
+import org.opengis.filter.expression.Expression;
 /**
  *
  * @author jfc173

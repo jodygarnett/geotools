@@ -26,10 +26,8 @@ import java.util.Set;
 import java.util.Stack;
 
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.AttributeExpression;
 import org.geotools.filter.BetweenFilter;
 import org.geotools.filter.CompareFilter;
-import org.geotools.filter.Expression;
 import org.geotools.filter.FidFilter;
 import org.geotools.filter.Filter;
 import org.geotools.filter.FilterType;
@@ -38,13 +36,10 @@ import org.geotools.filter.FunctionExpression;
 import org.geotools.filter.GeometryFilter;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.LikeFilter;
-import org.geotools.filter.LiteralExpression;
 import org.geotools.filter.LogicFilter;
-import org.geotools.filter.MathExpression;
 import org.geotools.filter.NullFilter;
 import org.geotools.xml.XMLHandlerHints;
 import org.opengis.filter.And;
-import org.opengis.filter.BinaryLogicOperator;
 import org.opengis.filter.ExcludeFilter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Id;
@@ -594,26 +589,6 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
         current.push(data);
     }
 
-    public void visit(AttributeExpression expression) {
-        // nothing todo
-    }
-
-    public void visit(Expression expression) {
-        // nothing todo
-    }
-
-    public void visit(LiteralExpression expression) {
-        // nothing todo
-    }
-
-    public void visit(MathExpression expression) {
-        // nothing todo
-    }
-
-    public void visit(FunctionExpression expression) {
-        // nothing todo
-    }
-
     public void visit(IncludeFilter filter) {
         current.push(new Data(filter));
     }
@@ -693,11 +668,11 @@ public Object visit(And filter, Object extraData) {
 }
 
 public Object visit( Id filter, Object extraData) {
-        if (filter instanceof FidFilter) {
-                visit((FidFilter)filter);
-        }
+    Data data = new Data();
+    data.fids.addAll( filter.getIDs() );
+    current.push(data);
         
-        return extraData;
+    return extraData;
 }
 
     public Object visitNullFilter( Object extraData) {        

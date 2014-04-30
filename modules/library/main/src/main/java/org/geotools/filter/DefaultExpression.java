@@ -18,7 +18,7 @@ package org.geotools.filter;
 
 import org.geotools.filter.expression.ExpressionAbstract;
 
-
+import static org.geotools.filter.ExpressionType.*;
 /**
  * Implements a default expression, with helpful variables and static methods.
  *
@@ -28,7 +28,7 @@ import org.geotools.filter.expression.ExpressionAbstract;
  * @source $URL$
  * @version $Id$
  */
-public abstract class DefaultExpression extends ExpressionAbstract implements Expression {
+public abstract class DefaultExpression extends ExpressionAbstract {
 
     
     /* ***********************************************************************

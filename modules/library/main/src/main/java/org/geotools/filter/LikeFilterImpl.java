@@ -22,12 +22,10 @@ import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.geotools.factory.CommonFactoryFinder;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.PropertyIsLike;
-import org.opengis.filter.MultiValuedFilter.MatchAction;
+import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
-
 
 /**
  * Defines a like filter, which checks to see if an attribute matches a REGEXP.

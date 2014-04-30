@@ -16,7 +16,6 @@
  */
 package org.geotools.renderer.lite;
 
-import org.geotools.filter.Filter;
 import org.geotools.filter.GeometryFilter;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -151,17 +150,6 @@ class FastBBOX implements BBOX, BinarySpatialOperator, BinaryComparisonOperator,
 
     public boolean isMatchingCase() {
         return false;
-    }
-
-    public void addLeftGeometry(org.geotools.filter.Expression leftGeometry)
-            throws IllegalFilterException {
-        throw new UnsupportedOperationException("This filter cannot be modified");
-        
-    }
-
-    public void addRightGeometry(org.geotools.filter.Expression rightGeometry)
-            throws IllegalFilterException {
-        throw new UnsupportedOperationException("This filter cannot be modified");
     }
 
     public MatchAction getMatchAction() {

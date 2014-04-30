@@ -163,13 +163,6 @@ public class IsBetweenImpl extends CompareFilterImpl implements BetweenFilter {
 		setExpression2( upperBoundary );
 	}
 
-	
-	/**
-	 * @deprecated use {@link #setExpression(Expression) }
-	 */
-	public void addMiddleValue(org.geotools.filter.Expression middleValue) {
-		setExpression( middleValue );
-	}
     
     public String toString() {
         return "[ " + expression + " BETWEEN " + expression1 + " AND " + expression2 + " ]";

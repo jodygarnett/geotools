@@ -36,6 +36,7 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.Literal;
+import org.opengis.filter.expression.Expression;
 import org.opengis.filter.spatial.Disjoint;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -302,15 +303,15 @@ public class FilterEqualsTest extends TestCase {
 	 testExp2 = new LiteralExpressionImpl(new Integer(45));
 	testExp3 = new AttributeExpressionImpl(testSchema, "testInteger");
 	testExp4 = new AttributeExpressionImpl(testSchema, "testInteger");
-	lFilter1.setValue(testExp3);
-	lFilter2.setValue(testExp4);
+	lFilter1.setExpression(testExp3);
+	lFilter2.setExpression(testExp4);
 	lFilter1.setPattern(pattern, wcMulti, wcSingle, escape);
 	lFilter2.setPattern(pattern, wcMulti, wcSingle, escape);
 	assertTrue(lFilter1.equals(lFilter2));
 	lFilter2.setPattern("te__t!", wcMulti, wcSingle, escape);
 	assertTrue(!lFilter1.equals(lFilter2));
 	lFilter2.setPattern(pattern, wcMulti, wcSingle, escape);
-	lFilter2.setValue(testExp2);
+	lFilter2.setExpression(testExp2);
 	assertTrue(!lFilter1.equals(lFilter2));
     }	
 

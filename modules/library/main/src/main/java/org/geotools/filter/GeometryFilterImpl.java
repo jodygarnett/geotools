@@ -23,10 +23,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.Converters;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.filter.MultiValuedFilter.MatchAction;
+
+import org.opengis.filter.expression.Expression;
 
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -100,38 +99,6 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
         this(e1, e2, MatchAction.ANY);
     }
 
-
-    /**
-     * Adds the 'left' value to this filter.
-     *
-     * @param leftGeometry Expression for 'left' value.
-     *
-     * @throws IllegalFilterException Filter is not internally consistent.
-     *
-     * @deprecated use {@link #setExpression1(org.opengis.filter.expression.Expression)}
-     */
-    public final void addLeftGeometry(Expression leftGeometry)
-        throws IllegalFilterException {
-
-        setExpression1(leftGeometry);
-    }
-
-    /**
-     * Adds the 'right' value to this filter.
-     *
-     * @param rightGeometry Expression for 'right' value.
-     *
-     * @throws IllegalFilterException Filter is not internally consistent.
-     *
-     * @deprecated use {@link #set}
-     * 
-     */
-    public final void addRightGeometry(Expression rightGeometry)
-        throws IllegalFilterException {
-        
-        setExpression2(rightGeometry);
-    }
-    
     /**
      * NC - support for multiple values
      * Convenience method for returning expression as either a geometry or a list of geometries.

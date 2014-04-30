@@ -30,7 +30,7 @@ package org.geotools.filter;
  *
  *
  * @source $URL$
- * @deprecated please use instance of check against gt-opengis class.
+ * @deprecated Use instance of check against org.opengis.Filter interfaces
  */
 public interface FilterType {
     /* ***********************************************************************

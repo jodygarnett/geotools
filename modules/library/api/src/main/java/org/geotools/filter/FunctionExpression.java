@@ -23,16 +23,25 @@ import org.opengis.filter.expression.Literal;
 import org.geotools.factory.Factory;
 
 /**
- * Interface for a function expression implementation
+ * Interface allowing Function to be directly used as a factory.
+ * <p>
+ * To use a function implementation as a factory:
+ * <ul>
+ * <li>Function created using using either a no argument constructor, or a constructor that takes hints.
+ *  {@link Factory#getImplementationHints()} used used to review the hints that are supported by the function
+ *  implementation.</li>
+ * <li>{@link #setParameters(List)} is used to supply the argument expressions.</li>
+ * <li>Optionally {@link #setFallbackValue(Literal)} is used to supply a placeholder to be used if the function implementation
+ * is not available</li>
+ * </ul>
  *
  * @author James Macgill, PSU
- *
- *
+ * @author Jody Garnett (Boundless)
+ * @see FunctionFactory
  * @source $URL$
- *
- * @deprecated use {@link org.opengis.filter.expression.Function}
+ * @deprecated Use of FunctionFactory is preferred
  */
-public interface FunctionExpression extends Expression, Factory, Function {
+public interface FunctionExpression extends Factory, Function {
     /**
      *  The number of arguments this <Function> requires.
      *

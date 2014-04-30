@@ -16,9 +16,8 @@
  */
 package org.geotools.filter;
 
-import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.PropertyIsLike;
-
+import org.opengis.filter.expression.Expression;
 
 /**
  * Defines a like filter, which checks to see if an attribute matches a REGEXP.

@@ -16,6 +16,8 @@
  */
 package org.geotools.filter;
 
+import org.opengis.filter.expression.BinaryExpression;
+
 
 
 /**
@@ -36,7 +38,7 @@ package org.geotools.filter;
  * @version $Id$
  */
 public abstract class MathExpressionImpl extends DefaultExpression
-    implements MathExpression {
+    implements BinaryExpression {
 	
     /** Holds the 'left' value of this math expression. */
     private org.opengis.filter.expression.Expression leftValue = null;

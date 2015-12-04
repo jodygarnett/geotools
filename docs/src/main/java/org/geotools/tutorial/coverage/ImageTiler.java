@@ -4,11 +4,18 @@
  *
  *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
  *
- *    This file is hereby placed into the Public Domain. This means anyone is
- *    free to do whatever they wish with this file. Use it well and enjoy!
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
  */
 //docs start prelim
-package org.geotools.tutorial.coverage;
+package org.geotools.tutorial;
 
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
@@ -130,71 +137,6 @@ public class ImageTiler {
     }
     //docs end main
 
-
-    //docs start cropping
-    /**
-     * Crop the coverage to the given envelope
-     * @param gridCoverage coverage to crp
-     * @param envelope envelope to crop it to
-     * @return the cropped coverage
-     */
-    private GridCoverage2D cropCoverage(GridCoverage2D gridCoverage, Envelope envelope) {
-        CoverageProcessor processor =  CoverageProcessor.getInstance();
-
-
-        //An example of manually creating the operation and parameters we want
-        final ParameterValueGroup param = processor.getOperation("CoverageCrop").getParameters();
-        param.parameter("Source").setValue(gridCoverage);
-        param.parameter("Envelope").setValue(envelope);
-
-        return (GridCoverage2D) processor.doOperation(param);
-    }
-    //docs end cropping
-
-    //docs start make envelope
-    /**
-     * Create the target tile envelope.
-     * @param coverageMinX minimum x of our coverage
-     * @param coverageMinY minimum y of our coverage
-     * @param geographicTileWidth our target tile envelope width
-     * @param geographicTileHeight our target tile envelope height
-     * @param targetCRS the target tile CRS
-     * @param horizontalIndex horizontal index of the tile envelope
-     * @param verticalIndex vertical index of the tile envelope
-     * @return tile envelope
-     */
-    private Envelope getTileEnvelope(double coverageMinX, double coverageMinY,
-            double geographicTileWidth, double geographicTileHeight,
-            CoordinateReferenceSystem targetCRS, int horizontalIndex, int verticalIndex) {
-
-        double envelopeStartX = (horizontalIndex * geographicTileWidth) + coverageMinX;
-        double envelopeEndX = envelopeStartX + geographicTileWidth;
-        double envelopeStartY = (verticalIndex * geographicTileHeight) + coverageMinY;
-        double envelopeEndY = envelopeStartY + geographicTileHeight;
-
-        return new ReferencedEnvelope(
-                envelopeStartX, envelopeEndX, envelopeStartY, envelopeEndY, targetCRS);
-    }
-    //docs end make envelope
-
-    //docs start scale
-    /**
-     * Scale the coverage based on the set tileScale
-     *
-     * As an alternative to using parameters to do the operations, we can use the
-     * Operations class to do them in a slightly more type safe way.
-     *
-     * @param coverage the coverage to scale
-     * @return the scaled coverage
-     */
-    private GridCoverage2D scaleCoverage(GridCoverage2D coverage) {
-        Operations ops = new Operations(null);
-        coverage = (GridCoverage2D) ops.scale(
-                coverage, this.getTileScale(), this.getTileScale(), 0, 0);
-        return coverage;
-    }
-    //docs end scale
-
     //docs start load coverage
     private void tile() throws IOException {
         AbstractGridFormat format = GridFormatFinder.findFormat(this.getInputFile());
@@ -225,10 +167,11 @@ public class ImageTiler {
         int vtc = this.getNumberOfVerticalTiles() != null
                 ? this.getNumberOfVerticalTiles() : NUM_VERTICAL_TILES;
 
-        double geographicTileWidth = (coverageMaxX - coverageMinX) / (double)htc;
-        double geographicTileHeight = (coverageMaxY - coverageMinY) / (double)vtc;
+        double geographicTileWidth = (coverageMaxX - coverageMinX) / htc;
+        double geographicTileHeight = (coverageMaxY - coverageMinY) / vtc;
 
         CoordinateReferenceSystem targetCRS = gridCoverage.getCoordinateReferenceSystem();
+        //docs end envelope
 
         //make sure to create our output directory if it doesn't already exist
         File tileDirectory = this.getOutputDirectory();
@@ -241,22 +184,41 @@ public class ImageTiler {
             for (int j = 0; j < vtc; j++) {
 
                 //create the envelope of the tile
-                Envelope envelope = getTileEnvelope(coverageMinX, coverageMinY, geographicTileWidth,
-                        geographicTileHeight, targetCRS, i, j);
+                double envelopeStartX = (i * geographicTileWidth) + coverageMinX;
+                double envelopeEndX = envelopeStartX + geographicTileWidth;
+                double envelopeStartY = (j * geographicTileHeight) + coverageMinY;
+                double envelopeEndY = envelopeStartY + geographicTileHeight;
 
-                GridCoverage2D finalCoverage = cropCoverage(gridCoverage, envelope);
+                Envelope envelope = new ReferencedEnvelope(
+                        envelopeStartX, envelopeEndX, envelopeStartY, envelopeEndY, targetCRS);
 
+                CoverageProcessor processor =  CoverageProcessor.getInstance();
+
+                //doc start cropping
+                //An example of manually creating the operation and parameters we want
+                final ParameterValueGroup param = processor.getOperation("CoverageCrop").getParameters();
+                param.parameter("Source").setValue(gridCoverage);
+                param.parameter("Envelope").setValue(envelope);
+
+                GridCoverage2D finalCoverage = (GridCoverage2D) processor.doOperation(param);
+                //doc end cropping
+                //doc start scale
                 if (this.getTileScale() != null) {
-                    finalCoverage = scaleCoverage(finalCoverage);
+                    //An alternative to using parameters to do the operations, we can use the
+                    //Operations class to do them in a slightly more type safe way.
+                    Operations ops = new Operations(null);
+                    finalCoverage = (GridCoverage2D) ops.scale(
+                            finalCoverage, this.getTileScale(), this.getTileScale(), 0, 0);
                 }
 
-                //docs start output
+                //doc end scale
+
+                //doc start end
                 File tileFile = new File(tileDirectory, i + "_" + j + "." + fileExtension);
                 format.getWriter(tileFile).write(finalCoverage, null);
-                //docs end output
             }
         }
 
     }
 }
-//docs end envelope
+//docs end end

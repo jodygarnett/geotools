@@ -194,15 +194,15 @@ public class ImageTiler {
 
                 CoverageProcessor processor =  CoverageProcessor.getInstance();
 
-                //doc start cropping
+                //docs start cropping
                 //An example of manually creating the operation and parameters we want
                 final ParameterValueGroup param = processor.getOperation("CoverageCrop").getParameters();
                 param.parameter("Source").setValue(gridCoverage);
                 param.parameter("Envelope").setValue(envelope);
 
                 GridCoverage2D finalCoverage = (GridCoverage2D) processor.doOperation(param);
-                //doc end cropping
-                //doc start scale
+                //docs end cropping
+                //docs start scale
                 if (this.getTileScale() != null) {
                     //An alternative to using parameters to do the operations, we can use the
                     //Operations class to do them in a slightly more type safe way.
@@ -211,9 +211,9 @@ public class ImageTiler {
                             finalCoverage, this.getTileScale(), this.getTileScale(), 0, 0);
                 }
 
-                //doc end scale
+                //docs end scale
 
-                //doc start end
+                //docs start end
                 File tileFile = new File(tileDirectory, i + "_" + j + "." + fileExtension);
                 format.getWriter(tileFile).write(finalCoverage, null);
             }

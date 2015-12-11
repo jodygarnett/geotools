@@ -209,6 +209,7 @@
     <module>geopkg</module>
     <module>mbtiles</module>
     <module>wfs-ng</module>
+      <module>mr-dem</module>
   </modules>
 
 </project>

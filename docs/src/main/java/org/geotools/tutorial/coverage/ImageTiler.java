@@ -15,7 +15,7 @@
  *    Lesser General Public License for more details.
  */
 //docs start prelim
-package org.geotools.tutorial;
+package org.geotools.tutorial.coverage;
 
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;

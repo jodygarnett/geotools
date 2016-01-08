@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <packaging>jar</packaging>
-    <artifactId>mr-dem</artifactId>
+    <artifactId>gt-mr-dem</artifactId>
     <name>Multi-resolution Digital Elevation Model</name>
 
     <description>DEM for a collection of rasters</description>

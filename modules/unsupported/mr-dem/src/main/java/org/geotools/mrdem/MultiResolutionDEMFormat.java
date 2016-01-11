@@ -15,15 +15,19 @@
  *    Lesser General Public License for more details.
  *
  */
-package org.geootools.mrdem;
+package org.geotools.mrdem;
 
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
 import org.geotools.factory.Hints;
+import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
+import org.geotools.parameter.DefaultParameterDescriptorGroup;
+import org.geotools.parameter.ParameterGroup;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverageWriter;
+import org.opengis.parameter.GeneralParameterDescriptor;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -42,6 +46,27 @@ public class MultiResolutionDEMFormat extends AbstractGridFormat implements Form
         info.put("docURL", "");
         info.put("version", "1.0");
         this.mInfo = info;
+        
+
+        // reading parameters
+        readParameters = new ParameterGroup(new DefaultParameterDescriptorGroup(mInfo,
+                new GeneralParameterDescriptor[]{
+                        READ_GRIDGEOMETRY2D,
+                        INPUT_TRANSPARENT_COLOR,
+                ImageMosaicFormat.OUTPUT_TRANSPARENT_COLOR,
+                USE_JAI_IMAGEREAD,
+                ImageMosaicFormat.BACKGROUND_VALUES,
+                SUGGESTED_TILE_SIZE,
+                ImageMosaicFormat.ALLOW_MULTITHREADING,
+                ImageMosaicFormat.MAX_ALLOWED_TILES,
+                TIME,
+                ELEVATION,
+                ImageMosaicFormat.FILTER,
+                ImageMosaicFormat.ACCURATE_RESOLUTION,
+                ImageMosaicFormat.SORT_BY,
+                ImageMosaicFormat.MERGE_BEHAVIOR,
+                ImageMosaicFormat.FOOTPRINT_BEHAVIOR
+        }));
     }
 
     @Override public AbstractGridCoverage2DReader getReader(Object source) {

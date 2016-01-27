@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.mrdem;
+package org.geotools.dem;
 
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
@@ -27,10 +27,10 @@ import java.util.Map;
 /**
  * Implementation of the multi-resolution digital elevation model
  */
-public final class MultiResolutionDEMFormatFactory implements GridFormatFactorySpi {
+public final class DEMFormatFactory implements GridFormatFactorySpi {
 
     @Override public AbstractGridFormat createFormat() {
-        return new MultiResolutionDEMFormat();
+        return new DEMFormat();
     }
 
     @Override public boolean isAvailable() {

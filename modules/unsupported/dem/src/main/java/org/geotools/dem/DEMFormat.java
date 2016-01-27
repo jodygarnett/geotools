@@ -15,30 +15,44 @@
  *    Lesser General Public License for more details.
  *
  */
-package org.geotools.mrdem;
+package org.geotools.dem;
 
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
 import org.geotools.factory.Hints;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.gce.imagemosaic.CatalogManager;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
+import org.geotools.gce.imagemosaic.Utils;
+import org.geotools.gce.imagemosaic.Utils.Prop;
+import org.geotools.gce.imagemosaic.catalog.index.Indexer;
+import org.geotools.gce.imagemosaic.catalog.index.Indexer.Collectors.Collector;
+import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilderConfiguration;
+import org.geotools.gce.imagemosaic.catalogbuilder.DefaultSchemaFactory;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
 import org.geotools.parameter.ParameterGroup;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverageWriter;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.parameter.GeneralParameterDescriptor;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+
+import com.vividsolutions.jts.geom.Polygon;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  *
  * Created by devon on 12/10/15.
  */
-public class MultiResolutionDEMFormat extends AbstractGridFormat implements Format {
+public class DEMFormat extends AbstractGridFormat implements Format {
 
-    public MultiResolutionDEMFormat() {
+    public DEMFormat() {
         HashMap<String,String> info = new HashMap<String,String> ();
         info.put("name", "Multi-Resolution Digital Elevation Modal");
         info.put("description", "DEM based on disparate rasters");
@@ -73,9 +87,49 @@ public class MultiResolutionDEMFormat extends AbstractGridFormat implements Form
         return getReader(source, null);
     }
 
-    @Override public AbstractGridCoverage2DReader getReader(Object source, Hints hints) {
+    @Override
+    public AbstractGridCoverage2DReader getReader(Object source, Hints hints) {
         try {
-            return new ImageMosaicReader(source, hints);
+            final CatalogBuilderConfiguration configuration = new CatalogBuilderConfiguration();            
+            
+            configuration.setDefaultSchemaFactory(new DefaultSchemaFactory() {
+
+                @Override
+                public SimpleFeatureType createDefaultSchema(CoordinateReferenceSystem actualCRS) {
+
+                    final SimpleFeatureTypeBuilder featureBuilder = new SimpleFeatureTypeBuilder();
+                    featureBuilder.setName(configuration.getParameter(Prop.INDEX_NAME));
+                    featureBuilder.setNamespaceURI("http://www.geo-solutions.it/");
+                    featureBuilder.add(configuration.getParameter(Prop.LOCATION_ATTRIBUTE).trim(), String.class);
+                    featureBuilder.add("the_geom", Polygon.class, actualCRS);
+                    featureBuilder.setDefaultGeometry("the_geom");
+                    String timeAttribute = configuration.getTimeAttribute();
+                    CatalogManager.addAttributes(timeAttribute, featureBuilder, Date.class);
+                    
+                    CatalogManager.addAttributes("resX", featureBuilder, Double.class);
+                    CatalogManager.addAttributes("resY", featureBuilder, Double.class);
+                    
+                    
+                    return featureBuilder.buildFeatureType();
+                } 
+            });
+                        
+            Indexer indexer = configuration.getIndexer();            
+            Collector collector = Utils.OBJECT_FACTORY.createIndexerCollectorsCollector();
+            collector.setSpi("ResolutionExtractorSPI");
+            collector.setMapped("resX");
+            collector.setMapped("resY");
+            indexer.setCollectors(Utils.OBJECT_FACTORY.createIndexerCollectors());
+            indexer.getCollectors().getCollector().add(collector);
+
+            Utils.checkSource(source, configuration, hints);
+           
+            return new ImageMosaicReader(source, hints); /*{
+                @Override
+                protected void postProcess(final CatalogBuilderConfiguration configuration) {
+                    
+                }
+            };*/
         } catch (IOException e) {
             e.printStackTrace();
             return null;

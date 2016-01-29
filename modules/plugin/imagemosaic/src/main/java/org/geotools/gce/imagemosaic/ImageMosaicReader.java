@@ -126,6 +126,8 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
     public static final String UNSPECIFIED = "_UN$PECIFIED_";
 
     Map<String, RasterManager> rasterManagers = new ConcurrentHashMap<String, RasterManager>();
+    
+    CatalogManager catalogManager;
 
     public RasterManager getRasterManager(String name) {
           if(name != null && rasterManagers.containsKey(name)){
@@ -255,7 +257,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
                 // run the walker and collect information
                 ImageMosaicEventHandlers eventHandler = new ImageMosaicEventHandlers();
                 final ImageMosaicConfigHandler catalogHandler = new ImageMosaicConfigHandler(
-                        configuration, eventHandler) {
+                        configuration, eventHandler, reader.getCatalogManager()) {
                     protected GranuleCatalog buildCatalog() throws IOException {
                         return reader.granuleCatalog;
                     };
@@ -392,7 +394,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
                 // run the walker and collect information
                 ImageMosaicEventHandlers eventHandler = new ImageMosaicEventHandlers();
                 final ImageMosaicConfigHandler catalogHandler = new ImageMosaicConfigHandler(configuration,
-                        eventHandler) {
+                        eventHandler, reader.getCatalogManager()) {
                 @Override
                 protected GranuleCatalog buildCatalog() throws IOException {
                     return reader.granuleCatalog;
@@ -429,7 +431,20 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
      * 
      */
     public ImageMosaicReader(Object source, Hints uHints) throws IOException {
+        this(source, uHints, new CatalogManagerImpl());
+    }
+	
+    /**
+     * Constructor.
+     * 
+     * @param source The source object.
+     * @throws IOException
+     * @throws UnsupportedEncodingException
+     * 
+     */
+    public ImageMosaicReader(Object source, Hints uHints, CatalogManager catalogManager) throws IOException {
         super(source, uHints);
+        this.catalogManager = catalogManager;
 
         //
         // try to extract a multithreaded loader if available
@@ -475,6 +490,10 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
         }
     }
 
+    protected CatalogManager getCatalogManager() {
+        return catalogManager;
+    }
+
     /**
      * Init this {@link ImageMosaicReader} using the provided {@link ImageMosaicDescriptor} as source.
      * 
@@ -516,7 +535,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
      * @throws DataSourceException
      */
     private void initReaderFromURL(final Object source, final Hints hints) throws Exception {
-        this.sourceURL = Utils.checkSource(source, hints);
+        this.sourceURL = Utils.checkSource(source, hints, catalogManager);
         
         // Preliminar check on source
         if (this.sourceURL == null) {
@@ -576,7 +595,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
                 
                 // Catalog initialization from datastore
                 GranuleCatalog catalog = null;
-                final Properties params = CatalogManager.createGranuleCatalogProperties(datastoreProperties);
+                final Properties params = catalogManager.createGranuleCatalogProperties(datastoreProperties);
 
                 // Since we are dealing with a catalog from an existing store, make sure to scan for all the typeNames on initialization
                 final Object typeNames=params.get(Utils.SCAN_FOR_TYPENAMES);
@@ -588,7 +607,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
                 if (beans.size() > 0) {
                     catalog = GranuleCatalogFactory.createGranuleCatalog(sourceURL, beans.get(0).getCatalogConfigurationBean(), params, getHints());
                 } else {
-                    catalog = CatalogManager.createGranuleCatalogFromDatastore(parent, datastoreProperties, true, getHints());
+                    catalog = catalogManager.createGranuleCatalogFromDatastore(parent, datastoreProperties, true, getHints());
                 } 
                 MultiLevelROIProvider rois = MultiLevelROIProviderFactory.createFootprintProvider(parent);
                 catalog.setMultiScaleROIProvider(rois);
@@ -609,7 +628,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
             } else {
                 
                 // Old style code: we have a single MosaicConfigurationBean. Use that to create the catalog 
-                granuleCatalog = CatalogManager.createCatalog(sourceURL, configuration, this.hints);
+                granuleCatalog = catalogManager.createCatalog(sourceURL, configuration, this.hints);
                 File parent = DataUtilities.urlToFile(sourceURL).getParentFile();
                 MultiLevelROIProvider rois = MultiLevelROIProviderFactory.createFootprintProvider(parent);
                 granuleCatalog.setMultiScaleROIProvider(rois);
@@ -1327,7 +1346,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
 
         final File datastoreProperties = new File(parent, "datastore.properties");
         if (datastoreProperties != null && datastoreProperties.exists() && datastoreProperties.canRead()) {
-            CatalogManager.dropDatastore(datastoreProperties);
+            catalogManager.dropDatastore(datastoreProperties);
         }
     }
 

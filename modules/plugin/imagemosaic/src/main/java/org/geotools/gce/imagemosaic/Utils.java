@@ -305,7 +305,8 @@ public class Utils {
 			final String indexName,
 			final String wildcard, 
 			final boolean absolutePath, 
-			final Hints hints) {
+			final Hints hints,
+			CatalogManager catalogManager) {
 
 		// create a mosaic index builder and set the relevant elements
 		final CatalogBuilderConfiguration configuration = new CatalogBuilderConfiguration();
@@ -322,7 +323,7 @@ public class Utils {
         // final ImageMosaicWalker catalogBuilder = new ImageMosaicWalker(configuration);
         final ImageMosaicEventHandlers eventHandler = new ImageMosaicEventHandlers();
         final ImageMosaicConfigHandler catalogHandler = new ImageMosaicConfigHandler(configuration,
-                eventHandler);
+                eventHandler, catalogManager);
         final ImageMosaicWalker walker;
         if (catalogHandler.isUseExistingSchema()) {
             // walks existing granules in the origin store
@@ -1093,7 +1094,7 @@ public class Utils {
         return params;
     }
 
-    static URL checkSource(Object source, Hints hints) {
+    static URL checkSource(Object source, Hints hints, CatalogManager catalogManager) {
         URL sourceURL = null;
         File sourceFile = null;
 
@@ -1247,7 +1248,8 @@ public class Utils {
                                 }
                             
                                 // actual creation
-                                createMosaic(locationPath, defaultIndexName, DEFAULT_WILCARD, DEFAULT_PATH_BEHAVIOR, hints);
+                                createMosaic(locationPath, defaultIndexName, DEFAULT_WILCARD, DEFAULT_PATH_BEHAVIOR, hints,
+                                        catalogManager);
 
                                 // check that the mosaic properties file was created
                                 final File propertiesFile = new File(locationPath,

@@ -116,6 +116,19 @@ public class ImageMosaicConfigHandler {
     private ImageMosaicEventHandlers eventHandler;
 
     private boolean useExistingSchema;
+    
+    private CatalogManager catalogManager;
+    
+    /**
+     * 
+     * 
+     * @throws
+     * @throws IllegalArgumentException
+     */
+    public ImageMosaicConfigHandler(final CatalogBuilderConfiguration configuration,
+            final ImageMosaicEventHandlers eventHandler) {
+        this(configuration, eventHandler, new CatalogManagerImpl());
+    }
 
     /**
      * Default constructor
@@ -124,7 +137,9 @@ public class ImageMosaicConfigHandler {
      * @throws IllegalArgumentException
      */
     public ImageMosaicConfigHandler(final CatalogBuilderConfiguration configuration,
-            final ImageMosaicEventHandlers eventHandler) {
+            final ImageMosaicEventHandlers eventHandler, CatalogManager catalogManager) {
+        this.catalogManager = catalogManager;
+        
         Utilities.ensureNonNull("runConfiguration", configuration);
 
         Utilities.ensureNonNull("eventHandler", eventHandler);
@@ -320,7 +335,7 @@ public class ImageMosaicConfigHandler {
     }
 
     protected GranuleCatalog buildCatalog() throws IOException {
-        GranuleCatalog catalog = CatalogManager.createCatalog(runConfiguration, !useExistingSchema);
+        GranuleCatalog catalog = catalogManager.createCatalog(runConfiguration, !useExistingSchema);
         getParentReader().granuleCatalog = catalog;
         return catalog;
     }
@@ -338,7 +353,9 @@ public class ImageMosaicConfigHandler {
             }
             return;
         }
-        List<Collector> collectorList = collectors.getCollector();
+        List<Collector> collectorList = new ArrayList<Collector>();
+        collectorList.addAll(collectors.getCollector());
+        collectorList.addAll(parentReader.getCatalogManager().customCollectors());
 
         // load the SPI set
         final Set<PropertiesCollectorSPI> pcSPIs = PropertiesCollectorFinder
@@ -384,6 +401,7 @@ public class ImageMosaicConfigHandler {
                 }
             }
         }
+                
         this.propertiesCollectors = pcs;
     }
 
@@ -874,7 +892,7 @@ public class ImageMosaicConfigHandler {
             // Creating a granuleStore
             if (!useExistingSchema) {
                 // creating the schema
-                SimpleFeatureType indexSchema = CatalogManager.createSchema(getRunConfiguration(),
+                SimpleFeatureType indexSchema = catalogManager.createSchema(getRunConfiguration(),
                         currentConfigurationBean.getName(), actualCRS);
                 getParentReader().createCoverage(coverageName, indexSchema);
 //            } else {
@@ -969,7 +987,7 @@ public class ImageMosaicConfigHandler {
         // STEP 3
         if (!useExistingSchema) {
             // create and store features
-            CatalogManager.updateCatalog(coverageName, fileBeingProcessed, coverageReader,
+            catalogManager.updateCatalog(coverageName, fileBeingProcessed, coverageReader,
                     getParentReader(), catalogConfig, envelope, transaction,
                     getPropertiesCollectors());
         }

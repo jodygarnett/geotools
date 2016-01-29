@@ -18,7 +18,6 @@ package org.geotools.dem;
 
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
-import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 
 import java.awt.*;
 import java.util.Collections;
@@ -26,6 +25,10 @@ import java.util.Map;
 
 /**
  * Implementation of the multi-resolution digital elevation model
+ * 
+ *
+ * @author Devon Tucker
+ * @author Niels Charlier
  */
 public final class DEMFormatFactory implements GridFormatFactorySpi {
 

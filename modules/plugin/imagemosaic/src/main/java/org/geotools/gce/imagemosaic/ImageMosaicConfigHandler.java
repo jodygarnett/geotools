@@ -344,19 +344,23 @@ public class ImageMosaicConfigHandler {
      * Load properties collectors from the configuration
      */
     private void loadPropertyCollectors() {
+        List<Collector> collectorList = new ArrayList<Collector>();
+        collectorList.addAll(parentReader.getCatalogManager().customCollectors());
+
         // load property collectors
         Indexer indexer = runConfiguration.getIndexer();
         Collectors collectors = indexer.getCollectors();
-        if (collectors == null) {
+        if (collectors != null) {
+            collectorList.addAll(collectors.getCollector());
+        }
+        
+        if (collectorList.isEmpty()) {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("No properties collector have been found");
             }
             return;
         }
-        List<Collector> collectorList = new ArrayList<Collector>();
-        collectorList.addAll(collectors.getCollector());
-        collectorList.addAll(parentReader.getCatalogManager().customCollectors());
-
+        
         // load the SPI set
         final Set<PropertiesCollectorSPI> pcSPIs = PropertiesCollectorFinder
                 .getPropertiesCollectorSPI();

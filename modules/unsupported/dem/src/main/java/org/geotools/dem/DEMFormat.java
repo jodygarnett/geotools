@@ -98,13 +98,11 @@ public class DEMFormat extends AbstractGridFormat implements Format {
                         CoordinateReferenceSystem actualCRS) {
                     final SimpleFeatureTypeBuilder featureBuilder = new SimpleFeatureTypeBuilder();
                     featureBuilder.setName(runConfiguration.getParameter(Prop.INDEX_NAME));
-                    featureBuilder.setNamespaceURI("http://www.geo-solutions.it/");
+                    featureBuilder.setNamespaceURI("http://boundlessgeo.com//");
                     featureBuilder.add(runConfiguration.getParameter(Prop.LOCATION_ATTRIBUTE).trim(), String.class);
                     featureBuilder.add("the_geom", Polygon.class, actualCRS);
                     featureBuilder.setDefaultGeometry("the_geom");
-                    String timeAttribute = runConfiguration.getTimeAttribute();
-                    addAttributes(timeAttribute, featureBuilder, Date.class);
-                    
+                    addAttributes("date", featureBuilder, Date.class);                    
                     addAttributes("resX", featureBuilder, Double.class);
                     addAttributes("resY", featureBuilder, Double.class);
                     
@@ -115,12 +113,24 @@ public class DEMFormat extends AbstractGridFormat implements Format {
                 @Override
                 public List<Collector> customCollectors() {
                     List<Collector> list = new ArrayList<Collector>();
-                    Collector collector = Utils.OBJECT_FACTORY.createIndexerCollectorsCollector();
-                    collector.setSpi("ResolutionExtractorSPI");
-                    collector.setMapped("resX");
-                    collector.setMapped("resY");
                     
-                    list.add(collector);       
+                    Collector collectorDate = Utils.OBJECT_FACTORY.createIndexerCollectorsCollector();
+                    collectorDate.setSpi("DateExtractorSPI");
+                    collectorDate.setMapped("date");   
+                    collectorDate.setValue("");                 
+                    list.add(collectorDate);       
+                    
+                    Collector collectorX = Utils.OBJECT_FACTORY.createIndexerCollectorsCollector();
+                    collectorX.setSpi("ResolutionExtractorSPI");
+                    collectorX.setMapped("resX");  
+                    collectorX.setValue("");
+                    list.add(collectorX);
+                    
+                    Collector collectorY = Utils.OBJECT_FACTORY.createIndexerCollectorsCollector();
+                    collectorY.setSpi("ResolutionExtractorSPI");
+                    collectorY.setMapped("resY");   
+                    collectorY.setValue("");                 
+                    list.add(collectorY);       
                     
                     return list;
                 }

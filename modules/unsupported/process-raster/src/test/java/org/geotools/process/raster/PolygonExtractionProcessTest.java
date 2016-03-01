@@ -87,7 +87,7 @@ public class PolygonExtractionProcessTest {
 
         int band = 0;
         Set<Double> outsideValues = Collections.singleton(0D);
-        SimpleFeatureCollection fc = process.execute(cov, 0, Boolean.TRUE, null, null, null, null);
+        SimpleFeatureCollection fc = process.execute(cov, 0, Boolean.TRUE, null, null, null, null, null);
         assertEquals(3, fc.size());
         
         FeatureIterator iter = fc.features();
@@ -137,7 +137,7 @@ public class PolygonExtractionProcessTest {
                 DATA,
                 new ReferencedEnvelope(0, DATA[0].length, 0, DATA.length, null));
         
-        SimpleFeatureCollection fc = process.execute(cov, 0, Boolean.TRUE, null, null, null, null);
+        SimpleFeatureCollection fc = process.execute(cov, 0, Boolean.TRUE, null, null, null, null, null);
         assertEquals(NUM_POLYS, fc.size());
 
         SimpleFeatureIterator iter = fc.features();
@@ -169,7 +169,7 @@ public class PolygonExtractionProcessTest {
                 new ReferencedEnvelope(0, DATA[0].length, 0, DATA.length, null));
 
         Number[] noDataValues = { -1 };
-        SimpleFeatureCollection fc = process.execute(cov, 0, Boolean.TRUE, null, Arrays.asList(noDataValues), null, null);
+        SimpleFeatureCollection fc = process.execute(cov, 0, Boolean.TRUE, null, Arrays.asList(noDataValues), null, null, null);
         assertEquals(NUM_POLYS, fc.size());
     }
 
@@ -195,7 +195,7 @@ public class PolygonExtractionProcessTest {
                 DATA,
                 new ReferencedEnvelope(0, width, 0, height, null));
 
-        SimpleFeatureCollection fc = process.execute(cov, 0, Boolean.FALSE, null, null, null, null);
+        SimpleFeatureCollection fc = process.execute(cov, 0, Boolean.FALSE, null, null, null, null, null);
 
         assertEquals(1, fc.size());
         Geometry geom = (Geometry) fc.features().next().getDefaultGeometry();
@@ -223,7 +223,7 @@ public class PolygonExtractionProcessTest {
 
         Set<Double> outsideValues = Collections.singleton(0D);
 
-        SimpleFeatureCollection fc = process.execute(cov, 0, Boolean.TRUE, null, null, null, null);
+        SimpleFeatureCollection fc = process.execute(cov, 0, Boolean.TRUE, null, null, null, null, null);
         assertEquals(1, fc.size());
         
         SimpleFeature feature = fc.features().next();
@@ -251,7 +251,7 @@ public class PolygonExtractionProcessTest {
         List<Number> noDataValues = new ArrayList<Number>();
         noDataValues.add(OUTSIDE);
         SimpleFeatureCollection fc = process.execute(
-                cov, 0, Boolean.TRUE, null, noDataValues, null, null);
+                cov, 0, Boolean.TRUE, null, noDataValues, null, null, null);
 
         // validate geometries and sum areas
         SimpleFeatureIterator iter = fc.features();
@@ -330,7 +330,7 @@ public class PolygonExtractionProcessTest {
         classificationRanges.add(r2);
         
         SimpleFeatureCollection fc = process.execute(
-                cov, 0, Boolean.TRUE, null, null, classificationRanges, null);
+                cov, 0, Boolean.TRUE, null, null, classificationRanges, null, null);
         
         assertEquals(2, fc.size());
         
@@ -394,7 +394,7 @@ public class PolygonExtractionProcessTest {
          * having the same bounds as the input coverage
          */
         SimpleFeatureCollection fc = 
-                process.execute(cov, 0, Boolean.TRUE, roiGeom, null, null, null);
+                process.execute(cov, 0, Boolean.TRUE, roiGeom, null, null, null, null);
         
         assertEquals(1, fc.size());
         
@@ -439,7 +439,7 @@ public class PolygonExtractionProcessTest {
         Polygon roiGeometry = JTS.toGeometry(processEnv);
 
         SimpleFeatureCollection fc = process.execute(
-                cov, 0, Boolean.TRUE, roiGeometry, null, null, null);
+                cov, 0, Boolean.TRUE, roiGeometry, null, null, null, null);
         
         // Expected result is 3 polygons:
         //   value == 1, area = 5 cells

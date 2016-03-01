@@ -21,7 +21,10 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.media.jai.JAI;
 import javax.media.jai.ParameterBlockJAI;
@@ -32,6 +35,8 @@ import org.jaitools.media.jai.vectorize.VectorizeRIF;
 import org.jaitools.numeric.Range;
 
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.util.AffineTransformation;
 
@@ -42,9 +47,9 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.image.jai.Registry;
 import org.geotools.process.ProcessException;
-
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.metadata.spatial.PixelOrientation;
 import org.opengis.util.ProgressListener;
@@ -117,6 +122,7 @@ public class PolygonExtractionProcess implements RasterProcess {
             collectionType = Number.class, min = 0) Collection<Number> noDataValues,
             @DescribeParameter(name = "ranges", description = "Specifier for a value range in the format ( START ; END ).  START and END values are optional. [ and ] can also be used as brackets, to indicate inclusion of the relevant range endpoint.", 
             collectionType = Range.class, min = 0) List<Range> classificationRanges,
+            @DescribeParameter(name = "merge", description = "Merge features with the same value to multipolygons.", min = 0) Boolean merge,
             ProgressListener progressListener)
             throws ProcessException {
 
@@ -186,7 +192,8 @@ public class PolygonExtractionProcess implements RasterProcess {
         final Collection<Polygon> prop = (Collection<Polygon>) dest.getProperty(VectorizeDescriptor.VECTOR_PROPERTY_NAME);
 
         // wrap as a feature collection and return
-        final SimpleFeatureType featureType = CoverageUtilities.createFeatureType(coverage, Polygon.class);
+        final SimpleFeatureType featureType = CoverageUtilities.createFeatureType(coverage, 
+                merge != null && merge ? MultiPolygon.class : Polygon.class);
         final SimpleFeatureBuilder builder = new SimpleFeatureBuilder(featureType);
         int i = 0;
         final ListFeatureCollection featureCollection = new ListFeatureCollection(featureType);
@@ -196,22 +203,54 @@ public class PolygonExtractionProcess implements RasterProcess {
                 mt2D.getTranslateX(),
                 mt2D.getShearY(),
                 mt2D.getScaleY(),
-                mt2D.getTranslateY());
-        for (Polygon polygon : prop) {
-            // get value
-            Double value = (Double) polygon.getUserData();
-            polygon.setUserData(null);
-            // filter coordinates in place
-            polygon.apply(jtsTransformation);
+                mt2D.getTranslateY());        
 
-            // create feature and add to list
-            builder.set("the_geom", polygon);
-            builder.set("value", value);
-
-            featureCollection.add(builder.buildFeature(String.valueOf(i++)));
-
+        if (merge != null && merge) {
+            Map<Double, List<Polygon>> map = new HashMap<Double, List<Polygon>>();
+            for (Polygon polygon : prop) {
+                // get value
+                Double value = (Double) polygon.getUserData();
+                polygon.setUserData(null);
+                
+                List<Polygon> polygons = map.get(value);
+                if (polygons == null) {
+                    polygons = new ArrayList<Polygon>();
+                    map.put(value, polygons);
+                }
+                // filter coordinates in place
+                polygon.apply(jtsTransformation);
+                
+                polygons.add(polygon);
+            }
+            
+            GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory(null);
+            
+            for (Entry<Double, List<Polygon>> entry : map.entrySet()) {
+                MultiPolygon geom = geometryFactory.createMultiPolygon(entry.getValue().toArray(
+                                new Polygon[entry.getValue().size()]));
+                        
+                // create feature and add to list
+                builder.set("value", entry.getKey());
+                builder.set("the_geom", geom);
+                featureCollection.add(builder.buildFeature(String.valueOf(i++)));
+            }
+        } else {
+            for (Polygon polygon : prop) {
+                // get value
+                Double value = (Double) polygon.getUserData();
+                polygon.setUserData(null);
+                // filter coordinates in place
+                polygon.apply(jtsTransformation);
+    
+                // create feature and add to list
+                builder.set("the_geom", polygon);
+                builder.set("value", value);
+    
+                featureCollection.add(builder.buildFeature(String.valueOf(i++)));
+    
+            }
         }
-
+        
         //return value
         return featureCollection;
     }

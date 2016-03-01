@@ -17,11 +17,16 @@
  */
 package org.geotools.dem;
 
+import org.apache.commons.io.FilenameUtils;
+import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
+import org.geotools.data.DefaultTransaction;
 import org.geotools.factory.Hints;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.gce.geotiff.GeoTiffWriter;
 import org.geotools.gce.imagemosaic.CatalogManagerImpl;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
@@ -29,16 +34,22 @@ import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer.Collectors.Collector;
 import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilderConfiguration;
+import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
+import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
 import org.geotools.parameter.ParameterGroup;
+import org.geotools.process.raster.mask.OutliersMaskProcess;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverageWriter;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.parameter.GeneralParameterDescriptor;
+import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Polygon;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,6 +62,15 @@ import java.util.List;
  * @author Niels Charlier
  */
 public class DEMFormat extends AbstractGridFormat implements Format {
+    
+    /** Optional Sorting for the granules of the mosaic.
+     * 
+     *  <p>It does work only with DBMS as indexes
+     */
+    public static final ParameterDescriptor<String> SORT_BY = new DefaultParameterDescriptor<String>("SORTING", String.class, null, 
+            "resX A, resY A, date D");
+    
+    private OutliersMaskProcess outliersProcess = new OutliersMaskProcess();
 
     public DEMFormat() {
         HashMap<String,String> info = new HashMap<String,String> ();
@@ -77,7 +97,7 @@ public class DEMFormat extends AbstractGridFormat implements Format {
                 ELEVATION,
                 ImageMosaicFormat.FILTER,
                 ImageMosaicFormat.ACCURATE_RESOLUTION,
-                ImageMosaicFormat.SORT_BY,
+                SORT_BY,
                 ImageMosaicFormat.MERGE_BEHAVIOR,
                 ImageMosaicFormat.FOOTPRINT_BEHAVIOR
         }));
@@ -133,6 +153,38 @@ public class DEMFormat extends AbstractGridFormat implements Format {
                     list.add(collectorY);       
                     
                     return list;
+                }
+                
+                @Override
+                protected String prepareLocation(CatalogBuilderConfiguration runConfiguration, final File fileBeingProcessed)
+                        throws IOException {
+                    return super.prepareLocation(runConfiguration, getMaskedFile(fileBeingProcessed));
+                }
+                
+                private File getMaskedFile(File fileBeingProcessed) {
+                    return new File(fileBeingProcessed.getParent(),
+                            FilenameUtils.getBaseName(fileBeingProcessed.getName()) + ".mask.tiff");
+                }
+                
+                @Override
+                public void updateCatalog(
+                        final String coverageName,
+                        final File fileBeingProcessed,
+                        final GridCoverage2DReader inputReader,
+                        final ImageMosaicReader mosaicReader,
+                        final CatalogBuilderConfiguration configuration, 
+                        final GeneralEnvelope envelope,
+                        final DefaultTransaction transaction, 
+                        final List<PropertiesCollector> propertiesCollectors) throws IOException {
+                    
+                    GridCoverage2D coverage = inputReader.read(null);
+                    GridCoverage2D maskedCoverage = outliersProcess.execute(coverage, 0, 10.0, 1000, 1.0, null, true, 
+                            OutliersMaskProcess.StatisticMethod.InterquartileRange);
+                    GeoTiffWriter writer = new GeoTiffWriter(getMaskedFile(fileBeingProcessed));
+                    writer.write(maskedCoverage, null);
+                    
+                    super.updateCatalog(coverageName, fileBeingProcessed, inputReader, mosaicReader, configuration, 
+                            envelope, transaction, propertiesCollectors);
                 }
                 
             }); 

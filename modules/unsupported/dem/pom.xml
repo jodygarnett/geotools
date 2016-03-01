@@ -21,6 +21,11 @@
             <artifactId>gt-imagemosaic</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-process-raster</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

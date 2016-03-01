@@ -48,18 +48,30 @@ class DateExtractor extends PropertiesCollector {
     @Override
     public PropertiesCollector collect(final GridCoverage2DReader gridCoverageReader) {
         String value = ((org.geotools.gce.geotiff.GeoTiffReader) gridCoverageReader).getMetadata().getAsciiTIFFTag("306");
-        addMatch("" + value);       
+        if (value != null) {
+            addMatch("" + value);
+        } else {
+            addMatch("");
+        }
         return this;
+    }
+    
+    private Date getDate() {
+        String dateStr = getMatches().get(0);
+        Date date = null;
+        if (dateStr != null && !dateStr.isEmpty()) {        
+            try {
+                date = FORMAT.parse(getMatches().get(0));
+            } catch (ParseException e) {
+                LOGGER.log(Level.WARNING, "Failed to parse date: " + dateStr, e);
+            }
+        }
+        return date;
     }
 
     @Override
-    public void setProperties(SimpleFeature feature) {              
-        Date date = null;
-        try {
-            date = FORMAT.parse(getMatches().get(0));
-        } catch (ParseException e) {
-            LOGGER.log(Level.WARNING, "Failed to parse date!", e);
-        }
+    public void setProperties(SimpleFeature feature) {   
+        Date date = getDate();
        
         if (date != null) {
             for (String propertyName : getPropertyNames()) {
@@ -71,12 +83,7 @@ class DateExtractor extends PropertiesCollector {
 
     @Override
     public void setProperties(Map<String, Object> map) {
-        Date date = null;
-        try {
-            date = FORMAT.parse(getMatches().get(0));
-        } catch (ParseException e) {
-            LOGGER.log(Level.WARNING, "Failed to parse date!", e);
-        }
+        Date date = getDate();
        
         if (date != null) {
             for (String propertyName : getPropertyNames()) {

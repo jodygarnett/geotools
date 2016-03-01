@@ -512,11 +512,19 @@ public class CatalogManagerImpl implements CatalogManager {
         return relative;
     }
     
-    /* (non-Javadoc)
-     * @see org.geotools.gce.imagemosaic.CatalogManager#getRelativePath(java.lang.String, java.lang.String, java.lang.String)
+
+    /**
+     * Get the relative path from one file to another, specifying the directory separator. 
+     * If one of the provided resources does not exist, it is assumed to be a file unless it ends with '/' or
+     * '\'.
+     * 
+     * @param targetPath targetPath is calculated to this file
+     * @param basePath basePath is calculated from this file
+     * @param pathSeparator directory separator. The platform default is not assumed so that 
+     *        we can test Unix behaviour when running on Windows (for example)
+     * @return
      */
-    @Override
-    public String getRelativePath(String targetPath, String basePath, String pathSeparator) {
+    protected String getRelativePath(String targetPath, String basePath, String pathSeparator) {
 
         // Normalize the paths
         String normalizedTargetPath = FilenameUtils.normalizeNoEndSeparator(targetPath);

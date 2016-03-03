@@ -118,6 +118,12 @@
        </modules>
      </profile>
      <profile>
+       <id>dem</id>
+       <modules>
+         <module>dem</module>
+       </modules>
+     </profile>
+     <profile>
        <id>swt</id>
        <modules>
          <module>swt</module>
@@ -209,7 +215,6 @@
     <module>geopkg</module>
     <module>mbtiles</module>
     <module>wfs-ng</module>
-      <module>dem</module>
   </modules>
 
 </project>

@@ -1,4 +1,4 @@
-package com.vividsolutions.jts.geom;
+package org.locationtech.jts.geom;
 
 /** @source $URL$ */
 public class EmptyGeometry extends Geometry {
@@ -70,6 +70,11 @@ public class EmptyGeometry extends Geometry {
     public void apply(GeometryComponentFilter filter) {}
 
     @Override
+    public Geometry copy() {
+        return null;
+    }
+
+    @Override
     public void normalize() {}
 
     @Override
@@ -84,6 +89,11 @@ public class EmptyGeometry extends Geometry {
 
     @Override
     protected int compareToSameClass(Object o, CoordinateSequenceComparator comp) {
+        return 0;
+    }
+
+    @Override
+    protected int getSortIndex() {
         return 0;
     }
 

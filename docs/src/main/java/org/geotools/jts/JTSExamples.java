@@ -1,6 +1,6 @@
 package org.geotools.jts;
 
-import com.vividsolutions.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Coordinate;
 import org.geotools.geometry.jts.JTS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 

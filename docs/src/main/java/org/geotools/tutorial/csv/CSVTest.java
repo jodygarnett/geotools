@@ -11,7 +11,7 @@ package org.geotools.tutorial.csv;
 import static org.junit.Assert.assertTrue;
 
 import com.csvreader.CsvReader;
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 import java.io.File;
 import java.io.FileReader;
 import java.io.Serializable;

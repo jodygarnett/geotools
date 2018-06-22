@@ -10,7 +10,7 @@ package org.geotools.tutorial.csv2;
 
 import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
-import com.vividsolutions.jts.geom.Point;
+import org.locationtech.jts.geom.Point;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;

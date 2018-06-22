@@ -16,7 +16,7 @@
  */
 package org.geotools.styling.css.util;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 import java.util.Date;
 import java.util.List;
 import org.geotools.filter.visitor.DefaultFilterVisitor;

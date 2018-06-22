@@ -16,7 +16,7 @@
  */
 package org.geotools.styling.css.util;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;

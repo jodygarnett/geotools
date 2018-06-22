@@ -1,7 +1,7 @@
 package org.geotools.tutorial.process;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.OctagonalEnvelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.OctagonalEnvelope;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;

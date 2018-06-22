@@ -1,6 +1,6 @@
 package org.geotools.referencing;
 
-import com.vividsolutions.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Coordinate;
 import java.awt.RenderingHints.Key;
 import java.awt.geom.Point2D;
 import java.util.Collections;

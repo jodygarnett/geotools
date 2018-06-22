@@ -19,9 +19,9 @@ package org.geotools.data.csv.parse;
 
 import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;

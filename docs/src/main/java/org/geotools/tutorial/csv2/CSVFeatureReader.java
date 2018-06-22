@@ -9,8 +9,8 @@
 package org.geotools.tutorial.csv2;
 
 import com.csvreader.CsvReader;
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 import org.geotools.data.FeatureReader;

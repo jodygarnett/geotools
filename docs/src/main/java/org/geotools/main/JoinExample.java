@@ -9,7 +9,7 @@
  */
 package org.geotools.main;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;

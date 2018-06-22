@@ -17,7 +17,7 @@
 
 package org.geotools.data.solr;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 import java.util.Date;
 import java.util.Map.Entry;
 import org.apache.solr.client.solrj.response.LukeResponse;

@@ -18,7 +18,7 @@
 package org.geotools.data.csv.parse;
 
 import com.csvreader.CsvWriter;
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;

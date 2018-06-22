@@ -16,11 +16,6 @@
  */
 package org.geotools.gce.imagemosaic.catalog;
 
-import com.vividsolutions.jts.awt.ShapeReader;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.util.AffineTransformation;
-import com.vividsolutions.jts.simplify.TopologyPreservingSimplifier;
 import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import java.awt.Rectangle;
 import java.awt.Shape;
@@ -37,6 +32,11 @@ import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.GeometryClipper;
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.awt.ShapeReader;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.util.AffineTransformation;
+import org.locationtech.jts.simplify.TopologyPreservingSimplifier;
 
 /**
  * A ROIGeometry provider that handles multi-scale ROI, supporting per imageIndex overviews's

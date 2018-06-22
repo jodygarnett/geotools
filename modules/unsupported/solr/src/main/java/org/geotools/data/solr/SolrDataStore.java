@@ -17,7 +17,7 @@
 
 package org.geotools.data.solr;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;

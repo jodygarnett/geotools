@@ -17,9 +17,9 @@
 
 package org.geotools.data.solr;
 
-import com.vividsolutions.jts.densify.Densifier;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.densify.Densifier;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;

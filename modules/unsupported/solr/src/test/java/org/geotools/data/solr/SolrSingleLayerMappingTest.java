@@ -16,7 +16,7 @@
  */
 package org.geotools.data.solr;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;

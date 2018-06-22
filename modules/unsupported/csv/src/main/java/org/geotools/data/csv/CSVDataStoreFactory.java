@@ -17,7 +17,7 @@
  */
 package org.geotools.data.csv;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.GeometryFactory;
 import java.awt.RenderingHints.Key;
 import java.io.File;
 import java.io.IOException;

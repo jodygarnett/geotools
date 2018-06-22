@@ -16,7 +16,7 @@
  */
 package org.geotools.data.sfs;
 
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Iterator;

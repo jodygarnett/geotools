@@ -16,7 +16,7 @@
  */
 package org.geotools.geometry.jts.spatialschema.geometry.primitive;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 import java.util.ArrayList;
 import java.util.List;
 import junit.framework.TestCase;

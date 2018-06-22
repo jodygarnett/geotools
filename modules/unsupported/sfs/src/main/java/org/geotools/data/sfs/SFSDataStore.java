@@ -16,7 +16,7 @@
  */
 package org.geotools.data.sfs;
 
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;

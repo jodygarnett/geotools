@@ -16,8 +16,8 @@
  */
 package org.geotools.mbstyle;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.PrecisionModel;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.PrecisionModel;
 import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -421,7 +421,7 @@ public class MBStyle {
                     try {
                         CoordinateReferenceSystem crs = CRS.decode("EPSG:4326");
 
-                        ftb.add("geometry", com.vividsolutions.jts.geom.Polygon.class, crs);
+                        ftb.add("geometry", org.locationtech.jts.geom.Polygon.class, crs);
                         ftb.setCRS(crs);
                         ftb.setDefaultGeometry("geometry");
                         ftb.setName("background");

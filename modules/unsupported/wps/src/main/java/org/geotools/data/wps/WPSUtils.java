@@ -16,7 +16,7 @@
  */
 package org.geotools.data.wps;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;

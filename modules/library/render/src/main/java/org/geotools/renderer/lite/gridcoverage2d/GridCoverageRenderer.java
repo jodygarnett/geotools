@@ -16,11 +16,6 @@
  */
 package org.geotools.renderer.lite.gridcoverage2d;
 
-import com.vividsolutions.jts.algorithm.match.HausdorffSimilarityMeasure;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.util.AffineTransformation;
 import it.geosolutions.jaiext.range.Range;
 import it.geosolutions.jaiext.utilities.ImageLayout2;
 import it.geosolutions.jaiext.vectorbin.ROIGeometry;
@@ -90,6 +85,11 @@ import org.geotools.styling.ChannelSelection;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.SelectedChannelType;
 import org.geotools.styling.SelectedChannelTypeImpl;
+import org.locationtech.jts.algorithm.match.HausdorffSimilarityMeasure;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.util.AffineTransformation;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.geometry.BoundingBox;

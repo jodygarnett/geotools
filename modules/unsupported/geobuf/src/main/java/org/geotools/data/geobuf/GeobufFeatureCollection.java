@@ -16,8 +16,8 @@
  */
 package org.geotools.data.geobuf;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;

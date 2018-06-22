@@ -1,6 +1,6 @@
 package org.geotools.grid;
 
-import com.vividsolutions.jts.geom.Polygon;
+import org.locationtech.jts.geom.Polygon;
 import java.awt.Color;
 import java.net.URL;
 import java.util.Arrays;

@@ -17,7 +17,7 @@
 
 package org.geotools.data.solr;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;

@@ -315,6 +315,11 @@ public class CompoundRing extends LinearRing
         linearize().apply(filter);
     }
 
+    @Override
+    public Object clone() {
+        return new CompoundRing(delegate);
+    }
+
     public void normalize() {
         linearize().normalize();
     }

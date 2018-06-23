@@ -442,6 +442,11 @@ public class CircularString extends LineString implements SingleCurvedGeometry<L
         linearize().apply(filter);
     }
 
+    @Override
+    public Object clone() {
+        return new CircularString(controlPoints, factory, tolerance);
+    }
+
     public void normalize() {
         linearize().normalize();
     }

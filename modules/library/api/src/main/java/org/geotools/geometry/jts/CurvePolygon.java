@@ -114,4 +114,9 @@ public class CurvePolygon extends Polygon implements CurvedGeometry<Polygon> {
     public int getCoordinatesDimension() {
         return 2;
     }
+
+    @Override
+    public Object clone() {
+        return new CurvePolygon(shell, holes, factory, tolerance);
+    }
 }

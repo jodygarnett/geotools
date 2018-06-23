@@ -439,6 +439,11 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
         linearize().apply(filter);
     }
 
+    @Override
+    public Object clone() {
+        return new CompoundCurve(components, factory, tolerance);
+    }
+
     public void normalize() {
         linearize().normalize();
     }

@@ -118,4 +118,14 @@ public class MultiSurface extends MultiPolygon implements MultiCurvedGeometry<Mu
     public int getCoordinatesDimension() {
         return 2;
     }
+
+    @Override
+    public Object clone() {
+        Polygon[] polys = new Polygon[geometries.length];
+        for (int i = 0; i < geometries.length; i++) {
+            polys[i] = (Polygon) geometries[i];
+        }
+
+        return new MultiSurface(polys, factory, tolerance);
+    }
 }

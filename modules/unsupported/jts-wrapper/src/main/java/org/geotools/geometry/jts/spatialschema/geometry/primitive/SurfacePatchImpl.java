@@ -11,9 +11,9 @@ package org.geotools.geometry.jts.spatialschema.geometry.primitive;
 
 // OpenGIS direct dependencies
 
-import org.locationtech.jts.geom.Geometry;
 import org.geotools.geometry.jts.JTSGeometry;
 import org.geotools.geometry.jts.spatialschema.geometry.geometry.GenericSurfaceImpl;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.primitive.Ring;
 import org.opengis.geometry.primitive.Surface;

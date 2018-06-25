@@ -16,13 +16,13 @@
  */
 package org.geotools.geometry.jts;
 
-import org.locationtech.jts.geom.Coordinate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.GeometryFactoryFinder;
 import org.geotools.geometry.jts.spatialschema.geometry.DirectPositionImpl;
+import org.locationtech.jts.geom.Coordinate;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Envelope;
 import org.opengis.geometry.Geometry;
@@ -62,8 +62,7 @@ public final class JTSUtils {
 
     /** Creates a 19107 primitive geometry from the given JTS geometry. */
     public static Geometry jtsToGo1(
-            final org.locationtech.jts.geom.Geometry jtsGeom,
-            final CoordinateReferenceSystem crs) {
+            final org.locationtech.jts.geom.Geometry jtsGeom, final CoordinateReferenceSystem crs) {
 
         Hints hints = new Hints(Hints.CRS, crs);
         PrimitiveFactory pf = GeometryFactoryFinder.getPrimitiveFactory(hints);
@@ -71,8 +70,7 @@ public final class JTSUtils {
 
         String geomType = jtsGeom.getGeometryType();
         if (geomType.equalsIgnoreCase("Point")) {
-            org.locationtech.jts.geom.Point jtsPoint =
-                    (org.locationtech.jts.geom.Point) jtsGeom;
+            org.locationtech.jts.geom.Point jtsPoint = (org.locationtech.jts.geom.Point) jtsGeom;
             DirectPosition dp = pointToDirectPosition(jtsPoint, crs);
             Point result = pf.createPoint(dp);
             return result;
@@ -383,8 +381,7 @@ public final class JTSUtils {
      * @param envelope The Envelope to be converted
      * @return A JTS Geometry
      */
-    public static org.locationtech.jts.geom.Geometry getEnvelopeGeometry(
-            final Envelope envelope) {
+    public static org.locationtech.jts.geom.Geometry getEnvelopeGeometry(final Envelope envelope) {
         // PENDING(NL): Add code to check for CRS compatibility
         // Must consider possibility that this is a pixel envelope
         // rather than geo coordinate; only way to be sure is to check Units

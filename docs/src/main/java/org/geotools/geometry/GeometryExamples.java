@@ -1,5 +1,10 @@
 package org.geotools.geometry;
 
+import org.geotools.geometry.jts.CircularString;
+import org.geotools.geometry.jts.CurvedGeometryFactory;
+import org.geotools.geometry.jts.Geometries;
+import org.geotools.geometry.jts.JTSFactoryFinder;
+import org.geotools.geometry.jts.WKTReader2;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -7,11 +12,6 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.impl.PackedCoordinateSequence;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
-import org.geotools.geometry.jts.CircularString;
-import org.geotools.geometry.jts.CurvedGeometryFactory;
-import org.geotools.geometry.jts.Geometries;
-import org.geotools.geometry.jts.JTSFactoryFinder;
-import org.geotools.geometry.jts.WKTReader2;
 
 public class GeometryExamples {
 

@@ -565,8 +565,7 @@ public abstract class GeometryImpl implements Geometry, Serializable, Cloneable,
      * This class implements JTS's CoordinateFilter interface using a GeoAPI MathTransform object to
      * actually perform the work.
      */
-    public static class MathTransformFilter
-            implements org.locationtech.jts.geom.CoordinateFilter {
+    public static class MathTransformFilter implements org.locationtech.jts.geom.CoordinateFilter {
         private MathTransform transform;
         private DirectPosition src;
         private DirectPosition dst;

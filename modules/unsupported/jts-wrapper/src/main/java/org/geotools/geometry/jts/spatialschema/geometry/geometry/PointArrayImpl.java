@@ -205,8 +205,7 @@ public class PointArrayImpl extends NotifyingArrayList<Position>
 
     public org.locationtech.jts.geom.Geometry getJTSGeometry() {
         int n = super.size();
-        org.locationtech.jts.geom.Coordinate[] coords =
-                new org.locationtech.jts.geom.Coordinate[n];
+        org.locationtech.jts.geom.Coordinate[] coords = new org.locationtech.jts.geom.Coordinate[n];
         for (int i = 0; i < n; i++) {
             coords[i] = JTSUtils.directPositionToCoordinate((DirectPosition) super.get(i));
         }

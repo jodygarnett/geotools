@@ -3,8 +3,9 @@ GeoTools Documentation
 
 Quickstart to get up and running with GeoTools in minutes:
 
+* `IntelliJ Quickstart <http://docs.geotools.org/latest/userguide/tutorial/quickstart/intellij.html>`_ ( `stable <http://docs.geotools.org/stable/tutorials/quickstart/intellij.html>`_ )
 * `Eclipse Quickstart <http://docs.geotools.org/latest/userguide/tutorial/quickstart/eclipse.html>`_ ( `stable <http://docs.geotools.org/stable/tutorials/quickstart/eclipse.html>`_ )
-* `NetBeans Quickstart <http://docs.geotools.org/latest/userguide/tutorial/quickstart/netbeans.html>`_ ( `stable <http://docs.geotools.org/stable/tutorials/quickstart/netbeans.html>`_ )
+* `Apache NetBeans Quickstart <http://docs.geotools.org/latest/userguide/tutorial/quickstart/netbeans.html>`_ ( `stable <http://docs.geotools.org/stable/tutorials/quickstart/netbeans.html>`_ )
 * `Maven command line Quickstart <http://docs.geotools.org/latest/userguide/tutorial/quickstart/maven.html>`_ 
 
 GeoTools API

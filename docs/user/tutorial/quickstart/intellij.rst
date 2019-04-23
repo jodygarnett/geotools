@@ -7,18 +7,14 @@
 
 IntelliJ Quickstart
 ===================
-This guide will help you setup the IntelliJ IDE in order to work with GeoTools and follow along with the rest of the
-GeoTools tutorial.
+This guide will help you setup the IntelliJ IDE in order to work with GeoTools and follow along with the rest of the GeoTools tutorial.
 
 Pre-Requisites
 --------------
 This guide assumes the following:
 
-* You have the latest JDK installed (8 at the time this article was written) installed. If not the `Eclipse Quickstart <./eclipse.html>`_
-  provides instructions on how to do this.
-* You have IntelliJ installed. This article targets IntelliJ CE 2016; however, previous versions at least as far back as
-  13 should work fine. Ultimate versions should also work fine. IntelliJ can be downloaded from JetBrains_ and generally
-  works out of the box on common operating systems.
+* You have the latest Java installed installed.
+* You have IntelliJ installed. This article targets IntelliJ CE 2019.1; however, previous versions at least as far back as 13 should work fine. Ultimate versions should also work fine. IntelliJ can be downloaded from JetBrains_ and generally works out of the box on common operating systems.
   
 Create a New Project
 --------------------
@@ -41,8 +37,7 @@ To start with we'll create a new project using the Maven quickstart archetype.
       :scale: 65 %
       :align: center
       
-#. Hit next. The following screen we should be able to leave with the defaults. For our purposes IntelliJ's bundled Maven should be
-   fine, unless the version is lower than 3, in which case you should consider using a new external verision. 
+#. Hit next. The following screen we should be able to leave with the defaults. For our purposes IntelliJ's bundled Maven should be fine, unless the version is lower than 3, in which case you should consider using a new external verision. 
    
    .. image:: images/intellij/new_project3.png
       :scale: 65 %

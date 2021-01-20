@@ -40,6 +40,31 @@ public class HTTPFactoryFinderTest {
     }
 
     @Test
+    public void findDefaultFactory() throws Exception {
+        HTTPClientFactory factory = HTTPFactoryFinder.getFactory(null);
+        assertTrue(factory != null);
+        assertTrue(factory.getImplementationHints().isEmpty());
+
+        HTTPClient client = factory.createClient();
+        assertTrue(client != null);
+        assertTrue(client instanceof SimpleHttpClient);
+    }
+
+    @Test
+    public void findDefaultFactoryLogging() throws Exception {
+        Hints hints = new Hints(Hints.HTTP_LOGGING, "TRUE");
+        HTTPClientFactory factory = HTTPFactoryFinder.getFactory(hints);
+        assertTrue("factory logging found", factory != null);
+        assertTrue(
+                "logging implementation hint",
+                factory.getImplementationHints().containsKey(Hints.HTTP_LOGGING));
+
+        HTTPClient client = factory.createClient();
+        assertTrue(client != null);
+        assertTrue(client instanceof LoggingHTTPClient);
+    }
+
+    @Test
     public void findingCustomHttpClientTestByHints() throws Exception {
 
         HTTPClient client =
@@ -64,7 +89,6 @@ public class HTTPFactoryFinderTest {
     public void avoidLoggingInspiteSystemProperty() throws Exception {
         Hints.putSystemDefault(Hints.HTTP_LOGGING, "True");
         try {
-
             HTTPClient client = HTTPFactoryFinder.getClient(new Hints(Hints.HTTP_LOGGING, "False"));
             assertTrue(client instanceof SimpleHttpClient);
         } finally {

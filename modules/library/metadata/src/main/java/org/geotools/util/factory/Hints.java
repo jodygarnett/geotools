@@ -20,6 +20,7 @@ import java.awt.RenderingHints;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -1000,7 +1001,19 @@ public class Hints extends RenderingHints {
     public static final ClassKey HTTP_CLIENT = new ClassKey("org.geotools.http.HTTPClient");
 
     /** Should we log each http request FALSE/TRUE/charset */
-    public static final Key HTTP_LOGGING = new Key(String.class);
+    public static final Key HTTP_LOGGING =
+            new Key(String.class) {
+                public boolean isCompatibleValue(final Object value) {
+                    if (value != null && value instanceof String) {
+                        String string = (String) value;
+                        if ("TRUE".equals(string) || "FALSE".equals(string)) {
+                            return true;
+                        }
+                        return Charset.isSupported(string);
+                    }
+                    return false;
+                }
+            };
 
     /**
      * Controls date time formatting output for GML 2.

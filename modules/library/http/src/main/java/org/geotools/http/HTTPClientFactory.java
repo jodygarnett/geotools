@@ -17,6 +17,7 @@
  */
 package org.geotools.http;
 
+import org.geotools.util.factory.Factory;
 import org.geotools.util.factory.Hints;
 
 /**
@@ -24,7 +25,7 @@ import org.geotools.util.factory.Hints;
  *
  * @author Roar Brænden
  */
-public interface HTTPClientFactory {
+public interface HTTPClientFactory extends Factory {
 
     /**
      * Method used to check if client in Hints can be created

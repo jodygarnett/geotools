@@ -18,6 +18,7 @@ package org.geotools.http;
 
 import java.util.Collections;
 import java.util.List;
+import org.geotools.util.factory.Hints;
 
 /**
  * Default factory for generating HTTP client's. Will deliver a SimpleHttpClient.
@@ -26,6 +27,13 @@ import java.util.List;
  */
 public class DefaultHTTPClientFactory extends AbstractHTTPClientFactory {
 
+    public DefaultHTTPClientFactory(){
+    }
+
+    public DefaultHTTPClientFactory(Hints hints){
+        super(hints);
+    }
+
     @Override
     protected List<Class<?>> clientClasses() {
         return Collections.singletonList(SimpleHttpClient.class);
@@ -33,6 +41,11 @@ public class DefaultHTTPClientFactory extends AbstractHTTPClientFactory {
 
     @Override
     public HTTPClient createClient() {
-        return new SimpleHttpClient();
+        return applyLoggingDefault(new SimpleHttpClient());
+    }
+
+    @Override
+    public HTTPClient createClient(Hints hints) {
+        return applyLogging(new SimpleHttpClient(), hints);
     }
 }

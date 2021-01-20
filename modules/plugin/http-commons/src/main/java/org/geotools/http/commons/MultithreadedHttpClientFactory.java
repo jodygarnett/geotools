@@ -20,6 +20,8 @@ import java.util.Collections;
 import java.util.List;
 import org.geotools.http.AbstractHTTPClientFactory;
 import org.geotools.http.HTTPClient;
+import org.geotools.http.SimpleHttpClient;
+import org.geotools.util.factory.Hints;
 
 /**
  * Factory for MultithreadedHttpClient
@@ -38,6 +40,11 @@ public class MultithreadedHttpClientFactory extends AbstractHTTPClientFactory {
 
     @Override
     public HTTPClient createClient() {
-        return new MultithreadedHttpClient();
+        return applyLoggingDefault( new MultithreadedHttpClient() );
+    }
+
+    @Override
+    public HTTPClient createClient(Hints hints) {
+        return applyLogging(new MultithreadedHttpClient(), hints);
     }
 }

@@ -11,21 +11,34 @@ package org.geotools.tutorial.reload;
 
 import java.io.File;
 import java.util.logging.Logger;
-import java.util.logging.Level;
+import org.geotools.util.factory.GeoTools;
 import org.geotools.util.logging.Logging;
+
+import org.apache.log4j.PropertyConfigurator;
 
 public class Reload4JIntegration {
 
-    static final Logger LOGGER = Logging.getLogger(Reload4JIntegration.class);
-    
-    public static void main(String args[]) {       
+    public static void main(String args[]) {
+        GeoTools.init();
+        final Logger LOGGER = Logging.getLogger(Reload4JIntegration.class);
+
         LOGGER.info("Welcome to Reload4J Integration Example");
-        if( System.getProperties().containsKey("java.util.logging.config.file") ){
-            File config = new File(System.getProperty("java.util.logging.config.file"));
-            LOGGER.config("java.util.logging.config.file="+config);
+        if( System.getProperties().containsKey("log4j.configuration") ){
+            File config = new File(System.getProperty("log4j.configuration"));
+            if(config.exists()) {
+               LOGGER.config("log4j.configuration="+config);
+            } else {
+                LOGGER.warning("The log4j.configuration="+config+" file proivded does not exist");
+            }
         }
-        LOGGER.fine("Everything is fine...");
-        LOGGER.finer("Everything is finer...");
+        else {
+            LOGGER.config("Built-in log4j.properties resource used.");
+        }
         LOGGER.finest("Everything is finest...");
+        LOGGER.finer("Everything is finer...");
+        LOGGER.fine("Everything is fine...");
+        LOGGER.info("Everything is okay.");
+        LOGGER.warning("Everything is alarming!");
+        LOGGER.severe("Everything is terrible!");
     }
 }

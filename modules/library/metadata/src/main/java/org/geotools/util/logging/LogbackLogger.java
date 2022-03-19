@@ -45,8 +45,8 @@ public class LogbackLogger extends LoggerAdapter {
 
         // uses reflection to avoid hard dependency on logback classic
         try {
-            Class LogbackLevelClass = Class.forName("ch.qos.logback.classic.Level");
-            Class LogbackLoggerCLass = Class.forName("ch.qos.logback.classic.Logger");
+            Class<?> LogbackLevelClass = Class.forName("ch.qos.logback.classic.Level");
+            Class<?> LogbackLoggerCLass = Class.forName("ch.qos.logback.classic.Logger");
 
             Field logbackLevelField = LogbackLevelClass.getField(levelName);
             Object levelObject = logbackLevelField.get(null);

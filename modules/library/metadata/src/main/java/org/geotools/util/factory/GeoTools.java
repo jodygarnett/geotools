@@ -696,9 +696,17 @@ public final class GeoTools {
      *       framework is available, then every logging message in the {@code org.geotools}
      *       namespace sent to the Java {@linkplain java.util.logging.Logger logger} are redirected
      *       to Commons-logging.
+     *   <li>Otherwise if the <A HREF="https://logback.qos.ch/">Logback</A> framework is available,
+     *       then every logging message in the {@code org.geotools} namespace sent to the Java
+     *       {@linkplain java.util.logging.Logger logger} are redirected to SL4J API used by
+     *       logback.
      *   <li>Otherwise if the <A HREF="http://logging.apache.org/log4j">Log4J</A> framework is
      *       available, then every logging message in the {@code org.geotools} namespace sent to the
-     *       Java {@linkplain java.util.logging.Logger logger} are redirected to Log4J.
+     *       Java {@linkplain java.util.logging.Logger logger} are redirected to Log4J API.
+     *   <li>Otherwise if the <A HREF="http://logging.apache.org/log4j">Reload4J</A> framework is
+     *       available, then every logging message in the {@code org.geotools} namespace sent to the
+     *       Java {@linkplain java.util.logging.Logger logger} are redirected to Log4J 1 API used by
+     *       Reload4J.
      *   <li>Otherwise, the Java logging {@linkplain java.util.logging.Formatter formatter} for
      *       console output is replaced by a {@linkplain org.geotools.util.logging.MonolineFormatter
      *       monoline formatter}.
@@ -718,13 +726,19 @@ public final class GeoTools {
      */
     public static void init() {
         final Logging log = Logging.GEOTOOLS;
-        try {
-            log.setLoggerFactory("org.geotools.util.logging.CommonsLoggerFactory");
-        } catch (ClassNotFoundException commonsException) {
+        final String CANDIDATES[] =
+                new String[] {
+                    "org.geotools.util.logging.CommonsLoggerFactory",
+                    "org.geotools.util.logging.LogbackLoggerFactory",
+                    "org.geotools.util.logging.Log4J2LoggerFactory", // sl4j
+                    "org.geotools.util.logging.Log4JLoggerFactory" // reload4j
+                };
+        for (String factoryName : CANDIDATES) {
             try {
-                log.setLoggerFactory("org.geotools.util.logging.Log4JLoggerFactory");
-            } catch (ClassNotFoundException log4jException) {
-                // Nothing to do, we already tried our best.
+                log.setLoggerFactory(factoryName);
+                break;
+            } catch (ClassNotFoundException classNotFound) {
+                continue;
             }
         }
         // If java logging is used, force monoline console output.

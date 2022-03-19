@@ -165,7 +165,7 @@ final class Log4JLogger extends LoggerAdapter {
 
     @Override
     public void config(String message) {
-        logger.info(message);
+        logger.log(CONFIG, message);
     }
 
     @Override
@@ -175,12 +175,12 @@ final class Log4JLogger extends LoggerAdapter {
 
     @Override
     public void finer(String message) {
-        logger.debug(message);
+        logger.trace(message);
     }
 
     @Override
     public void finest(String message) {
-        logger.trace(message);
+        logger.log(FINEST, message);
     }
 
     @Override

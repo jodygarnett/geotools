@@ -924,11 +924,10 @@
         <artifactId>commons-cli</artifactId>
         <version>1.4</version>
       </dependency>
+      <!-- replaces log4j:log4j -->
       <dependency>
         <groupId>ch.qos.reload4j</groupId>
-        <!-- replaces log4j -->
         <artifactId>reload4j</artifactId>
-        <!-- replaces log4j -->
         <version>${reload4j.version}</version>
       </dependency>
       <dependency>

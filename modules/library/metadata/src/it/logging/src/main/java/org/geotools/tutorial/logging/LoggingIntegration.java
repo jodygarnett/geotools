@@ -12,27 +12,31 @@ package org.geotools.tutorial.logging;
 import java.io.File;
 import java.util.logging.Logger;
 import java.util.logging.Level;
+import org.geotools.util.factory.GeoTools;
 import org.geotools.util.logging.Logging;
-
 /**
  * Logging integration demonstration illustrating use of logging.properties to
  * configure GeoTools.
  */
 public class LoggingIntegration {
 
-    static final Logger LOGGER = Logging.getLogger(LoggingIntegration.class);
-    
-    public static void main(String args[]) {       
+    public static void main(String args[]) {
+        GeoTools.init();
+        final Logger LOGGER = Logging.getLogger(LoggingIntegration.class);
+
         LOGGER.info("Welcome to Logging Integration Example");
         if( System.getProperties().containsKey("java.util.logging.config.file") ){
             File config = new File(System.getProperty("java.util.logging.config.file"));
             LOGGER.config("Using java.util.logging.config.file='"+config+"' configuration.");
         }
         else {
-            LOGGER.config("No java.util.logging.config.file configuration provided.");
+            LOGGER.warning("No java.util.logging.config.file configuration provided.");
         }
-        LOGGER.fine("Everything is fine...");
-        LOGGER.finer("Everything is finer...");
         LOGGER.finest("Everything is finest...");
+        LOGGER.finer("Everything is finer...");
+        LOGGER.fine("Everything is fine...");
+        LOGGER.info("Everything is okay.");
+        LOGGER.warning("Everything is alarming!");
+        LOGGER.severe("Everything is terrible!");
     }
 }

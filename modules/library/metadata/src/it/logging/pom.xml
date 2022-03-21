@@ -7,7 +7,7 @@
   <artifactId>logging</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
-  <name>GeoTools Logging Integration Demo</name>
+  <name>GeoTools Logging Integration Example</name>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.deploy.skip>true</maven.deploy.skip>

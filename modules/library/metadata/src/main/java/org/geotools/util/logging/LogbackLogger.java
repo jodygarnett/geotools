@@ -53,43 +53,13 @@ public class LogbackLogger extends LoggerAdapter {
 
             Method setLevelMethod = LogbackLoggerCLass.getMethod("setLevel", LogbackLevelClass);
             setLevelMethod.invoke(this.logger, levelObject);
-        } catch (ClassNotFoundException logbackClassicUnavaialble) {
-            // logback not available in this environment (so configuration is not available)
-        } catch (NoSuchFieldException levelNameUnavailable) {
-            System.err.println(
-                    logger.getName()
-                            + ": Logback-classic Looger.setLevel("
-                            + levelName
-                            + "): "
-                            + levelNameUnavailable.getMessage());
-        } catch (IllegalAccessException privateField) {
-            System.err.println(
-                    logger.getName()
-                            + ": Logback-classic Looger.setLevel("
-                            + levelName
-                            + "): "
-                            + privateField.getMessage());
-        } catch (NoSuchMethodException setLevelUnavailable) {
-            System.err.println(
-                    logger.getName()
-                            + ": Logback-classic Looger.setLevel("
-                            + levelName
-                            + "): "
-                            + setLevelUnavailable.getMessage());
-        } catch (InvocationTargetException setLevelFailed) {
-            System.err.println(
-                    logger.getName()
-                            + ": Logback-classic Looger.setLevel("
-                            + levelName
-                            + "): "
-                            + setLevelFailed.getMessage());
-        } catch (IllegalArgumentException illegalLevelParameter) {
-            System.err.println(
-                    logger.getName()
-                            + ": Logback-classic Looger.setLevel("
-                            + levelName
-                            + "): "
-                            + illegalLevelParameter.getMessage());
+        } catch (ClassNotFoundException
+                | NoSuchFieldException
+                | IllegalAccessException
+                | NoSuchMethodException
+                | InvocationTargetException
+                | IllegalArgumentException ignore) {
+            // Logback-classic Logger.setLevel( Level ) unavailable
         }
     }
 

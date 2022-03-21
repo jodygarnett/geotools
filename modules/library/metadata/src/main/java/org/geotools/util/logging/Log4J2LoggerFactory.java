@@ -76,7 +76,7 @@ public class Log4J2LoggerFactory extends LoggerFactory<org.apache.logging.log4j.
      */
     @Override
     protected org.apache.logging.log4j.Logger unwrap(final Logger logger) {
-        if (logger instanceof Log4JLogger) {
+        if (logger instanceof Log4J2Logger) {
             return ((Log4J2Logger) logger).logger;
         }
         return null;

@@ -13,6 +13,7 @@ import java.io.File;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 import org.geotools.util.factory.GeoTools;
+import org.geotools.util.logging.Log4J2LoggerFactory;
 import org.geotools.util.logging.Logging;
 /**
  * Logging integration demonstration illustrating use of logging.properties to
@@ -23,6 +24,9 @@ public class LoggingIntegration {
     public static void main(String args[]) {
         GeoTools.init();
         final Logger LOGGER = Logging.getLogger(LoggingIntegration.class);
+        if(Logging.ALL.getLoggerFactory() != null){
+            System.err.println("Expected GeoTools.init() use native java util logging factory, was "+Logging.ALL.getLoggerFactory());
+        }
 
         LOGGER.info("Welcome to Logging Integration Example");
         if( System.getProperties().containsKey("java.util.logging.config.file") ){

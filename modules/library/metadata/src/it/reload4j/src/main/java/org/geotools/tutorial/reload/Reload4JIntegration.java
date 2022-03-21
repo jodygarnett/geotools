@@ -16,6 +16,9 @@ import org.geotools.util.logging.Logging;
 
 import org.apache.log4j.PropertyConfigurator;
 
+/**
+ * Example illustrating use of Reload4J (providing Log4J 1 API) and startup environment.
+ */
 public class Reload4JIntegration {
 
     public static void main(String args[]) {

@@ -22,9 +22,13 @@ import java.util.logging.Logger;
  * A factory for loggers that redirect all Java logging events to the Apache's <A
  * HREF="http://logging.apache.org/log4j">Log4J</A> framework.
  *
- * @since 2.4
+ * <p>The {@code GeoTools.init()} method will select Log4J2LoggerFactory if log4j api is available
+ * on the classpath, however if you have several logging libraries on the classpath call {@code
+ * GeoTools.setLoggerFactory(Log4J2LoggerFactory#getInstance())}.
+ *
+ * @since 27
  * @version $Id$
- * @author Martin Desruisseaux
+ * @author Jody Garnett (GeoCat)
  */
 public class Log4J2LoggerFactory extends LoggerFactory<org.apache.logging.log4j.Logger> {
     /** The unique instance of this factory. */

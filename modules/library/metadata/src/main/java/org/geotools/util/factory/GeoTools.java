@@ -727,10 +727,10 @@ public final class GeoTools {
     public static void init() {
         final Logging log = Logging.GEOTOOLS;
         final String[] CANDIDATES = {
-            "org.geotools.util.logging.CommonsLoggerFactory",
             "org.geotools.util.logging.LogbackLoggerFactory",
             "org.geotools.util.logging.Log4J2LoggerFactory", // sl4j
-            "org.geotools.util.logging.Log4JLoggerFactory" // reload4j
+            "org.geotools.util.logging.Log4JLoggerFactory", // reload4j
+            "org.geotools.util.logging.CommonsLoggerFactory"
         };
         for (String factoryName : CANDIDATES) {
             try {

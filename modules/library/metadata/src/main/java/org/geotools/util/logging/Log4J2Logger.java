@@ -35,7 +35,7 @@ import org.apache.logging.log4j.spi.StandardLevel;
  *   <li>{@link java.util.logging.Level#FINE}: {@link org.apache.logging.log4j.Level#DEBUG}
  *   <li>{@link java.util.logging.Level#FINER}: {@link org.apache.logging.log4j.Level#TRACE}
  *   <li>{@link java.util.logging.Level#FINEST}: {@link #FINEST}
- *   <li>{@link java.util.logging.Level#FINEST}: {@link #FINEST}
+ *   <li>{@link java.util.logging.Level#ALL}: {@link org.apache.logging.log4j.Level#ALL}
  * </ul>
  *
  * @since 27
@@ -89,19 +89,19 @@ final class Log4J2Logger extends LoggerAdapter {
     private static org.apache.logging.log4j.Level toLog4JLevel(final Level level) {
         final int n = level.intValue();
         switch (n / 100) {
-            case 10:
-                return org.apache.logging.log4j.Level.ERROR; // SEVERE
-            case 9:
-                return org.apache.logging.log4j.Level.WARN; // WARNING
+            case 10: // SEVERE
+                return org.apache.logging.log4j.Level.ERROR;
+            case 9: // WARNING
+                return org.apache.logging.log4j.Level.WARN;
             case 8: // INFO
-                return org.apache.logging.log4j.Level.INFO; // INFO
+                return org.apache.logging.log4j.Level.INFO;
             case 7:
                 return CONFIG; // CONFIG
             case 6: // (not allocated)
-            case 5:
-                return org.apache.logging.log4j.Level.DEBUG; // FINE
-            case 4:
-                return org.apache.logging.log4j.Level.TRACE; // FINER
+            case 5: // FINE
+                return org.apache.logging.log4j.Level.DEBUG;
+            case 4: // FINER
+                return org.apache.logging.log4j.Level.TRACE;
             case 3: // FINEST
                 return FINEST;
             case 2: // (not allocated)

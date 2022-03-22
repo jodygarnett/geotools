@@ -30,7 +30,7 @@ import org.geotools.util.SuppressFBWarnings;
 import org.geotools.util.XArray;
 
 /**
- * Utility class for configuring loggings in GeoTools. <strong>All GeoTools code should fetch their
+ * Utility class for configuring logging in GeoTools. <strong>All GeoTools code should fetch their
  * logger through a call to {@link #getLogger(String)}</strong>, not java util logging {@link
  * Logger#getLogger(String)}. This is necessary in order to give GeoTools a chance to redirect log
  * events to other logging frameworks, for example <A
@@ -40,7 +40,8 @@ import org.geotools.util.XArray;
  * <p><b>Example:</b> In order to redirect every GeoTools log events to commons-logging, invoke the
  * following once at application startup:
  *
- * <pre><code>Logging.setLoggerFactory}("org.geotools.util.logging.CommonsLoggerFactory");</code>
+ * <pre>
+ * <code>Logging.GEOTOOLS.setLoggerFactory}("org.geotools.util.logging.CommonsLoggerFactory");</code>
  * </pre>
  *
  * @since 2.4
@@ -74,9 +75,10 @@ public final class Logging {
     /**
      * The children {@link Logging} objects.
      *
-     * <p>The plain array used there is not efficient for adding new items (an {@code ArrayList}
-     * would be more efficient), but we assume that very few new items will be added. Furthermore a
-     * plain array is efficient for reading, and the later is way more common than the former.
+     * <p>The plain array used here is inefficient for adding new items (an {@code ArrayList} would
+     * be more efficient), but we assume that very few new items will be added. Furthermore, a plain
+     * array is efficient for reading, which is more common and more performance sensitive than
+     * adding.
      */
     private Logging[] children = EMPTY;
 

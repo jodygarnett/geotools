@@ -20,8 +20,40 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.logging.Level;
+import org.slf4j.Logger;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 
+/**
+ * Logger that redirect all Java logging events to <A HREF="">logback framework</A> * (using the
+ * <AHREF="https://www.slf4j.org/">sl4j</A> API).
+ *
+ * <ul>
+ *   <li>{@link Level#ALL}: all enabled
+ *   <li>{@link Level#SEVERE}: {@link Logger#isErrorEnabled()}
+ *   <li>{@link Level#WARNING}: {@link Logger#isWarnEnabled()}}
+ *   <li>{@link Level#INFO}: {@link Logger#isInfoEnabled(Marker)} ()} with {@link #CONFIG} marker.
+ *   <li>{@link Level#CONFIG}: {@link Logger#isDebugEnabled()}
+ *   <li>{@link Level#FINE}: {@link Logger#isDebugEnabled()}
+ *   <li>{@link Level#FINER}: {@link Logger#isTraceEnabled()}
+ *   <li>{@link Level#FINEST}: {@link Logger#isTraceEnabled(Marker)} ()} with {@link #FINEST}
+ *       marker.
+ *   <li>{@link Level#OFF}: none enabled
+ * </ul>
+ */
 public class LogbackLogger extends LoggerAdapter {
+    /**
+     * Marker used to tag configuration {@link Level#CONFIG} messages, as checked with sl4j {@code
+     * logger.isInfoEnabled(CONFIG)}.
+     */
+    private static final Marker CONFIG = MarkerFactory.getMarker("CONFIG");
+
+    /**
+     * Marker used to tag configuration {@link Level#FINEST} messages, as checked with sl4j {@code
+     * logger.isInfoEnabled(FINEST)}.
+     */
+    private static final Marker FINEST = MarkerFactory.getMarker("FINEST");
+
     public org.slf4j.Logger logger;
 
     public LogbackLogger(String name, org.slf4j.Logger logger) {
@@ -63,6 +95,12 @@ public class LogbackLogger extends LoggerAdapter {
         }
     }
 
+    /**
+     * Used by {@link #setLevel(Level)} to determine name used by logback classic.
+     *
+     * @param level Standard logging level
+     * @return logback classic level name.
+     */
     private static String toLogbackLevelName(final Level level) {
         final int n = level.intValue();
         switch (n / 100) {
@@ -102,9 +140,16 @@ public class LogbackLogger extends LoggerAdapter {
 
     @Override
     public Level getLevel() {
-        if (logger.isTraceEnabled()) return Level.FINEST;
+        if (logger.isTraceEnabled())
+            if (logger.isTraceEnabled(FINEST)) return Level.FINEST;
+            else {
+                return Level.FINER;
+            }
         if (logger.isDebugEnabled()) return Level.FINE;
-        if (logger.isInfoEnabled()) return Level.INFO;
+        if (logger.isInfoEnabled()) {
+            if (logger.isInfoEnabled(CONFIG)) return Level.CONFIG;
+            else return Level.INFO;
+        }
         if (logger.isWarnEnabled()) return Level.WARNING;
         if (logger.isErrorEnabled()) return Level.SEVERE;
         return Level.OFF;
@@ -117,7 +162,7 @@ public class LogbackLogger extends LoggerAdapter {
 
     @Override
     public void severe(String message) {
-        logger.error("SEVERE", message);
+        logger.error(message);
     }
 
     @Override
@@ -132,7 +177,7 @@ public class LogbackLogger extends LoggerAdapter {
 
     @Override
     public void config(String message) {
-        logger.debug("CONFIG", message);
+        logger.info(CONFIG, message);
     }
 
     @Override
@@ -147,6 +192,48 @@ public class LogbackLogger extends LoggerAdapter {
 
     @Override
     public void finest(String message) {
-        logger.trace("FINEST", message);
+        logger.trace(FINEST, message);
+    }
+
+    /**
+     * Logs a record at the specified level, passing the provided throwable to slf4j api.</code>.
+     */
+    @Override
+    public void log(final Level level, final String message, final Throwable thrown) {
+        final int n = level.intValue();
+        switch (n / 100) {
+            default:
+                {
+                    if (n < 0 || n == Integer.MAX_VALUE) break;
+                    // MAX_VALUE is a special value for Level.OFF. Otherwise and
+                    // if positive, fallthrough since we are greater than SEVERE.
+                }
+            case 10:
+                logger.error(message, thrown);
+                break;
+            case 9:
+                logger.warn(message, thrown);
+                break;
+            case 8:
+                logger.info(message, thrown);
+                break;
+            case 7:
+                logger.info(CONFIG, message, thrown);
+                break;
+            case 6:
+            case 5:
+                logger.debug(message, thrown);
+                break;
+            case 4:
+                logger.trace(message, thrown);
+                break;
+            case 3:
+                logger.trace(FINEST, message, thrown);
+                break;
+            case 2: /* Logging OFF */
+            case 1: /* Logging OFF */
+            case 0: /* Logging OFF */
+                break;
+        }
     }
 }

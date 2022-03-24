@@ -98,6 +98,7 @@
             <classpath/>
             <argument>-Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager</argument>
             <argument>-Dlog4j2.configurationFile=logging.xml</argument>
+            <argument>-Djava.awt.headless=true</argument>
             <argument>org.geotools.tutorial.logging.Log4JIntegration</argument>
           </arguments>
         </configuration>

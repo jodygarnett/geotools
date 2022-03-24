@@ -30,18 +30,9 @@ import org.slf4j.LoggerFactory;
  */
 public class LogbackIntegration {
 
+    public static final Logger LOGGER = initLogger();
+
     public static void main(String args[]) {
-        GeoTools.init();
-        // ((LoggerContext)LogManager.getContext(false)).reconfigure();
-        if( Logging.ALL.getLoggerFactory() == LogbackLoggerFactory.getInstance() ){
-            System.err.println("Expected GeoTools.init() to configure LogbackLoggerFactory, was "+Logging.ALL.getLoggerFactory());
-        }
-
-        final Logger LOGGER = Logging.getLogger(LogbackIntegration.class);
-        if(!LOGGER.getClass().getName().equals("org.geotools.util.logging.LogbackLogger")){
-           LOGGER.severe("LogbackLogger expected, but was:" + LOGGER.getClass().getName() );
-        }
-
         LOGGER.info("Welcome to Logback Integration Example");
         LOGGER.info("Configuration " + lookupConfiguration());
 
@@ -51,6 +42,14 @@ public class LogbackIntegration {
         LOGGER.info("Everything is okay.");
         LOGGER.warning("Everything is alarming!");
         LOGGER.severe("Everything is terrible!");
+    }
+    
+    private static Logger initLogger(){
+        GeoTools.init();
+         if( Logging.ALL.getLoggerFactory() == LogbackLoggerFactory.getInstance() ){
+            System.err.println("Expected GeoTools.init() to configure LogbackLoggerFactory, was "+Logging.ALL.getLoggerFactory());
+        }
+        return Logging.getLogger(LogbackIntegration.class);
     }
 
     private static String lookupConfiguration(){

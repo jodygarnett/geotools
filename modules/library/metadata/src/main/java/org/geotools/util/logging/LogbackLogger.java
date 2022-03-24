@@ -29,16 +29,15 @@ import org.slf4j.MarkerFactory;
  * <AHREF="https://www.slf4j.org/">sl4j</A> API).
  *
  * <ul>
- *   <li>{@link Level#ALL}: all enabled
- *   <li>{@link Level#SEVERE}: {@link Logger#isErrorEnabled()}
- *   <li>{@link Level#WARNING}: {@link Logger#isWarnEnabled()}}
- *   <li>{@link Level#INFO}: {@link Logger#isInfoEnabled(Marker)} ()} with {@link #CONFIG} marker.
- *   <li>{@link Level#CONFIG}: {@link Logger#isDebugEnabled()}
- *   <li>{@link Level#FINE}: {@link Logger#isDebugEnabled()}
- *   <li>{@link Level#FINER}: {@link Logger#isTraceEnabled()}
- *   <li>{@link Level#FINEST}: {@link Logger#isTraceEnabled(Marker)} ()} with {@link #FINEST}
- *       marker.
- *   <li>{@link Level#OFF}: none enabled
+ *   <li>{@link Level#ALL}: {@link org.slf4j.Level#ALL}
+ *   <li>{@link Level#SEVERE}: {@link org.slf4j.Level#ERROR}
+ *   <li>{@link Level#WARNING}: {@link org.slf4j.Level#WARN}
+ *   <li>{@link Level#INFO}: {@link org.slf4j.Level#INFO}} 
+ *   <li>{@link Level#CONFIG}: {@link org.slf4j.Level#INFO} with {@link #CONFIG} marker.
+ *   <li>{@link Level#FINE}: {@link org.slf4j.Level#DEBUG}
+ *   <li>{@link Level#FINER}: {@link org.slf4j.Level#TRACE}
+ *   <li>{@link Level#FINEST}: {@link org.slf4j.Level#TRACE} with {@link #FINEST} marker.
+ *   <li>{@link Level#OFF}: {@link org.slf4j.Level#OFF}
  * </ul>
  */
 public class LogbackLogger extends LoggerAdapter {
@@ -111,7 +110,7 @@ public class LogbackLogger extends LoggerAdapter {
             case 8: // INFO
                 return "INFO"; // INFO
             case 7:
-                return "DEBUG"; // CONFIG
+                return "INFO"; // CONFIG
             case 6: // (not allocated)
             case 5:
                 return "DEBUG"; // FINE

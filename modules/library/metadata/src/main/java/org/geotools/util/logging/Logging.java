@@ -62,12 +62,22 @@ public final class Logging {
     /** An empty array of logging. Also used for locks. */
     private static final Logging[] EMPTY = new Logging[0];
 
-    /** Logging configuration that apply to all packages. */
+    /**
+     * Logging configuration that apply to all packages.
+     *
+     * <p>NOTE: ALL must be created before any other static Logging constant.
+     */
     public static final Logging ALL = new Logging();
-    // NOTE: ALL must be created before any other static Logging constant.
 
     /** Logging configuration that apply only to GeoTools packages. */
     public static final Logging GEOTOOLS = getLogging("org.geotools");
+
+    /**
+     * Logging configuration that apply only to javax.media.jai packages.
+     *
+     * <p>Used by {@link LoggingImagingListener} to route errors reported from JAI framework.
+     */
+    public static final Logging JAI = getLogging("javax.media.jai");
 
     /** The name of the base package. */
     final String name;

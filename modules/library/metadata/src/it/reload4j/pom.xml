@@ -68,9 +68,8 @@
           <executable>java</executable>
           <arguments>
             <argument>-classpath</argument>
-            <!-- uses dependencies and build directory -->
             <classpath/>
-            <argument>-Dgeotools.log=org.geotools.util.logging.Log4JLoggerFactory</argument>
+            <argument>-Djava.awt.headless=true</argument>
             <argument>org.geotools.tutorial.reload.Reload4JIntegration</argument>
           </arguments>
         </configuration>

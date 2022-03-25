@@ -69,6 +69,16 @@
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
         <version>3.0.0</version>
+        <configuration>
+          <executable>java</executable>
+          <arguments>
+            <argument>-classpath</argument>
+            <!-- uses dependencies and build directory -->
+            <classpath/>
+            <argument>-Djava.awt.headless=true</argument>
+            <argument>org.geotools.tutorial.logging.LogbackIntegration</argument>
+          </arguments>
+        </configuration>
         <executions>
           <execution>
             <id>integration-test</id>
@@ -76,15 +86,6 @@
             <goals>
               <goal>exec</goal>
             </goals>
-            <configuration>
-              <executable>java</executable>
-              <arguments>
-                <argument>-classpath</argument>
-                <classpath/>
-                <argument>-Djava.awt.headless=true</argument>
-                <argument>org.geotools.tutorial.logging.LogbackIntegration</argument>
-              </arguments>
-            </configuration>
           </execution>
         </executions>
       </plugin>

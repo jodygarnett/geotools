@@ -20,7 +20,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.logging.Level;
-import org.slf4j.Logger;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 
@@ -32,7 +31,7 @@ import org.slf4j.MarkerFactory;
  *   <li>{@link Level#ALL}: {@link org.slf4j.Level#ALL}
  *   <li>{@link Level#SEVERE}: {@link org.slf4j.Level#ERROR}
  *   <li>{@link Level#WARNING}: {@link org.slf4j.Level#WARN}
- *   <li>{@link Level#INFO}: {@link org.slf4j.Level#INFO}} 
+ *   <li>{@link Level#INFO}: {@link org.slf4j.Level#INFO}}
  *   <li>{@link Level#CONFIG}: {@link org.slf4j.Level#INFO} with {@link #CONFIG} marker.
  *   <li>{@link Level#FINE}: {@link org.slf4j.Level#DEBUG}
  *   <li>{@link Level#FINER}: {@link org.slf4j.Level#TRACE}

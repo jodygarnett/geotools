@@ -6,27 +6,27 @@ if (!buildLog.isFile()) {
 }
 String log = org.apache.commons.io.FileUtils.readFileToString(buildLog);
 
-if (!log.contains("INFO   [tutorial.logging]")) {
+if (!log.contains("INFO   org.geotools.tutorial.logging")) {
     throw new IllegalStateException("INFO expected");
 }
-if (!log.contains("logging.xml")) {
-    throw new IllegalStateException("logging.xml use expected");
+if (!log.contains("logback.xml")) {
+    throw new IllegalStateException("logback.xml use expected");
 }
-if (!log.contains("ERROR  [tutorial.logging]")) {
+if (!log.contains("ERROR  org.geotools.tutorial.logging")) {
+    throw new IllegalStateException("ERROR expected");
+}
+if (!log.contains("WARN   org.geotools.tutorial.logging")) {
     throw new IllegalStateException("WARN expected");
 }
-if (!log.contains("WARN   [tutorial.logging]")) {
-    throw new IllegalStateException("WARN expected");
+if (!log.contains("INFO   org.geotools.tutorial.logging CONFIG:")) {
+    throw new IllegalStateException("INFO with CONFIG marker expected");
 }
-if (!log.contains("CONFIG [tutorial.logging]")) {
-    throw new IllegalStateException("CONFIG expected");
-}
-if (!log.contains("DEBUG  [tutorial.logging]")) {
+if (!log.contains("DEBUG  org.geotools.tutorial.logging")) {
     throw new IllegalStateException("DEBUG expected");
 }
-if (!log.contains("TRACE  [tutorial.logging]")) {
+if (!log.contains("TRACE  org.geotools.tutorial.logging")) {
     throw new IllegalStateException("TRACE expected");
 }
-if (!log.contains("FINEST [tutorial.logging]")) {
-    throw new IllegalStateException("FINEST expected");
+if (!log.contains("TRACE  org.geotools.tutorial.logging FINEST:")) {
+    throw new IllegalStateException("TRACE with FINEST marker expected");
 }

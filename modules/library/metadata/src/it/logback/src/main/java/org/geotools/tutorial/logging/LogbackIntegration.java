@@ -34,11 +34,12 @@ public class LogbackIntegration {
 
     public static void main(String args[]) {
         LOGGER.info("Welcome to Logback Integration Example");
-        LOGGER.info("Configuration " + lookupConfiguration());
+        LOGGER.config("Configuration " + lookupConfiguration());
 
         LOGGER.finest("Everything is finest...");
         LOGGER.finer("Everything is finer...");
         LOGGER.fine("Everything is fine...");
+        LOGGER.config("Everything is configured...");
         LOGGER.info("Everything is okay.");
         LOGGER.warning("Everything is alarming!");
         LOGGER.severe("Everything is terrible!");

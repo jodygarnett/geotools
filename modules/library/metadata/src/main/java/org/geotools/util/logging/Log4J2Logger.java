@@ -38,6 +38,13 @@ import org.apache.logging.log4j.spi.StandardLevel;
  *   <li>{@link java.util.logging.Level#ALL}: {@link org.apache.logging.log4j.Level#ALL}
  * </ul>
  *
+ * To configure these additional levels use:
+ *
+ * <pre>&gt;code>    &gt;CustomLevels>
+ *      &gt;CustomLevel name="CONFIG" intLevel="450" /&lt
+ *     &gt;CustomLevel name="FINEST" intLevel="700" /&lt
+ *   &gt;/CustomLevels&lt</code></pre>
+ *
  * @since 27
  * @version $Id$
  * @author Jody Garnett (GeoCat)
@@ -66,7 +73,7 @@ final class Log4J2Logger extends LoggerAdapter {
      * if using a log4j adapter.
      */
     public static final org.apache.logging.log4j.Level FINEST =
-            org.apache.logging.log4j.Level.forName("FINEST", StandardLevel.DEBUG.intLevel() + 100);
+            org.apache.logging.log4j.Level.forName("FINEST", StandardLevel.TRACE.intLevel() + 100);
 
     /**
      * Creates a new logger adapter mapping from Log4J to java util logging.

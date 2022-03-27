@@ -25,9 +25,9 @@ if (!log.contains("ERROR [tutorial.reload]")) {
 if (!log.contains("DEBUG [tutorial.reload]")) {
     throw new IllegalStateException("DEBUG expected");
 }
-if (!log.contains("DEBUG [tutorial.reload]")) {
+if (!log.contains("TRACE [tutorial.reload]")) {
     throw new IllegalStateException("FINER expected");
 }
-if (!log.contains("TRACE [tutorial.reload]")) {
+if (!log.contains("FINEST [tutorial.reload]")) {
     throw new IllegalStateException("FINEST expected");
 }

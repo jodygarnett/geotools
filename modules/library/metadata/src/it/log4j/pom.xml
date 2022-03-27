@@ -96,8 +96,6 @@
             <argument>-classpath</argument>
             <!-- uses dependencies and build directory -->
             <classpath/>
-            <argument>-Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager</argument>
-            <argument>-Dlog4j2.configurationFile=logging.xml</argument>
             <argument>-Djava.awt.headless=true</argument>
             <argument>org.geotools.tutorial.logging.Log4JIntegration</argument>
           </arguments>
@@ -109,6 +107,25 @@
             <goals>
               <goal>exec</goal>
             </goals>
+          </execution>
+          <execution>
+            <id>integration-test2</id>
+            <phase>integration-test</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <executable>java</executable>
+              <arguments>
+                <argument>-classpath</argument>
+                <!-- uses dependencies and build directory -->
+                <classpath/>
+                <argument>-Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager</argument>
+                <argument>-Dlog4j2.configurationFile=log4j2-production.xml</argument>
+                <argument>-Djava.awt.headless=true</argument>
+                <argument>org.geotools.tutorial.logging.Log4JIntegration</argument>
+              </arguments>
+            </configuration>
           </execution>
         </executions>
       </plugin>

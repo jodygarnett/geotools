@@ -6,11 +6,12 @@ if (!buildLog.isFile()) {
 }
 String log = org.apache.commons.io.FileUtils.readFileToString(buildLog);
 
+if (!log.contains("log4j2.xml")) {
+    throw new IllegalStateException("log4j2.xml use expected");
+}
+
 if (!log.contains("INFO   [tutorial.logging]")) {
     throw new IllegalStateException("INFO expected");
-}
-if (!log.contains("logging.xml")) {
-    throw new IllegalStateException("logging.xml use expected");
 }
 if (!log.contains("ERROR  [tutorial.logging]")) {
     throw new IllegalStateException("WARN expected");

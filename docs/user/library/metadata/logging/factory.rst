@@ -7,10 +7,10 @@ If you are working in your own application, you can teach GeoTools to use your a
 
 GeoTools provides LoggerFactories for:
 
-* ``LogbackLoggerFactory``
-* ``Log4j2LoggerFactory`` - Log4J 2 API
-* ``Log4j1LoggerFactory`` - Log4J 1 API (maintained by Reload4J project)
-* ``CommonsLoggerFactory`` - Apache's Common Logging framework
+* ``org.geotools.util.logging.LogbackLoggerFactory``
+* ``org.geotools.util.logging.Log4j2LoggerFactory`` - Log4J 2 API
+* ``org.geotools.util.logging.Log4j1LoggerFactory`` - Log4J 1 API (maintained by Reload4J project)
+* ``org.geotools.util.logging.CommonsLoggerFactory`` - Apache's Common Logging framework
 
 Using a logger factory:
 
@@ -33,8 +33,7 @@ Using a logger factory:
       private static Logger initDefaultLogger() {
           Throwable troubleSettingUpLogging = null;
           try {
-              Logging.ALL.setLoggerFactory("org.geotools.util.Log4JLoggerFactory");
-              Logging.GEOTOOLS.setLoggerFactory("org.geotools.util.Log4JLoggerFactory");
+              Logging.ALL.setLoggerFactory("org.geotools.util.logging.Log4JLoggerFactory");
           } catch (Throwable trouble) {
               troubleSettingUpLogging = trouble;
           }
@@ -73,15 +72,15 @@ Or during class initialization:
 
 .. code-block::
    
-   static final Logger LOGGER = initLogger();
+   static final Logger LOGGER = defaultLogger();
 
    public static void main(String args[]){
         LOGGER.fine("Application started - first post!")
    }
    
-   private static final Logger initLogger(){
+   private static final Logger defaultLogger(){
        GeoTools.init();
-       LOGGER = Logging.getLogger("org.geotools.tutorial");
+       return Logging.getLogger("org.geotools.tutorial");
    }
 
 Keep in mind this method configures Logging.GEOTOOLS Logger only, if you are using Logging to configure for additional Loggger instances during startup you may do so:

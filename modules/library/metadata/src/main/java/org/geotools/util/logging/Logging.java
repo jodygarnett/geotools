@@ -379,7 +379,7 @@ public final class Logging {
      * {@code ConsoleHandler} are found, then a new one is created.
      *
      * <p><b>Note:</b> this method may have no effect if the loggings are redirected to an other
-     * logging framework, for example if {@link #redirectToCommonsLogging} has been invoked.
+     * logging framework.
      */
     public void forceMonolineConsoleOutput() {
         forceMonolineConsoleOutput(null);

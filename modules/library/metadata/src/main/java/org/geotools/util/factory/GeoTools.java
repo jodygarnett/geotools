@@ -620,7 +620,7 @@ public final class GeoTools {
      * Sets the global {@linkplain LoggerFactory logger factory}.
      *
      * <p>This method is the same as calling {@link Logging#setLoggerFactory(factory)} to configure
-     * both {@link Logging#GEOTOOLS} and {@link Logging#JAI} logger creation.
+     * both {@link Logging#ALL} logger creation.
      *
      * <p>GeoTools provides logback, log4j, reload4j, and commons-logging factories. This method
      * exists to allow you supply your own implementation (when using a GeoTools library in an
@@ -634,15 +634,16 @@ public final class GeoTools {
      * @see Logging#setLoggerFactory(LoggerFactory)
      * @since 2.4
      */
-    public void setLoggerFactory(final LoggerFactory<?> factory) {
+    public static void setLoggerFactory(final LoggerFactory<?> factory) {
         if (factory != null) {
-            Logging.GEOTOOLS.setLoggerFactory(factory);
-            Logging.JAI.setLoggerFactory(factory);
+            if (Logging.ALL.getLoggerFactory() == factory) {
+                Logging.ALL.setLoggerFactory(factory);
+            }
         } else {
-            Logging.GEOTOOLS.setLoggerFactory((LoggerFactory) null);
-            Logging.JAI.setLoggerFactory((LoggerFactory) null);
+            Logging.ALL.setLoggerFactory((LoggerFactory) null);
 
             // Otherwise if java logging is used, force monoline console output.
+            Logging.ALL.forceMonolineConsoleOutput();
             Logging.GEOTOOLS.forceMonolineConsoleOutput();
             Logging.JAI.forceMonolineConsoleOutput();
         }
@@ -656,13 +657,20 @@ public final class GeoTools {
      * <p>
      *
      * <ul>
-     *   <li>If the <A HREF="http://jakarta.apache.org/commons/logging/">Commons-logging</A>
-     *       framework is available, then every logging message in the {@code org.geotools}
-     *       namespace sent to the Java {@linkplain java.util.logging.Logger logger} are redirected
-     *       to Commons-logging.
-     *   <li>Otherwise if the <A HREF="http://logging.apache.org/log4j">Log4J</A> framework is
-     *       available, then every logging message in the {@code org.geotools} namespace sent to the
-     *       Java {@linkplain java.util.logging.Logger logger} are redirected to Log4J.
+     *   <li>If <A HREF="https://logback.qos.ch/">Logback</A> is available, then messages in {@code
+     *       org.geotools} and {@code javax.media.jai} namespace sent to {@linkplain
+     *       java.util.logging.Logger logger} are redirected to SL4J API used by logback.
+     *   <li>Otherwise if <A HREF="http://logging.apache.org/log4j">Log4J</A> is available, then
+     *       messages in {@code org.geotools} and {@code javax.media.jai} namespace sent to Java
+     *       {@linkplain java.util.logging.Logger logger} are redirected to Log4J API.
+     *   <li>Otherwise if <A HREF="http://logging.apache.org/log4j">Reload4J</A> is available, then
+     *       messages in {@code org.geotools} and {@code javax.media.jai} namespace sent to Java
+     *       {@linkplain java.util.logging.Logger logger} are redirected to Log4J 1 API used by
+     *       Reload4J.
+     *   <li>finally if <A HREF="http://jakarta.apache.org/commons/logging/">Commons-logging</A> is
+     *       available, then messages in {@code org.geotools} and {@code javax.media.jai} namespaces
+     *       sent to the Java {@linkplain java.util.logging.Logger logger} are redirected to
+     *       Commons-logging.
      *   <li>Otherwise, the Java logging {@linkplain java.util.logging.Formatter formatter} for
      *       console output is replaced by a {@linkplain org.geotools.util.logging.MonolineFormatter
      *       monoline formatter}.
@@ -744,15 +752,13 @@ public final class GeoTools {
         };
         for (String factoryName : CANDIDATES) {
             try {
-                Logging.GEOTOOLS.setLoggerFactory(factoryName);
+                Logging.ALL.setLoggerFactory(factoryName);
                 break;
             } catch (ClassNotFoundException classNotFound) {
                 continue;
             }
         }
-        if (Logging.GEOTOOLS.getLoggerFactory() != null) {
-            Logging.JAI.setLoggerFactory(Logging.GEOTOOLS.getLoggerFactory());
-        } else {
+        if (Logging.ALL.getLoggerFactory() == null) {
             // Otherwise if java logging is used, force monoline console output.
             Logging.GEOTOOLS.forceMonolineConsoleOutput();
             Logging.JAI.forceMonolineConsoleOutput();

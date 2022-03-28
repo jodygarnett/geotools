@@ -69,7 +69,16 @@ A convenience method exists in Logger for each of those levels:
    
 Do not use the logging info level as a replacement of System.out.println for displaying debug information to the console.
    
-The INFO level is for end users. Use the FINE, FINER or FINEST levels for debug information, and setup yours :file:`logging.properties` file accordingly (see Logging Configuration below).
+The INFO level is for end users. Use the FINE, FINER or FINEST levels for debug information.
+
+Logging configuration
+^^^^^^^^^^^^^^^^^^^^^
+
+When testing configure logging using `src/test/resources/logging.properties` file.
+
+When running use ``-Djava.util.logging.config.file=logging.properties`` system property.
+
+See the :user:`user guide for details <library/metadata/logging/java_logging.html>` for examples of configuration, and bridging to other logging systems.
 
 Entering/Existing Logger
 ^^^^^^^^^^^^^^^^^^^^^^^^

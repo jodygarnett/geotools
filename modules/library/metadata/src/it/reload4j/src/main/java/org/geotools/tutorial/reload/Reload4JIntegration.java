@@ -47,7 +47,7 @@ public class Reload4JIntegration {
         if( System.getProperties().containsKey("log4j.configuration") ){
             File config = new File(System.getProperty("log4j.configuration"));
             if(config.exists()) {
-               return config;
+               return ;config;
             } else {
                LOGGER.warning("The log4j.configuration="+config+" file does not exist");
             }

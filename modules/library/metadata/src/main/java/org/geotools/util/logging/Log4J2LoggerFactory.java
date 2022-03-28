@@ -17,6 +17,16 @@
 package org.geotools.util.logging;
 
 import java.util.logging.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.config.Configuration;
+import org.apache.logging.log4j.core.config.DefaultConfiguration;
+import org.apache.logging.log4j.core.config.NullConfiguration;
+import org.apache.logging.log4j.core.config.builder.impl.BuiltConfiguration;
+import org.apache.logging.log4j.core.config.json.JsonConfiguration;
+import org.apache.logging.log4j.core.config.properties.PropertiesConfiguration;
+import org.apache.logging.log4j.core.config.xml.XmlConfiguration;
+import org.apache.logging.log4j.core.config.yaml.YamlConfiguration;
 
 /**
  * A factory for loggers that redirect all Java logging events to the Apache's <A
@@ -80,5 +90,36 @@ public class Log4J2LoggerFactory extends LoggerFactory<org.apache.logging.log4j.
             return ((Log4J2Logger) logger).logger;
         }
         return null;
+    }
+
+    /**
+     * Indication of Log4J configuration details, often a configuration filename or setting.
+     *
+     * @return Log4J configuration details, often a filename or setting.
+     */
+    @Override
+    public String lookupConfiguration() {
+        try (LoggerContext context = (LoggerContext) LogManager.getContext()) {
+            Configuration configuration = context.getConfiguration();
+            if (configuration instanceof XmlConfiguration) {
+                return ((XmlConfiguration) configuration).getName();
+            } else if (configuration instanceof YamlConfiguration) {
+                return ((YamlConfiguration) configuration).getName();
+            } else if (configuration instanceof JsonConfiguration) {
+                return ((JsonConfiguration) configuration).getName();
+            } else if (configuration instanceof PropertiesConfiguration) {
+                return ((PropertiesConfiguration) configuration).getName();
+            } else if (configuration instanceof DefaultConfiguration) {
+                return "org.apache.logging.log4j.level="
+                        + System.getProperty("org.apache.logging.log4j.level", "ERROR");
+            } else if (configuration instanceof BuiltConfiguration) {
+                return "built configuration";
+            } else if (configuration instanceof NullConfiguration) {
+                return "null configuration";
+            }
+            return null;
+        } catch (Exception unknown) {
+            return "unknown";
+        }
     }
 }

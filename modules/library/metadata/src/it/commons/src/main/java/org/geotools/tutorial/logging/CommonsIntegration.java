@@ -9,45 +9,43 @@
  */
 package org.geotools.tutorial.logging;
 
-import java.io.File;
 import java.util.logging.Logger;
 import java.util.logging.Level;
-import org.geotools.util.factory.GeoTools;
-import org.geotools.util.logging.Log4J2LoggerFactory;
-import org.geotools.util.logging.Logging;
-/**
- * Logging integration demonstration illustrating use of logging.properties to configure GeoTools.
- */
-public class LoggingIntegration {
-    static {
-        GeoTools.init();
-    }
 
-    static final Logger LOGGER = Logging.getLogger(LoggingIntegration.class);
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.logging.CommonsLoggerFactory;
+import org.geotools.util.logging.Logging;
+
+/**
+ * Example illustrating use of SLF4J API and Logback startup environment.
+ */
+public class CommonsIntegration {
+
+    public static final Logger LOGGER = initLogger();
 
     public static void main(String args[]) {
+        LOGGER.info("Welcome to Commons Logging Integration Example");
 
-        if (Logging.ALL.getLoggerFactory() != null) {
-            System.err.println(
-                    "Expected GeoTools.init() use native java util logging factory, was "
-                            + Logging.ALL.getLoggerFactory());
+        if(!LOGGER.getClass().getName().equals("org.geotools.util.logging.CommonsLogger")){
+            LOGGER.severe("CommonsLogger expected, but was:" + LOGGER.getClass().getName() );
         }
-
-        LOGGER.info("Welcome to Logging Integration Example");
-        checkProperty("java.util.logging.config.file");
         LOGGER.config("Configuration " + Logging.ALL.lookupConfiguration());
 
         LOGGER.finest("Everything is finest...");
         LOGGER.finer("Everything is finer...");
         LOGGER.fine("Everything is fine...");
+        LOGGER.config("Everything is configured...");
         LOGGER.info("Everything is okay.");
         LOGGER.warning("Everything is alarming!");
         LOGGER.severe("Everything is terrible!");
     }
-
-    private static void checkProperty(String property) {
-        if (System.getProperties().containsKey(property)) {
-            LOGGER.config(property + "=" + System.getProperty(property));
+    
+    private static Logger initLogger(){
+        GeoTools.init();
+        if( Logging.ALL.getLoggerFactory() != CommonsLoggerFactory.getInstance() ){
+            System.err.println("Expected GeoTools.init() to configure CommonsLoggerFactory, was "+Logging.ALL.getLoggerFactory());
         }
+        return Logging.getLogger(CommonsIntegration.class);
     }
+
 }

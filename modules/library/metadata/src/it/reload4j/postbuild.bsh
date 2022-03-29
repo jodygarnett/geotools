@@ -6,7 +6,7 @@ if (!buildLog.isFile()) {
 }
 String log = org.apache.commons.io.FileUtils.readFileToString(buildLog);
 
-if (!log.contains("Built-in log4j.properties resource used.")) {
+if (!log.contains("log4j.properties")) {
     throw new IllegalStateException("log4j.properties  use expected");
 }
 

@@ -34,7 +34,11 @@ public class LogbackIntegration {
 
     public static void main(String args[]) {
         LOGGER.info("Welcome to Logback Integration Example");
-        LOGGER.config("Configuration " + lookupConfiguration());
+
+        if(!LOGGER.getClass().getName().equals("org.geotools.util.logging.LogbackLogger")){
+            LOGGER.severe("LogbackLogger expected, but was:" + LOGGER.getClass().getName() );
+        }
+        LOGGER.config("Configuration " + Logging.ALL.lookupConfiguration());
 
         LOGGER.finest("Everything is finest...");
         LOGGER.finer("Everything is finer...");
@@ -47,19 +51,10 @@ public class LogbackIntegration {
     
     private static Logger initLogger(){
         GeoTools.init();
-         if( Logging.ALL.getLoggerFactory() == LogbackLoggerFactory.getInstance() ){
+        if( Logging.ALL.getLoggerFactory() == LogbackLoggerFactory.getInstance() ){
             System.err.println("Expected GeoTools.init() to configure LogbackLoggerFactory, was "+Logging.ALL.getLoggerFactory());
         }
         return Logging.getLogger(LogbackIntegration.class);
     }
 
-    private static String lookupConfiguration(){
-        try {
-            LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
-            ConfigurationWatchList configurationWatchList = ConfigurationWatchListUtil.getConfigurationWatchList(context);
-            return configurationWatchList.getMainURL().toString();
-        } catch (Exception unknown) {
-            return "unknown";
-        }
-    }
 }

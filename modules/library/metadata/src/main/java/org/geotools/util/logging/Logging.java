@@ -418,6 +418,33 @@ public final class Logging {
     }
 
     /**
+     * Checks the {@link LoggerFactory#lookupConfiguration()} information, or reports back on {@code
+     * java.util.logging} configuration if no factory is used.
+     *
+     * <p>The details returned are suitable for troubleshooting.
+     *
+     * @return logging configuration details.
+     */
+    public String lookupConfiguration() {
+        if (factory != null) {
+            return factory.lookupConfiguration();
+        } else {
+            String configClass = System.getProperty("java.util.logging.config.class");
+            String configFile = System.getProperty("java.util.logging.config.file");
+            String javaHome = System.getProperty("java.home");
+            if (configClass != null) {
+                return configClass;
+            } else if (configFile != null) {
+                return configFile;
+            } else if (javaHome != null) {
+                return javaHome + "/lib/logging.properties";
+            } else {
+                return "java.util.logging";
+            }
+        }
+    }
+
+    /**
      * Invoked when an unexpected error occurs. This method logs a message at the {@link
      * Level#WARNING WARNING} level to the specified logger. The originating class name and method
      * name are inferred from the error stack trace, using the first {@linkplain StackTraceElement

@@ -9,25 +9,32 @@
  */
 package org.geotools.tutorial.reload;
 
-import java.io.File;
 import java.util.logging.Logger;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.logging.Logging;
 import org.geotools.util.logging.Log4JLoggerFactory;
 
-import org.apache.log4j.PropertyConfigurator;
-
-/**
- * Example illustrating use of Reload4J (providing Log4J 1 API) and startup environment.
- */
+/** Example illustrating use of Reload4J (providing Log4J 1 API) and startup environment. */
 public class Reload4JIntegration {
-    
+
     public static final Logger LOGGER = initLogger();
-    
+
     public static void main(String args[]) {
         LOGGER.info("Welcome to Reload4J Integration Example");
-        LOGGER.info("Configuration " + lookupConfiguration());
-        
+        if (!LOGGER.getClass().getName().equals("org.geotools.util.logging.Log4JLogger")) {
+            LOGGER.severe("Log4JLogger expected, but was:" + LOGGER.getClass().getName());
+        }
+        // Log4J Properties
+        checkProperty("log4j.defaultInitOverride");
+        checkProperty("log4j.configuratorClass");
+        checkProperty("log4j.configuratorClass");
+
+        if (System.getProperties().containsKey("log4j.configuration")) {
+            LOGGER.config("log4j.configurationFile=" + System.getProperty("log4j.configuration"));
+        }
+
+        LOGGER.config("Configuration " + Log4JLoggerFactory.getInstance().lookupConfiguration());
+
         LOGGER.finest("Everything is finest...");
         LOGGER.finer("Everything is finer...");
         LOGGER.fine("Everything is fine...");
@@ -35,25 +42,15 @@ public class Reload4JIntegration {
         LOGGER.warning("Everything is alarming!");
         LOGGER.severe("Everything is terrible!");
     }
-    private static Logger initLogger(){
+
+    private static Logger initLogger() {
         GeoTools.init();
-         if( Logging.ALL.getLoggerFactory() == Log4JLoggerFactory.getInstance() ){
-            System.err.println("Expected GeoTools.init() to configure Log4JLoggerFactory, was "+Logging.ALL.getLoggerFactory());
-        }
         return Logging.getLogger(Reload4JIntegration.class);
     }
-    
-    private static String lookupConfiguration(){
-        if( System.getProperties().containsKey("log4j.configuration") ){
-            File config = new File(System.getProperty("log4j.configuration"));
-            if(config.exists()) {
-               return ;config;
-            } else {
-               LOGGER.warning("The log4j.configuration="+config+" file does not exist");
-            }
-        }
-        else {
-            return "built-in log4j.properties resource used";
+
+    private static void checkProperty(String property) {
+        if (System.getProperties().containsKey(property)) {
+            LOGGER.config(property + "=" + System.getProperty(property));
         }
     }
 }

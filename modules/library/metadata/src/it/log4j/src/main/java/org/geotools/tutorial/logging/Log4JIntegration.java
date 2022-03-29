@@ -14,27 +14,24 @@ import java.util.logging.Logger;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.logging.Log4J2LoggerFactory;
 import org.geotools.util.logging.Logging;
-/**
- * Example illustrating use of Log4J 2 API and startup environment.
- */
+/** Example illustrating use of Log4J 2 API and startup environment. */
 public class Log4JIntegration {
+    static {
+        GeoTools.init();
+    }
+
+    static final Logger LOGGER = Logging.getLogger(Log4JIntegration.class);
 
     public static void main(String args[]) {
-        GeoTools.init();
-        if( Logging.ALL.getLoggerFactory() == Log4J2LoggerFactory.getInstance() ){
-            System.err.println("Expected GeoTools.init() to configure Log4J2LoggerFactory, was "+Logging.ALL.getLoggerFactory());
-        }
-
-        final Logger LOGGER = Logging.getLogger(Log4JIntegration.class);
-        if(!LOGGER.getClass().getName().equals("org.geotools.util.logging.Log4J2Logger")){
-           LOGGER.severe("Log4J2Logger expected, but was:" + LOGGER.getClass().getName() );
-        }
-
         LOGGER.info("Welcome to Log4j Integration Example");
-        if( System.getProperties().containsKey("log4j2.configurationFile") ){
-            LOGGER.config("log4j2.configurationFile="+System.getProperty("log4j2.configurationFile"));
+        if (!LOGGER.getClass().getName().equals("org.geotools.util.logging.Log4J2Logger")) {
+            LOGGER.severe("Log4J2Logger expected, but was:" + LOGGER.getClass().getName());
         }
-        LOGGER.info("Configuration " + Log4J2LoggerFactory.getInstance().lookupConfiguration());
+
+        // Log4J2 properties
+        LOGGER.info("Welcome to Log4j Integration Example");
+        checkProperty("log4j2.configurationFile");
+        LOGGER.config("Configuration " + Logging.ALL.lookupConfiguration());
 
         LOGGER.finest("Everything is finest...");
         LOGGER.finer("Everything is finer...");
@@ -45,4 +42,9 @@ public class Log4JIntegration {
         LOGGER.severe("Everything is terrible!");
     }
 
+    private static void checkProperty(String property) {
+        if (System.getProperties().containsKey(property)) {
+            LOGGER.config(property + "=" + System.getProperty(property));
+        }
+    }
 }

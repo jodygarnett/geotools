@@ -9,7 +9,7 @@ String log = org.apache.commons.io.FileUtils.readFileToString(buildLog);
 if (!log.contains("INFO      LoggingIntegration")) {
     throw new IllegalStateException("INFO expected");
 }
-if (!log.contains("Using java.util.logging.config.file")) {
+if (!log.contains("java.util.logging.config.file=logging.properties")) {
     throw new IllegalStateException("java.util.logging.config.file use expected");
 }
 if (!log.contains("CONFIG    LoggingIntegration")) {

@@ -38,6 +38,7 @@ public class Reload4JIntegration {
         LOGGER.finest("Everything is finest...");
         LOGGER.finer("Everything is finer...");
         LOGGER.fine("Everything is fine...");
+        LOGGER.config("Everything is configured...");
         LOGGER.info("Everything is okay.");
         LOGGER.warning("Everything is alarming!");
         LOGGER.severe("Everything is terrible!");

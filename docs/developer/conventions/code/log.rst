@@ -74,10 +74,28 @@ The INFO level is for end users. Use the FINE, FINER or FINEST levels for debug 
 Logging configuration
 ^^^^^^^^^^^^^^^^^^^^^
 
-When testing configure logging using `src/test/resources/logging.properties` file.
+There are :file:`logging.properties`` files available in the project directory:
 
-When running use ``-Djava.util.logging.config.file=logging.properties`` system property.
+* :file:`quiet-logging.properties` - default for maven builds
+* :file:`info-logging.properties` - use ``-Dlogging-profile=info-logging`` to enable
 
+To provide custom logging when testing:
+
+1. Add `src/test/resources/logging.properties`
+2. In your project :file:`pom.xml` update ``maven-surefire-plugin`` configuration:
+
+   .. code-block:: xml
+   
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <systemPropertyVariables>
+            <java.util.logging.config.file>src/test/resources/logging.properties</java.util.logging.config.file>
+          </systemPropertyVariables>
+        </configuration>
+      </plugin>
+      
 See the :user:`user guide for details <library/metadata/logging/java_logging.html>` for examples of configuration, and bridging to other logging systems.
 
 Entering/Existing Logger

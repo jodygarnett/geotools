@@ -966,6 +966,11 @@
         <version>${sl4j.version}</version>
       </dependency>
       <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-jdk14</artifactId>
+        <version>${sl4j.version}</version>
+      </dependency>
+      <dependency>
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-classic</artifactId>
         <version>${logback.version}</version>
@@ -1083,12 +1088,6 @@
         <groupId>opendap</groupId>
         <artifactId>opendap</artifactId>
         <version>2.1</version>
-      </dependency>
-      <dependency>
-        <!-- Logging system used by NetCDF. -->
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-jdk14</artifactId>
-        <version>${sl4j.version}</version>
       </dependency>
 
       <!-- EMF -->
@@ -1386,12 +1385,6 @@
         <groupId>org.apache.solr</groupId>
         <artifactId>solr-solrj</artifactId>
         <version>${solrj.version}</version>
-        <exclusions>
-          <exclusion>
-            <artifactId>slf4j-api</artifactId>
-            <groupId>org.slf4j</groupId>
-          </exclusion>
-        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.elasticsearch.client</groupId>

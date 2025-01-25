@@ -29,19 +29,6 @@
   </properties>
 
   <dependencies>
-    <!-- docs dependency only used to schedule release after docs module order        -->
-    <!-- uses exclusions to avoid contributing additional dependencies to release     -->
-    <dependency>
-      <groupId>org.geotools</groupId>
-      <artifactId>docs</artifactId>
-      <version>${project.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>*</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
 
     <!-- these jars are only available from osgeo repo -->
     <dependency>
@@ -58,7 +45,7 @@
     </dependency>
 
     <!-- Check that dependences listed here are included in binaryDistDependencies.xml -->
-    <!-- This ensures that transitive dependences are packaged up in libs/ folder.     -->
+    <!-- This ensures that transitive dependencies are packaged up in libs/ folder.     -->
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-app-schema-resolver</artifactId>
@@ -600,4 +587,31 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <id>docs</id>
+      <activation>
+        <property>
+          <name>all</name>
+        </property>
+      </activation>
+      <dependencies>
+        <!-- docs dependency only used to schedule release after docs module order        -->
+        <!-- uses exclusions to avoid contributing additional dependencies to release     -->
+        <dependency>
+          <groupId>org.geotools</groupId>
+          <artifactId>docs</artifactId>
+          <version>${project.version}</version>
+          <exclusions>
+            <exclusion>
+              <groupId>*</groupId>
+              <artifactId>*</artifactId>
+            </exclusion>
+          </exclusions>
+        </dependency>
+      </dependencies>
+    </profile>
+  </profiles>
+
 </project>

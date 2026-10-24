@@ -26,10 +26,12 @@ jobs:
         distribution: 'temurin'
         architecture: 'arm64'
     - name: Build GDAL
+      env:
+        HOMEBREW_NO_AUTO_UPDATE: 1
+        HOMEBREW_NO_INSTALL_CLEANUP: 1
+        HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: 1
       run: |
         mkdir $GDAL_INSTALL_PATH
-        brew update
-        brew upgrade
         brew install freexl libxml2 libspatialite geos proj libgeotiff openjpeg libaec postgis doxygen unixodbc aom jpeg-xl libheif libarchive libkml boost ccache swig python-setuptools
         : # gdal is automatically installed as a dependency for postgis
         brew uninstall --ignore-dependencies gdal
@@ -38,8 +40,8 @@ jobs:
         cd gdal-$OSX_GDAL_VERSION
         mkdir build
         cd build
-        : # See https://github.com/OSGeo/gdal/issues/6949 (Java bindings) and https://github.com/OSGeo/gdal/pull/8226 (Arrow and Parquet). Poppler is off due to build failures
-        cmake -DCMAKE_INSTALL_PREFIX=$GDAL_INSTALL_PATH -DCMAKE_BUILD_TYPE=Release -DBUILD_JAVA_BINDINGS=ON -DBUILD_PYTHON_BINDINGS=OFF -DGDAL_USE_POPPLER=OFF ${CMAKE_OPTIONS} ..
+        : # See https://github.com/OSGeo/gdal/issues/6949 (Java bindings) and https://github.com/OSGeo/gdal/pull/8226 (Arrow and Parquet). Poppler and OpenEXR are off due to build failures
+        cmake -DCMAKE_INSTALL_PREFIX=$GDAL_INSTALL_PATH -DCMAKE_BUILD_TYPE=Release -DBUILD_JAVA_BINDINGS=ON -DBUILD_PYTHON_BINDINGS=OFF -DGDAL_USE_POPPLER=OFF -DGDAL_USE_OPENEXR=OFF ${CMAKE_OPTIONS} ..
         cmake --build .
         cmake --build . --target install
         : # Sanity test that the gdal bindings actually work
